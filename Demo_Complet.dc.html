@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avatar Institut – Website Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: #FFFFFF;
+  color: #0F0F0F;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+}
+.page-section { display: none; }
+.page-section.active { display: block; }
+</style>
+</helmet>
+
+<!-- HEADER / NAVIGATION (STICKY) -->
+<header style="background:#FFFFFF;border-bottom:1px solid #E8F0EA;position:sticky;top:0;z-index:999;backdrop-filter:blur(8px);background:rgba(255,255,255,0.95);">
+  <div style="max-width:1400px;margin:0 auto;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="display:flex;align-items:center;gap:16px;flex-shrink:0;cursor:pointer;" onclick="showPage('home')">
+      <svg width="48" height="60" viewBox="0 0 44 56" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+        <circle cx="22" cy="20" r="16" fill="none" stroke="#1F4D3A" stroke-width="1"/>
+        <circle cx="22" cy="20" r="2.8" fill="#1F4D3A"/>
+        <line x1="4" y1="42" x2="40" y2="42" stroke="#1F4D3A" stroke-width="0.3" opacity="0.5"/>
+        <text x="22" y="48" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="5" letter-spacing="1.5" fill="#0F0F0F">AVATAR INSTITUT</text>
+      </svg>
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <div style="font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:#0F0F0F;direction:rtl;text-align:right;">مؤسسة الأڤاتار</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;color:#1F4D3A;letter-spacing:1px;">AVATAR INSTITUT</div>
+      </div>
+    </div>
+    <nav style="display:flex;gap:32px;align-items:center;flex:1;margin-left:60px;">
+      <a onclick="showPage('home')" style="font-size:13px;color:#0F0F0F;text-decoration:none;font-weight:500;border-bottom:2px solid #1F4D3A;padding-bottom:4px;cursor:pointer;">Home</a>
+      <a onclick="showPage('about')" style="font-size:13px;color:#4A4A4A;text-decoration:none;font-weight:400;cursor:pointer;transition:color 0.3s;">About</a>
+      <a onclick="showPage('services')" style="font-size:13px;color:#4A4A4A;text-decoration:none;font-weight:400;cursor:pointer;transition:color 0.3s;">Services</a>
+      <a onclick="showPage('contact')" style="font-size:13px;color:#4A4A4A;text-decoration:none;font-weight:400;cursor:pointer;transition:color 0.3s;">Contact</a>
+    </nav>
+    <button style="background:#1F4D3A;color:#FFFFFF;border:none;padding:10px 24px;border-radius:3px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:1px;">GET STARTED</button>
+  </div>
+</header>
+
+<!-- ═════════════════════════════════════ HOME PAGE ═════════════════════════════════════ -->
+<section class="page-section active" id="home" style="padding:0;">
+
+<!-- HERO SECTION -->
+<section style="background:linear-gradient(135deg, #FFFFFF 0%, #F7FAF8 100%);padding:100px 40px;min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+  <div style="position:absolute;top:10%;right:5%;width:300px;height:300px;border:1px solid #E8F0EA;border-radius:50%;opacity:0.3;"></div>
+  <div style="position:absolute;bottom:15%;left:5%;width:200px;height:200px;border:2px solid #1F4D3A;opacity:0.08;transform:rotate(45deg);"></div>
+  <div style="max-width:1200px;margin:0 auto;text-align:center;position:relative;z-index:1;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:#1F4D3A;letter-spacing:2px;margin-bottom:20px;text-transform:uppercase;">Where Science Meets Consciousness</div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:72px;font-weight:700;color:#0F0F0F;line-height:1.1;margin-bottom:24px;max-width:1000px;margin-left:auto;margin-right:auto;">Explore the Metaphysics of Human Consciousness</h1>
+    <h2 style="font-family:'Cairo',sans-serif;font-size:28px;font-weight:700;color:#1F4D3A;direction:rtl;text-align:center;margin-bottom:32px;line-height:1.3;">استكشف ميتافيزيقا الوعي الإنساني</h2>
+    <p style="font-family:'Inter',sans-serif;font-size:18px;color:#4A4A4A;max-width:700px;margin:0 auto 40px;line-height:1.7;">Join a global community of researchers, students, and spiritual seekers advancing the intersection of science, consciousness, and human development.</p>
+    <div style="display:flex;gap:16px;justify-content:center;margin-bottom:60px;">
+      <button onclick="showPage('services')" style="background:#1F4D3A;color:#FFFFFF;border:none;padding:14px 32px;border-radius:3px;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:1px;transition:all 0.3s;">EXPLORE COURSES</button>
+      <button onclick="showPage('about')" style="background:transparent;color:#1F4D3A;border:1.5px solid #1F4D3A;padding:14px 32px;border-radius:3px;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:1px;transition:all 0.3s;">LEARN MORE</button>
+    </div>
+    <div style="display:flex;gap:40px;justify-content:center;align-items:center;margin-top:80px;padding-top:40px;border-top:1px solid #E8F0EA;">
+      <div style="text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:#1F4D3A;">500+</div>
+        <div style="font-size:12px;color:#4A4A4A;margin-top:4px;">Active Students</div>
+      </div>
+      <div style="width:1px;height:40px;background:#E8F0EA;"></div>
+      <div style="text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:#1F4D3A;">12+</div>
+        <div style="font-size:12px;color:#4A4A4A;margin-top:4px;">Research Programs</div>
+      </div>
+      <div style="width:1px;height:40px;background:#E8F0EA;"></div>
+      <div style="text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:#1F4D3A;">45</div>
+        <div style="font-size:12px;color:#4A4A4A;margin-top:4px;">Expert Faculty</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRODUCTION SECTION -->
+<section style="background:#FFFFFF;padding:80px 40px;border-top:1px solid #E8F0EA;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;">
+      <div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:#1F4D3A;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">About Avatar Institut</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:#0F0F0F;margin-bottom:24px;line-height:1.2;">Bridging Science and Spirit</h2>
+        <p style="font-size:16px;color:#4A4A4A;margin-bottom:20px;line-height:1.8;">Avatar Institut für Metaphysik GmbH is an international academy dedicated to advancing the study of metaphysics, consciousness, and human development through rigorous research and transformative education.</p>
+        <p style="font-size:16px;color:#4A4A4A;margin-bottom:32px;line-height:1.8;">Our mission unites academic excellence with spiritual wisdom, creating pathways for researchers, students, and professionals to explore the deeper dimensions of human experience.</p>
+        <a onclick="showPage('about')" style="display:inline-block;color:#1F4D3A;text-decoration:none;font-weight:600;font-size:13px;letter-spacing:1px;border-bottom:1px solid #1F4D3A;padding-bottom:4px;transition:all 0.3s;cursor:pointer;">DISCOVER OUR STORY →</a>
+      </div>
+      <div style="background:#F7FAF8;border:1px solid #E8F0EA;border-radius:3px;padding:60px;display:flex;align-items:center;justify-content:center;min-height:400px;">
+        <div style="text-align:center;">
+          <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 20px;">
+            <circle cx="60" cy="60" r="50" fill="none" stroke="#1F4D3A" stroke-width="1.5"/>
+            <circle cx="60" cy="60" r="35" fill="none" stroke="#1F4D3A" stroke-width="1" opacity="0.5"/>
+            <circle cx="60" cy="60" r="8" fill="#1F4D3A"/>
+            <circle cx="60" cy="20" r="3" fill="#1F4D3A" opacity="0.6"/>
+            <circle cx="100" cy="60" r="3" fill="#1F4D3A" opacity="0.6"/>
+            <circle cx="60" cy="100" r="3" fill="#1F4D3A" opacity="0.6"/>
+            <circle cx="20" cy="60" r="3" fill="#1F4D3A" opacity="0.6"/>
+          </svg>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:#1F4D3A;letter-spacing:1px;">Consciousness Research</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES SECTION -->
+<section style="background:#F7FAF8;padding:80px 40px;border-top:1px solid #E8F0EA;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:60px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:#1F4D3A;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Core Principles</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:#0F0F0F;">Our Values Guide Us</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;">
+      <div style="background:#FFFFFF;padding:32px;border-radius:3px;border-left:3px solid #1F4D3A;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:28px;margin-bottom:12px;">◈</div>
+        <h3 style="font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:#0F0F0F;margin-bottom:12px;text-transform:uppercase;">Wisdom</h3>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.6;">Deep understanding rooted in both ancient traditions and modern inquiry.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:32px;border-radius:3px;border-left:3px solid #1F4D3A;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:28px;margin-bottom:12px;">⚗</div>
+        <h3 style="font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:#0F0F0F;margin-bottom:12px;text-transform:uppercase;">Research</h3>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.6;">Rigorous scientific methodology applied to metaphysical questions.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:32px;border-radius:3px;border-left:3px solid #1F4D3A;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:28px;margin-bottom:12px;">♡</div>
+        <h3 style="font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:#0F0F0F;margin-bottom:12px;text-transform:uppercase;">Integrity</h3>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.6;">Honest inquiry and authentic engagement with all seekers.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:32px;border-radius:3px;border-left:3px solid #1F4D3A;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:28px;margin-bottom:12px;">✦</div>
+        <h3 style="font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:#0F0F0F;margin-bottom:12px;text-transform:uppercase;">Transformation</h3>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.6;">Empowering individuals to evolve and reach their potential.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES PREVIEW -->
+<section style="background:#FFFFFF;padding:80px 40px;border-top:1px solid #E8F0EA;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:60px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:#1F4D3A;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">What We Offer</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:#0F0F0F;">Learning Pathways</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;">
+      <div style="background:#F7FAF8;padding:40px;border-radius:3px;border-top:2px solid #1F4D3A;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:#0F0F0F;margin-bottom:16px;">Online Courses</h3>
+        <p style="font-size:14px;color:#4A4A4A;margin-bottom:24px;line-height:1.7;">Self-paced and interactive courses covering metaphysics, consciousness studies, and human development.</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="font-size:12px;color:#1F4D3A;font-weight:500;">✓ Flexible scheduling</div>
+          <div style="font-size:12px;color:#1F4D3A;font-weight:500;">✓ Expert instructors</div>
+          <div style="font-size:12px;color:#1F4D3A;font-weight:500;">✓ Lifetime access</div>
+        </div>
+      </div>
+      <div style="background:#F7FAF8;padding:40px;border-radius:3px;border-top:2px solid #1F4D3A;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:#0F0F0F;margin-bottom:16px;">Certifications</h3>
+        <p style="font-size:14px;color:#4A4A4A;margin-bottom:24px;line-height:1.7;">Comprehensive programs recognized internationally for professional and personal development.</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="font-size:12px;color:#1F4D3A;font-weight:500;">✓ Industry recognized</div>
+          <div style="font-size:12px;color:#1F4D3A;font-weight:500;">✓ Mentorship included</div>
+          <div style="font-size:12px;color:#1F4D3A;font-weight:500;">✓ Global community</div>
+        </div>
+      </div>
+      <div style="background:#F7FAF8;padding:40px;border-radius:3px;border-top:2px solid #1F4D3A;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:#0F0F0F;margin-bottom:16px;">Consultations</h3>
+        <p style="font-size:14px;color:#4A4A4A;margin-bottom:24px;line-height:1.7;">Private sessions with expert faculty for personalized guidance and deep exploration.</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="font-size:12px;color:#1F4D3A;font-weight:500;">✓ 1-on-1 sessions</div>
+          <div style="font-size:12px;color:#1F4D3A;font-weight:500;">✓ Customized focus</div>
+          <div style="font-size:12px;color:#1F4D3A;font-weight:500;">✓ Flexible duration</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section style="background:#1F4D3A;padding:80px 40px;color:#FFFFFF;">
+  <div style="max-width:900px;margin:0 auto;text-align:center;">
+    <h2 style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;margin-bottom:24px;">Ready to Begin Your Journey?</h2>
+    <p style="font-size:18px;margin-bottom:40px;line-height:1.7;opacity:0.95;">Join thousands of seekers transforming their understanding of consciousness and human potential.</p>
+    <button onclick="showPage('services')" style="background:#FFFFFF;color:#1F4D3A;border:none;padding:14px 40px;border-radius:3px;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:1px;transition:all 0.3s;">EXPLORE LEARNING OPTIONS</button>
+  </div>
+</section>
+
+</section>
+
+<!-- ═════════════════════════════════════ ABOUT PAGE ═════════════════════════════════════ -->
+<section class="page-section" id="about" style="padding:0;">
+
+<section style="background:linear-gradient(135deg, #FFFFFF 0%, #F7FAF8 100%);padding:60px 40px;border-bottom:1px solid #E8F0EA;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:#1F4D3A;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">About Us</div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:56px;font-weight:700;color:#0F0F0F;max-width:800px;">Our Story & Mission</h1>
+    <p style="font-size:16px;color:#4A4A4A;margin-top:20px;max-width:700px;">Understanding the institute's foundation, values, and commitment to advancing consciousness studies.</p>
+  </div>
+</section>
+
+<section style="background:#FFFFFF;padding:80px 40px;border-bottom:1px solid #E8F0EA;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;">
+      <div style="padding:40px;background:#F7FAF8;border-radius:3px;border-left:4px solid #1F4D3A;">
+        <div style="font-family:'Playfair Display',serif;font-size:32px;color:#0F0F0F;margin-bottom:20px;">Our Mission</div>
+        <p style="font-size:15px;color:#4A4A4A;line-height:1.8;margin-bottom:16px;">To advance the study of metaphysics, consciousness, and human development through rigorous research, transformative education, and the integration of scientific inquiry with spiritual wisdom.</p>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;font-style:italic;">We empower researchers, students, and professionals to explore the deeper dimensions of human consciousness and transform their understanding of existence.</p>
+      </div>
+      <div style="padding:40px;background:#F7FAF8;border-radius:3px;border-left:4px solid #1F4D3A;">
+        <div style="font-family:'Playfair Display',serif;font-size:32px;color:#0F0F0F;margin-bottom:20px;">Our Vision</div>
+        <p style="font-size:15px;color:#4A4A4A;line-height:1.8;margin-bottom:16px;">To become the leading international academy connecting science, consciousness studies, and spiritual wisdom in service of human evolution.</p>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;font-style:italic;">We envision a world where the exploration of consciousness is grounded in both academic rigor and ancient wisdom traditions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#F7FAF8;padding:80px 40px;border-bottom:1px solid #E8F0EA;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:60px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:#1F4D3A;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Foundation</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:#0F0F0F;">Core Values</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:32px;">
+      <div style="background:#FFFFFF;padding:40px;border-radius:3px;border-top:3px solid #1F4D3A;">
+        <h3 style="font-family:'Inter',sans-serif;font-size:16px;font-weight:600;color:#0F0F0F;text-transform:uppercase;margin-bottom:16px;letter-spacing:0.5px;">Wisdom</h3>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;">Deep understanding rooted in both ancient spiritual traditions and contemporary scientific inquiry. We honor the wisdom of the past while embracing innovation.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:40px;border-radius:3px;border-top:3px solid #1F4D3A;">
+        <h3 style="font-family:'Inter',sans-serif;font-size:16px;font-weight:600;color:#0F0F0F;text-transform:uppercase;margin-bottom:16px;letter-spacing:0.5px;">Knowledge</h3>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;">Rigorous research and evidence-based learning. We apply scientific methodology to metaphysical questions, bridging disciplines and expanding understanding.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:40px;border-radius:3px;border-top:3px solid #1F4D3A;">
+        <h3 style="font-family:'Inter',sans-serif;font-size:16px;font-weight:600;color:#0F0F0F;text-transform:uppercase;margin-bottom:16px;letter-spacing:0.5px;">Integrity</h3>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;">Honest inquiry, ethical practice, and transparency. We maintain the highest standards of academic and spiritual integrity in all our work.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:40px;border-radius:3px;border-top:3px solid #1F4D3A;">
+        <h3 style="font-family:'Inter',sans-serif;font-size:16px;font-weight:600;color:#0F0F0F;text-transform:uppercase;margin-bottom:16px;letter-spacing:0.5px;">Transformation</h3>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;">Empowering individuals to evolve and realize their full potential. We create pathways for meaningful personal and collective transformation.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:40px;border-radius:3px;border-top:3px solid #1F4D3A;">
+        <h3 style="font-family:'Inter',sans-serif;font-size:16px;font-weight:600;color:#0F0F0F;text-transform:uppercase;margin-bottom:16px;letter-spacing:0.5px;">Service</h3>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;">Dedication to serving the collective good. Our work is centered on contributing to human development and the evolution of consciousness.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:40px;border-radius:3px;border-top:3px solid #1F4D3A;">
+        <h3 style="font-family:'Inter',sans-serif;font-size:16px;font-weight:600;color:#0F0F0F;text-transform:uppercase;margin-bottom:16px;letter-spacing:0.5px;">Inclusivity</h3>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;">Welcoming diverse perspectives, cultures, and traditions. We create an international community united by curiosity and commitment to growth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#FFFFFF;padding:80px 40px;border-bottom:1px solid #E8F0EA;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:60px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:#1F4D3A;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Knowledge Pillars</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:#0F0F0F;">Areas of Expertise</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;">
+      <div style="padding:32px;background:#F7FAF8;border-radius:3px;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#0F0F0F;margin-bottom:16px;">Metaphysics</h3>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.8;margin-bottom:16px;">The study of existence, reality, and the nature of being. We explore fundamental questions about consciousness, existence, and the structure of reality.</p>
+        <ul style="list-style:none;font-size:12px;color:#1F4D3A;font-weight:500;">
+          <li style="margin-bottom:6px;">• Ontology</li>
+          <li style="margin-bottom:6px;">• Epistemology</li>
+          <li>• Phenomenology</li>
+        </ul>
+      </div>
+      <div style="padding:32px;background:#F7FAF8;border-radius:3px;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#0F0F0F;margin-bottom:16px;">Consciousness Studies</h3>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.8;margin-bottom:16px;">The science and philosophy of consciousness. We investigate the nature of awareness, perception, and subjective experience through multiple methodologies.</p>
+        <ul style="list-style:none;font-size:12px;color:#1F4D3A;font-weight:500;">
+          <li style="margin-bottom:6px;">• Neural correlates</li>
+          <li style="margin-bottom:6px;">• Altered states</li>
+          <li>• Meditation research</li>
+        </ul>
+      </div>
+      <div style="padding:32px;background:#F7FAF8;border-radius:3px;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#0F0F0F;margin-bottom:16px;">Human Development</h3>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.8;margin-bottom:16px;">The evolution and growth of human potential. We support individuals in their journey toward self-knowledge, wisdom, and fulfillment.</p>
+        <ul style="list-style:none;font-size:12px;color:#1F4D3A;font-weight:500;">
+          <li style="margin-bottom:6px;">• Personal growth</li>
+          <li style="margin-bottom:6px;">• Spiritual development</li>
+          <li>• Transformation practices</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#1F4D3A;padding:80px 40px;color:#FFFFFF;">
+  <div style="max-width:900px;margin:0 auto;text-align:center;">
+    <h2 style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;margin-bottom:24px;">Discover Our Learning Programs</h2>
+    <p style="font-size:16px;margin-bottom:40px;line-height:1.7;opacity:0.95;">Explore our comprehensive courses, certifications, and consultations designed for your journey.</p>
+    <button onclick="showPage('services')" style="display:inline-block;background:#FFFFFF;color:#1F4D3A;border:none;padding:14px 40px;border-radius:3px;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:1px;text-decoration:none;">EXPLORE SERVICES →</button>
+  </div>
+</section>
+
+</section>
+
+<!-- ═════════════════════════════════════ SERVICES PAGE ═════════════════════════════════════ -->
+<section class="page-section" id="services" style="padding:0;">
+
+<section style="background:linear-gradient(135deg, #FFFFFF 0%, #F7FAF8 100%);padding:60px 40px;border-bottom:1px solid #E8F0EA;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:#1F4D3A;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Learning Pathways</div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:56px;font-weight:700;color:#0F0F0F;max-width:800px;">Our Services</h1>
+    <p style="font-size:16px;color:#4A4A4A;margin-top:20px;max-width:700px;">Choose from our comprehensive range of programs designed for every stage of your consciousness journey.</p>
+  </div>
+</section>
+
+<section style="background:#FFFFFF;padding:80px 40px;border-bottom:1px solid #E8F0EA;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px;">
+      <div style="background:#F7FAF8;border-radius:3px;overflow:hidden;border:1px solid #E8F0EA;">
+        <div style="background:#1F4D3A;color:#FFFFFF;padding:40px;text-align:center;">
+          <div style="font-size:56px;margin-bottom:16px;">📚</div>
+          <h2 style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;">Online Courses</h2>
+        </div>
+        <div style="padding:40px;">
+          <p style="font-size:14px;color:#4A4A4A;margin-bottom:32px;line-height:1.8;">Self-paced, interactive courses covering metaphysics, consciousness studies, sacred symbolism, and human development.</p>
+          <div style="margin-bottom:32px;">
+            <h4 style="font-size:12px;color:#1F4D3A;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">What's Included</h4>
+            <ul style="list-style:none;font-size:13px;color:#4A4A4A;line-height:2;">
+              <li>✓ Video lessons & materials</li>
+              <li>✓ Interactive exercises</li>
+              <li>✓ Downloadable resources</li>
+              <li>✓ Community forum access</li>
+              <li>✓ Lifetime access</li>
+              <li>✓ Certificate of completion</li>
+            </ul>
+          </div>
+          <div style="padding:24px;background:#FFFFFF;border-radius:3px;margin-bottom:24px;border:1px solid #E8F0EA;">
+            <div style="font-size:12px;color:#4A4A4A;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Starting Price</div>
+            <div style="font-family:'Playfair Display',serif;font-size:32px;color:#1F4D3A;font-weight:700;">$99</div>
+            <div style="font-size:11px;color:#4A4A4A;margin-top:4px;">per course</div>
+          </div>
+          <button style="width:100%;background:#1F4D3A;color:#FFFFFF;border:none;padding:12px;border-radius:3px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:1px;">EXPLORE COURSES</button>
+        </div>
+      </div>
+      <div style="background:#F7FAF8;border-radius:3px;overflow:hidden;border:2px solid #1F4D3A;">
+        <div style="background:#1F4D3A;color:#FFFFFF;padding:40px;text-align:center;">
+          <div style="font-size:56px;margin-bottom:16px;">🏆</div>
+          <h2 style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;">Certifications</h2>
+          <div style="margin-top:8px;font-size:11px;letter-spacing:1px;text-transform:uppercase;background:rgba(255,255,255,0.2);display:inline-block;padding:4px 12px;border-radius:2px;margin-top:8px;">MOST POPULAR</div>
+        </div>
+        <div style="padding:40px;">
+          <p style="font-size:14px;color:#4A4A4A;margin-bottom:32px;line-height:1.8;">Comprehensive multi-month programs with mentorship, projects, and professional recognition globally.</p>
+          <div style="margin-bottom:32px;">
+            <h4 style="font-size:12px;color:#1F4D3A;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">What's Included</h4>
+            <ul style="list-style:none;font-size:13px;color:#4A4A4A;line-height:2;">
+              <li>✓ Full curriculum</li>
+              <li>✓ Monthly live seminars</li>
+              <li>✓ Expert mentorship</li>
+              <li>✓ Capstone project</li>
+              <li>✓ Recognized certificate</li>
+              <li>✓ Alumni network access</li>
+            </ul>
+          </div>
+          <div style="padding:24px;background:#FFFFFF;border-radius:3px;margin-bottom:24px;border:1px solid #E8F0EA;">
+            <div style="font-size:12px;color:#4A4A4A;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Starting Price</div>
+            <div style="font-family:'Playfair Display',serif;font-size:32px;color:#1F4D3A;font-weight:700;">$1,299</div>
+            <div style="font-size:11px;color:#4A4A4A;margin-top:4px;">6-month program</div>
+          </div>
+          <button style="width:100%;background:#1F4D3A;color:#FFFFFF;border:none;padding:12px;border-radius:3px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:1px;">LEARN MORE</button>
+        </div>
+      </div>
+      <div style="background:#F7FAF8;border-radius:3px;overflow:hidden;border:1px solid #E8F0EA;">
+        <div style="background:#1F4D3A;color:#FFFFFF;padding:40px;text-align:center;">
+          <div style="font-size:56px;margin-bottom:16px;">💬</div>
+          <h2 style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;">Private Consultations</h2>
+        </div>
+        <div style="padding:40px;">
+          <p style="font-size:14px;color:#4A4A4A;margin-bottom:32px;line-height:1.8;">1-on-1 sessions with expert faculty for personalized guidance, deep work, and transformative support.</p>
+          <div style="margin-bottom:32px;">
+            <h4 style="font-size:12px;color:#1F4D3A;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">What's Included</h4>
+            <ul style="list-style:none;font-size:13px;color:#4A4A4A;line-height:2;">
+              <li>✓ Personalized focus</li>
+              <li>✓ Expert guidance</li>
+              <li>✓ Flexible scheduling</li>
+              <li>✓ Custom exercises</li>
+              <li>✓ Follow-up support</li>
+              <li>✓ Session notes provided</li>
+            </ul>
+          </div>
+          <div style="padding:24px;background:#FFFFFF;border-radius:3px;margin-bottom:24px;border:1px solid #E8F0EA;">
+            <div style="font-size:12px;color:#4A4A4A;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Starting Price</div>
+            <div style="font-family:'Playfair Display',serif;font-size:32px;color:#1F4D3A;font-weight:700;">$150</div>
+            <div style="font-size:11px;color:#4A4A4A;margin-top:4px;">per session (60 min)</div>
+          </div>
+          <button style="width:100%;background:#1F4D3A;color:#FFFFFF;border:none;padding:12px;border-radius:3px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:1px;">BOOK A SESSION</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#F7FAF8;padding:80px 40px;border-bottom:1px solid #E8F0EA;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:60px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:#1F4D3A;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Extended Offerings</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:#0F0F0F;">Complementary Services</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:32px;">
+      <div style="background:#FFFFFF;padding:40px;border-radius:3px;border-left:4px solid #1F4D3A;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:#0F0F0F;margin-bottom:16px;">Digital Library</h3>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;margin-bottom:20px;">Access our comprehensive collection of research papers, ebooks, journals, and multimedia resources on consciousness studies and metaphysics.</p>
+        <div style="display:flex;gap:16px;align-items:center;">
+          <span style="font-family:'Playfair Display',serif;font-size:20px;color:#1F4D3A;">📖</span>
+          <span style="font-size:13px;color:#4A4A4A;">1000+ curated resources available</span>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;padding:40px;border-radius:3px;border-left:4px solid #1F4D3A;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:#0F0F0F;margin-bottom:16px;">Workshops & Events</h3>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;margin-bottom:20px;">Attend live seminars, workshops, retreats, and international conferences featuring leading experts and thought leaders.</p>
+        <div style="display:flex;gap:16px;align-items:center;">
+          <span style="font-family:'Playfair Display',serif;font-size:20px;color:#1F4D3A;">🎓</span>
+          <span style="font-size:13px;color:#4A4A4A;">Events year-round globally</span>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;padding:40px;border-radius:3px;border-left:4px solid #1F4D3A;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:#0F0F0F;margin-bottom:16px;">Community Platform</h3>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;margin-bottom:20px;">Join our vibrant online community to connect with fellow seekers, share experiences, and collaborate on consciousness exploration.</p>
+        <div style="display:flex;gap:16px;align-items:center;">
+          <span style="font-family:'Playfair Display',serif;font-size:20px;color:#1F4D3A;">🌍</span>
+          <span style="font-size:13px;color:#4A4A4A;">500+ active members worldwide</span>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;padding:40px;border-radius:3px;border-left:4px solid #1F4D3A;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:#0F0F0F;margin-bottom:16px;">Research Collaboration</h3>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;margin-bottom:20px;">Partner with our research team on groundbreaking studies exploring consciousness, metaphysics, and human development.</p>
+        <div style="display:flex;gap:16px;align-items:center;">
+          <span style="font-family:'Playfair Display',serif;font-size:20px;color:#1F4D3A;">🔬</span>
+          <span style="font-size:13px;color:#4A4A4A;">12+ ongoing research programs</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#FFFFFF;padding:80px 40px;border-bottom:1px solid #E8F0EA;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:60px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:#1F4D3A;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Course Catalog</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:#0F0F0F;">Featured Programs</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:32px;">
+      <div style="padding:32px;background:#F7FAF8;border-radius:3px;border-top:3px solid #1F4D3A;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#0F0F0F;margin-bottom:12px;">Foundations of Metaphysics</h3>
+        <p style="font-size:12px;color:#1F4D3A;font-weight:600;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">8-Week Course</p>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;margin-bottom:16px;">An introduction to metaphysical philosophy, exploring ontology, epistemology, and the nature of existence through both Eastern and Western traditions.</p>
+        <div style="padding:16px;background:#FFFFFF;border-radius:3px;border:1px solid #E8F0EA;">
+          <p style="font-size:12px;color:#1F4D3A;font-weight:600;margin-bottom:8px;">SKILLS GAINED</p>
+          <ul style="list-style:none;font-size:12px;color:#4A4A4A;line-height:1.8;">
+            <li>• Philosophical frameworks</li>
+            <li>• Metaphysical inquiry</li>
+            <li>• Critical thinking</li>
+          </ul>
+        </div>
+      </div>
+      <div style="padding:32px;background:#F7FAF8;border-radius:3px;border-top:3px solid #1F4D3A;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#0F0F0F;margin-bottom:12px;">Consciousness Exploration</h3>
+        <p style="font-size:12px;color:#1F4D3A;font-weight:600;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">12-Week Course</p>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;margin-bottom:16px;">Deep investigation into consciousness studies, covering neuroscience, meditation, altered states, and direct experience of awareness itself.</p>
+        <div style="padding:16px;background:#FFFFFF;border-radius:3px;border:1px solid #E8F0EA;">
+          <p style="font-size:12px;color:#1F4D3A;font-weight:600;margin-bottom:8px;">SKILLS GAINED</p>
+          <ul style="list-style:none;font-size:12px;color:#4A4A4A;line-height:1.8;">
+            <li>• Meditation practice</li>
+            <li>• Consciousness science</li>
+            <li>• Self-inquiry</li>
+          </ul>
+        </div>
+      </div>
+      <div style="padding:32px;background:#F7FAF8;border-radius:3px;border-top:3px solid #1F4D3A;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#0F0F0F;margin-bottom:12px;">Sacred Symbolism</h3>
+        <p style="font-size:12px;color:#1F4D3A;font-weight:600;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">6-Week Course</p>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;margin-bottom:16px;">Explore the universal language of symbols found across cultures, understanding their spiritual significance and contemporary applications.</p>
+        <div style="padding:16px;background:#FFFFFF;border-radius:3px;border:1px solid #E8F0EA;">
+          <p style="font-size:12px;color:#1F4D3A;font-weight:600;margin-bottom:8px;">SKILLS GAINED</p>
+          <ul style="list-style:none;font-size:12px;color:#4A4A4A;line-height:1.8;">
+            <li>• Symbol interpretation</li>
+            <li>• Cross-cultural wisdom</li>
+            <li>• Integrative meaning-making</li>
+          </ul>
+        </div>
+      </div>
+      <div style="padding:32px;background:#F7FAF8;border-radius:3px;border-top:3px solid #1F4D3A;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#0F0F0F;margin-bottom:12px;">Human Development Mastery</h3>
+        <p style="font-size:12px;color:#1F4D3A;font-weight:600;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">16-Week Course</p>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;margin-bottom:16px;">Comprehensive program integrating psychology, spirituality, and transformative practices for personal growth and actualization.</p>
+        <div style="padding:16px;background:#FFFFFF;border-radius:3px;border:1px solid #E8F0EA;">
+          <p style="font-size:12px;color:#1F4D3A;font-weight:600;margin-bottom:8px;">SKILLS GAINED</p>
+          <ul style="list-style:none;font-size:12px;color:#4A4A4A;line-height:1.8;">
+            <li>• Self-transformation</li>
+            <li>• Integral development</li>
+            <li>• Life mastery</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#1F4D3A;padding:80px 40px;color:#FFFFFF;">
+  <div style="max-width:900px;margin:0 auto;text-align:center;">
+    <h2 style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;margin-bottom:24px;">Ready to Transform Your Understanding?</h2>
+    <p style="font-size:16px;margin-bottom:40px;line-height:1.7;opacity:0.95;">Start your learning journey today with any of our programs. Expert instructors, vibrant community, and lifetime support await.</p>
+    <button onclick="showPage('contact')" style="display:inline-block;background:#FFFFFF;color:#1F4D3A;border:none;padding:14px 40px;border-radius:3px;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:1px;text-decoration:none;">CONTACT US FOR ENROLLMENT →</button>
+  </div>
+</section>
+
+</section>
+
+<!-- ═════════════════════════════════════ CONTACT PAGE ═════════════════════════════════════ -->
+<section class="page-section" id="contact" style="padding:0;">
+
+<section style="background:linear-gradient(135deg, #FFFFFF 0%, #F7FAF8 100%);padding:60px 40px;border-bottom:1px solid #E8F0EA;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:#1F4D3A;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Get in Touch</div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:56px;font-weight:700;color:#0F0F0F;max-width:800px;">Contact Us</h1>
+    <p style="font-size:16px;color:#4A4A4A;margin-top:20px;max-width:700px;">Reach out to learn more about our programs, schedule a consultation, or explore partnerships.</p>
+  </div>
+</section>
+
+<section style="background:#FFFFFF;padding:80px 40px;border-bottom:1px solid #E8F0EA;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;">
+      <div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:32px;color:#0F0F0F;margin-bottom:24px;">Send us a Message</h2>
+        <form style="display:flex;flex-direction:column;gap:20px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <label style="font-size:12px;font-weight:600;color:#0F0F0F;text-transform:uppercase;letter-spacing:0.5px;">First Name</label>
+              <input type="text" placeholder="Your first name" style="border:1px solid #E8F0EA;padding:12px 14px;border-radius:3px;font-size:13px;background:#F7FAF8;font-family:'Inter',sans-serif;">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <label style="font-size:12px;font-weight:600;color:#0F0F0F;text-transform:uppercase;letter-spacing:0.5px;">Last Name</label>
+              <input type="text" placeholder="Your last name" style="border:1px solid #E8F0EA;padding:12px 14px;border-radius:3px;font-size:13px;background:#F7FAF8;font-family:'Inter',sans-serif;">
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <label style="font-size:12px;font-weight:600;color:#0F0F0F;text-transform:uppercase;letter-spacing:0.5px;">Email Address</label>
+            <input type="email" placeholder="your@email.com" style="border:1px solid #E8F0EA;padding:12px 14px;border-radius:3px;font-size:13px;background:#F7FAF8;font-family:'Inter',sans-serif;">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <label style="font-size:12px;font-weight:600;color:#0F0F0F;text-transform:uppercase;letter-spacing:0.5px;">Subject</label>
+            <select style="border:1px solid #E8F0EA;padding:12px 14px;border-radius:3px;font-size:13px;background:#F7FAF8;font-family:'Inter',sans-serif;color:#4A4A4A;">
+              <option>Select a subject</option>
+              <option>Course Inquiry</option>
+              <option>Certification Program</option>
+              <option>Private Consultation</option>
+              <option>Partnership</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <label style="font-size:12px;font-weight:600;color:#0F0F0F;text-transform:uppercase;letter-spacing:0.5px;">Message</label>
+            <textarea placeholder="Tell us about your inquiry..." style="border:1px solid #E8F0EA;padding:12px 14px;border-radius:3px;font-size:13px;background:#F7FAF8;font-family:'Inter',sans-serif;min-height:140px;resize:vertical;"></textarea>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <input type="checkbox" id="consent" style="width:18px;height:18px;cursor:pointer;">
+            <label for="consent" style="font-size:12px;color:#4A4A4A;line-height:1.5;">I agree to be contacted and understand my data will be handled according to our privacy policy.</label>
+          </div>
+          <button type="submit" style="background:#1F4D3A;color:#FFFFFF;border:none;padding:14px 24px;border-radius:3px;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:1px;transition:background 0.3s;">SEND MESSAGE</button>
+        </form>
+      </div>
+      <div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:32px;color:#0F0F0F;margin-bottom:40px;">Contact Information</h2>
+        <div style="margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid #E8F0EA;">
+          <h3 style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#0F0F0F;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Office Address</h3>
+          <p style="font-size:14px;color:#4A4A4A;line-height:1.8;">Avatar Institut für Metaphysik GmbH<br>Metaphysical Research Center<br>Geneva, Switzerland</p>
+        </div>
+        <div style="margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid #E8F0EA;">
+          <h3 style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#0F0F0F;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Email</h3>
+          <a href="/cdn-cgi/l/email-protection#c7aea9a1a887a6b1a6b3a6b5eaaea9b4b3aeb3b2b3e9a4a8aa" style="font-size:14px;color:#1F4D3A;text-decoration:none;font-weight:500;"><span class="__cf_email__" data-cfemail="4821262e2708293e293c293a6521263b3c213c3d3c662b2725">[email&#160;protected]</span></a><br>
+          <a href="/cdn-cgi/l/email-protection#6d0e02181f1e081e2d0c1b0c190c1f4004031e1904191819430e0200" style="font-size:14px;color:#1F4D3A;text-decoration:none;font-weight:500;margin-top:4px;display:inline-block;"><span class="__cf_email__" data-cfemail="7f1c100a0d0c1a0c3f1e091e0b1e0d5216110c0b160b0a0b511c1012">[email&#160;protected]</span></a><br>
+          <a href="/cdn-cgi/l/email-protection#1b787475686e776f7a6f727475685b7a6d7a6f7a69367275686f726f6e6f35787476" style="font-size:14px;color:#1F4D3A;text-decoration:none;font-weight:500;margin-top:4px;display:inline-block;"><span class="__cf_email__" data-cfemail="dfbcb0b1acaab3abbeabb6b0b1ac9fbea9beabbeadf2b6b1acabb6abaaabf1bcb0b2">[email&#160;protected]</span></a>
+        </div>
+        <div style="margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid #E8F0EA;">
+          <h3 style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#0F0F0F;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Phone</h3>
+          <p style="font-size:14px;color:#4A4A4A;"><strong>Main:</strong> +41 22 XXX XXXX<br><strong>Support:</strong> +41 22 XXX XXXX<br><span style="font-size:12px;color:#4A4A4A;display:block;margin-top:6px;">Available Mon–Fri, 9am–6pm CET</span></p>
+        </div>
+        <div style="padding:20px;background:#F7FAF8;border-radius:3px;border-left:4px solid #1F4D3A;">
+          <h4 style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#0F0F0F;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Response Time</h4>
+          <p style="font-size:13px;color:#4A4A4A;">We typically respond to inquiries within 24–48 hours. For urgent matters, please call our main number.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#F7FAF8;padding:80px 40px;border-bottom:1px solid #E8F0EA;">
+  <div style="max-width:900px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:60px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:#1F4D3A;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Common Questions</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:#0F0F0F;">Frequently Asked Questions</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <div style="background:#FFFFFF;padding:32px;border-radius:3px;border-left:4px solid #1F4D3A;">
+        <h3 style="font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:#0F0F0F;margin-bottom:12px;">How do I enroll in a course?</h3>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.8;">Simply visit our Services page, select your desired course or program, and follow the enrollment process. You'll gain instant access to course materials and our community platform.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:32px;border-radius:3px;border-left:4px solid #1F4D3A;">
+        <h3 style="font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:#0F0F0F;margin-bottom:12px;">What are the prerequisites for certification programs?</h3>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.8;">Most certification programs require foundational knowledge, though some offer beginner tracks. We recommend contacting us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="50333f3e23253c243124393f3e23103126312431227d393e2324392425247e333f3d">[email&#160;protected]</a> to assess your readiness for a specific program.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:32px;border-radius:3px;border-left:4px solid #1F4D3A;">
+        <h3 style="font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:#0F0F0F;margin-bottom:12px;">Can I get a refund if I'm not satisfied?</h3>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.8;">We offer a 30-day satisfaction guarantee on all online courses. If you're not satisfied with the content, contact us for a full refund. Certification programs have different terms—please inquire directly.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:32px;border-radius:3px;border-left:4px solid #1F4D3A;">
+        <h3 style="font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:#0F0F0F;margin-bottom:12px;">Are the certifications internationally recognized?</h3>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.8;">Our certifications are recognized across many countries by educational institutions, wellness professionals, and organizations. The credential is digital and globally verifiable on our platform.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:32px;border-radius:3px;border-left:4px solid #1F4D3A;">
+        <h3 style="font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:#0F0F0F;margin-bottom:12px;">What languages are your courses offered in?</h3>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.8;">Our courses are currently offered in English and Arabic. Some resources and live seminars include simultaneous translation. We're expanding to additional languages throughout 2026.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:32px;border-radius:3px;border-left:4px solid #1F4D3A;">
+        <h3 style="font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:#0F0F0F;margin-bottom:12px;">How long do I have access to course materials?</h3>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.8;">Once enrolled in an online course, you have lifetime access to all materials, including any future updates. You can learn at your own pace without time restrictions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#1F4D3A;padding:80px 40px;color:#FFFFFF;">
+  <div style="max-width:700px;margin:0 auto;text-align:center;">
+    <h2 style="font-family:'Playfair Display',serif;font-size:40px;font-weight:700;margin-bottom:16px;">Stay Connected</h2>
+    <p style="font-size:16px;margin-bottom:32px;line-height:1.7;opacity:0.95;">Subscribe to our newsletter for updates on new courses, research findings, and exclusive events.</p>
+    <form style="display:flex;gap:12px;margin-bottom:16px;">
+      <input type="email" placeholder="Enter your email" style="flex:1;padding:12px 16px;border:none;border-radius:3px;font-size:13px;background:#FFFFFF;color:#0F0F0F;font-family:'Inter',sans-serif;">
+      <button type="submit" style="background:#FFFFFF;color:#1F4D3A;border:none;padding:12px 24px;border-radius:3px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:1px;">SUBSCRIBE</button>
+    </form>
+    <p style="font-size:11px;opacity:0.8;">We respect your privacy. Unsubscribe at any time.</p>
+  </div>
+</section>
+
+</section>
+
+<!-- ═════════════════════════════════════ FOOTER ═════════════════════════════════════ -->
+<footer style="background:#FFFFFF;border-top:1px solid #E8F0EA;padding:40px;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:40px;margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid #E8F0EA;">
+      <div>
+        <div style="font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:#1F4D3A;direction:rtl;margin-bottom:16px;">مؤسسة الأڤاتار</div>
+        <p style="font-size:13px;color:#4A4A4A;line-height:1.8;">Avatar Institut für Metaphysik GmbH is dedicated to advancing consciousness studies and metaphysical education globally.</p>
+      </div>
+      <div>
+        <h4 style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#0F0F0F;text-transform:uppercase;margin-bottom:16px;letter-spacing:1px;">Quick Links</h4>
+        <ul style="list-style:none;">
+          <li style="margin-bottom:8px;"><a onclick="showPage('home')" style="font-size:13px;color:#4A4A4A;text-decoration:none;cursor:pointer;">Home</a></li>
+          <li style="margin-bottom:8px;"><a onclick="showPage('about')" style="font-size:13px;color:#4A4A4A;text-decoration:none;cursor:pointer;">About Us</a></li>
+          <li style="margin-bottom:8px;"><a href="#" style="font-size:13px;color:#4A4A4A;text-decoration:none;">Resources</a></li>
+          <li><a onclick="showPage('contact')" style="font-size:13px;color:#4A4A4A;text-decoration:none;cursor:pointer;">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#0F0F0F;text-transform:uppercase;margin-bottom:16px;letter-spacing:1px;">Services</h4>
+        <ul style="list-style:none;">
+          <li style="margin-bottom:8px;"><a onclick="showPage('services')" style="font-size:13px;color:#4A4A4A;text-decoration:none;cursor:pointer;">Online Courses</a></li>
+          <li style="margin-bottom:8px;"><a onclick="showPage('services')" style="font-size:13px;color:#4A4A4A;text-decoration:none;cursor:pointer;">Certifications</a></li>
+          <li style="margin-bottom:8px;"><a onclick="showPage('services')" style="font-size:13px;color:#4A4A4A;text-decoration:none;cursor:pointer;">Consultations</a></li>
+          <li><a href="#" style="font-size:13px;color:#4A4A4A;text-decoration:none;">Events</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#0F0F0F;text-transform:uppercase;margin-bottom:16px;letter-spacing:1px;">Follow Us</h4>
+        <div style="display:flex;gap:12px;">
+          <a href="#" style="width:36px;height:36px;background:#F7FAF8;border-radius:3px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#1F4D3A;font-weight:600;">f</a>
+          <a href="#" style="width:36px;height:36px;background:#F7FAF8;border-radius:3px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#1F4D3A;font-weight:600;">in</a>
+          <a href="#" style="width:36px;height:36px;background:#F7FAF8;border-radius:3px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#1F4D3A;font-weight:600;">tw</a>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <p style="font-size:12px;color:#4A4A4A;">© 2026 Avatar Institut für Metaphysik. All rights reserved.</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:13px;color:#1F4D3A;letter-spacing:1px;">Where Science Meets Consciousness</p>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function showPage(pageId) {
+  // Hide all pages
+  const pages = document.querySelectorAll('.page-section');
+  pages.forEach(page => page.classList.remove('active'));
+  
+  // Show selected page
+  const selectedPage = document.getElementById(pageId);
+  if (selectedPage) {
+    selectedPage.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+}
+</script>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
