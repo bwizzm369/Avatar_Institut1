@@ -9,16 +9,35 @@ Plateforme e-learning bilingue (anglais / arabe) d’Avatar Institut.
 
 ## État actuel
 
-Site statique de référence (`index.html`). Fondation Next.js non encore initialisée.
+Fondation Next.js (App Router, TypeScript strict) sur `develop/avatar-platform`.
+Site statique de référence conservé dans [`legacy/index.html`](./legacy/index.html).
 
-## Commandes (disponibles après initialisation Next.js)
+Supabase, Stripe, PayPal et Bunny Stream **ne sont pas connectés** à cette phase.
+
+## Installation
 
 ```bash
 npm install
-npm run lint
-npx tsc --noEmit
-npm run build
 ```
+
+## Développement
+
+```bash
+npm run dev
+```
+
+## Qualité
+
+```bash
+npm run check
+```
+
+Équivalent : `npm run lint && npm run typecheck && npm test && npm run build`.
+
+## Variables d’environnement
+
+Copier [`.env.example`](./.env.example) vers `.env.local` si besoin.
+Ne jamais committer de secrets.
 
 ## Git
 
