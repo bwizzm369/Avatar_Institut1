@@ -1,0 +1,47 @@
+---
+description: Règles permanentes Avatar Institut — e-learning bilingue, sécurité, Git et qualité
+alwaysApply: true
+---
+
+# Avatar Institut — Règles permanentes
+
+## Mémoire projet
+- Lire `PROJECT_MEMORY.md` avant chaque tâche.
+- Mettre à jour `PROJECT_MEMORY.md` après chaque changement validé.
+
+## Projet
+- Plateforme e-learning bilingue arabe/anglais d’Avatar Institut.
+- Respecter parfaitement le RTL arabe et le LTR anglais.
+- Identité visuelle : blanc, noir et vert profond `#1F4D3A`.
+- Ne jamais redessiner ou déformer le logo officiel.
+- Conserver la géométrie, les proportions et la symbolique du logo.
+- Conserver l’ancien site dans `legacy/` comme référence visuelle.
+- Ne pas dépendre de `support.js` dans la nouvelle application Next.js.
+
+## Architecture
+- Cible : Next.js, TypeScript, Supabase, Bunny Stream, Stripe, PayPal et Vercel.
+- Utiliser une architecture modulaire et des composants réutilisables.
+
+## Sécurité
+- Ne jamais placer de clé secrète dans le code ou dans Git.
+- Accès aux formations uniquement après confirmation serveur du paiement.
+- Ne jamais se fier à une redirection navigateur pour valider un paiement.
+- Les webhooks Stripe et PayPal devront être vérifiés, idempotents et journalisés.
+- Protéger les données Supabase avec RLS.
+- Un étudiant ne peut consulter que son profil, ses achats, ses formations et ses certificats.
+- Les vidéos Bunny Stream ne doivent pas être exposées avec des liens publics permanents.
+
+## Contenu de démonstration
+- Ne jamais présenter des statistiques de démonstration comme des chiffres réels.
+- Les formations de démonstration doivent être clairement identifiées.
+- Ne jamais annoncer qu’une fonction est terminée si elle est seulement simulée.
+
+## Git et flux de travail
+- Ne jamais modifier directement `main`.
+- Ne jamais faire de commit ou de push sans demande explicite.
+- Ne jamais écraser une modification existante sans l’identifier.
+- Faire des changements petits, cohérents et testables.
+- Développement sur `develop/avatar-platform`.
+
+## Qualité
+- Exécuter lint, typecheck et build avant de déclarer une phase terminée.
