@@ -21,6 +21,7 @@ type Dictionary = Record<string, LocalizedString>;
 export const messages: Dictionary = {
   "nav.home": { en: "Home", ar: "الرئيسية" },
   "nav.courses": { en: "Courses", ar: "الدورات" },
+  "nav.library": { en: "Library", ar: "المكتبة" },
   "nav.cart": { en: "Cart", ar: "السلة" },
   "nav.login": { en: "Log in", ar: "تسجيل الدخول" },
   "nav.signup": { en: "Sign up", ar: "إنشاء حساب" },
@@ -115,6 +116,56 @@ export const messages: Dictionary = {
   "courses.level": { en: "Level", ar: "المستوى" },
   "courses.duration": { en: "Duration", ar: "المدة" },
   "courses.price": { en: "Price", ar: "السعر" },
+
+  "library.eyebrow": {
+    en: "Public resources",
+    ar: "موارد عامة",
+  },
+  "library.title": {
+    en: "Digital Library",
+    ar: "المكتبة الرقمية",
+  },
+  "library.subtitle": {
+    en: "Explore books, videos and research selected by Avatar Institut.",
+    ar: "اكتشف كتبًا وفيديوهات وأبحاثًا مختارة من مؤسسة الأفاتار.",
+  },
+  "library.filtersLabel": {
+    en: "Library filters",
+    ar: "مرشحات المكتبة",
+  },
+  "library.filter.all": { en: "All", ar: "الكل" },
+  "library.filter.videos": { en: "Videos", ar: "الفيديوهات" },
+  "library.filter.books": { en: "Books", ar: "الكتب" },
+  "library.filter.research": { en: "Research", ar: "الأبحاث" },
+  "library.filter.podcasts": { en: "Podcasts", ar: "البودكاست" },
+  "library.filter.free": { en: "Free resources", ar: "موارد مجانية" },
+  "library.searchLabel": {
+    en: "Search the digital library",
+    ar: "ابحث في المكتبة الرقمية",
+  },
+  "library.searchPlaceholder": {
+    en: "Search by title, author or category",
+    ar: "ابحث حسب العنوان أو المؤلف أو الفئة",
+  },
+  "library.category": { en: "Category", ar: "الفئة" },
+  "library.language": { en: "Language", ar: "اللغة" },
+  "library.featured": { en: "Featured", ar: "مختار" },
+  "library.emptyTitle": {
+    en: "Our first selection of books, videos and research is being prepared.",
+    ar: "نعمل حاليًا على إعداد أول مجموعة مختارة من الكتب والفيديوهات والأبحاث.",
+  },
+  "library.emptyBody": {
+    en: "Please return soon to discover Avatar Institut's first public collection.",
+    ar: "يرجى العودة قريبًا لاكتشاف أول مجموعة عامة من مؤسسة الأفاتار.",
+  },
+  "library.noResultsTitle": {
+    en: "No resources match your current search.",
+    ar: "لا توجد موارد تطابق البحث الحالي.",
+  },
+  "library.noResultsBody": {
+    en: "Try another keyword or choose a different filter.",
+    ar: "جرّب كلمة أخرى أو اختر مرشحًا مختلفًا.",
+  },
 
   "cart.title": { en: "Your cart", ar: "سلتك" },
   "cart.empty": { en: "Your cart is empty.", ar: "سلتك فارغة." },

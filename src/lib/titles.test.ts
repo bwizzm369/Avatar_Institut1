@@ -5,6 +5,7 @@ describe("document titles", () => {
   it("resolves route keys", () => {
     expect(resolveTitleKey("/")).toBe("home");
     expect(resolveTitleKey("/courses")).toBe("courses");
+    expect(resolveTitleKey("/library")).toBe("library");
     expect(resolveTitleKey("/courses/foo")).toBe("courseDetail");
     expect(resolveTitleKey("/cart")).toBe("cart");
     expect(resolveTitleKey("/cart/success")).toBe("cartSuccess");
@@ -27,6 +28,7 @@ describe("document titles", () => {
     expect(formatDocumentTitle("/", "en")).toBe("Home · Avatar Institut");
     expect(formatDocumentTitle("/", "ar")).toBe("الرئيسية · Avatar Institut");
     expect(formatDocumentTitle("/courses", "en")).toBe("Courses · Avatar Institut");
+    expect(formatDocumentTitle("/library", "ar")).toBe("المكتبة · Avatar Institut");
     expect(englishAbsoluteTitle("home")).toBe("Home · Avatar Institut");
   });
 });

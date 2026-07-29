@@ -24,6 +24,7 @@ export function Header() {
   const links = [
     { href: "/", label: msg("nav.home", locale) },
     { href: "/courses", label: msg("nav.courses", locale) },
+    { href: "/library", label: msg("nav.library", locale) },
     { href: "/cart", label: msg("nav.cart", locale) },
     { href: "/dashboard", label: msg("nav.dashboard", locale) },
   ];

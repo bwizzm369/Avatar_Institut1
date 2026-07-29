@@ -1208,6 +1208,281 @@ img.official-logo-panel {
   min-width: 0;
 }
 
+.library-page {
+  --library-ivory: #f6f1e8;
+  --library-gold: #b89a6a;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(184, 154, 106, 0.1), transparent 20%),
+    radial-gradient(circle at 82% 22%, rgba(31, 77, 58, 0.07), transparent 24%),
+    linear-gradient(180deg, #fcfaf6 0%, var(--library-ivory) 100%);
+}
+
+.library-page-rtl {
+  direction: rtl;
+}
+
+.library-hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(31, 77, 58, 0.1);
+  padding: 4.5rem 1.25rem 3rem;
+}
+
+.library-hero-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 1rem;
+  text-align: center;
+}
+
+.library-hero-motif {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(34rem, 85vw);
+  height: min(34rem, 85vw);
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  border: 1px solid rgba(31, 77, 58, 0.08);
+  box-shadow:
+    inset 0 0 0 2rem rgba(255, 255, 255, 0.28),
+    inset 0 0 0 2.1rem rgba(184, 154, 106, 0.08),
+    inset 0 0 0 5rem rgba(31, 77, 58, 0.04);
+  pointer-events: none;
+}
+
+.library-title {
+  max-width: 14ch;
+  margin: 0 auto;
+}
+
+.library-lead {
+  margin: 0 auto;
+  max-width: 44rem;
+}
+
+.library-section {
+  padding-top: 2rem;
+}
+
+.library-stack {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.library-toolbar {
+  display: grid;
+  gap: 1rem;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(31, 77, 58, 0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+}
+
+.library-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.library-filter {
+  border: 1px solid rgba(31, 77, 58, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--color-green);
+  padding: 0.6rem 0.95rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.library-filter.active,
+.library-filter:hover {
+  background: var(--color-green);
+  border-color: var(--color-green);
+  color: var(--color-white);
+}
+
+.library-search input {
+  width: 100%;
+  border: 1px solid rgba(31, 77, 58, 0.14);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  padding: 0.85rem 1rem;
+}
+
+.library-search input:focus {
+  outline: 2px solid rgba(31, 77, 58, 0.24);
+  outline-offset: 2px;
+}
+
+.library-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+.library-card {
+  display: grid;
+  min-width: 0;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(31, 77, 58, 0.12);
+  border-radius: 10px;
+  box-shadow: 0 16px 40px rgba(15, 15, 15, 0.05);
+}
+
+.library-thumb-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: linear-gradient(145deg, #e6ede8 0%, #f9f7f2 100%);
+}
+
+.library-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: linear-gradient(145deg, #e6ede8 0%, #f9f7f2 100%);
+}
+
+.library-thumb-frame .library-thumb {
+  aspect-ratio: auto;
+}
+
+.library-thumb-placeholder {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.library-thumb-mark {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(31, 77, 58, 0.2);
+  box-shadow:
+    inset 0 0 0 0.9rem rgba(184, 154, 106, 0.16),
+    inset 0 0 0 1.9rem rgba(31, 77, 58, 0.05);
+  background: radial-gradient(circle at center, #1f4d3a 0.3rem, transparent 0.34rem);
+}
+
+.library-card-body {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  min-width: 0;
+}
+
+.library-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.library-badge,
+.library-featured {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.library-badge {
+  background: rgba(31, 77, 58, 0.08);
+  border: 1px solid rgba(31, 77, 58, 0.12);
+  color: var(--color-green);
+}
+
+.library-featured {
+  background: rgba(184, 154, 106, 0.14);
+  border: 1px solid rgba(184, 154, 106, 0.38);
+  color: #7a6237;
+}
+
+.library-card-copy {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.library-card-title {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+.library-author {
+  color: var(--color-green);
+  font-weight: 600;
+}
+
+.library-description {
+  color: var(--color-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.library-details {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.library-details dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.library-details dd {
+  margin-top: 0.2rem;
+  color: var(--color-black);
+}
+
+.library-link {
+  width: 100%;
+}
+
+.library-empty {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 2.5rem 1.5rem;
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(31, 77, 58, 0.12);
+  border-radius: 10px;
+}
+
+.library-empty-mark {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(31, 77, 58, 0.14);
+  box-shadow:
+    inset 0 0 0 1rem rgba(255, 255, 255, 0.3),
+    inset 0 0 0 2rem rgba(184, 154, 106, 0.1);
+  background: radial-gradient(circle at center, #1f4d3a 0.36rem, transparent 0.4rem);
+}
+
 .learning-hero-main {
   display: grid;
   gap: 0.85rem;
@@ -1537,6 +1812,15 @@ img.official-logo-panel {
     grid-template-columns: 1fr 1fr;
   }
 
+  .library-toolbar {
+    grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 0.8fr);
+    align-items: center;
+  }
+
+  .library-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .detail-layout {
     grid-template-columns: 1.4fr 0.8fr;
   }
@@ -1573,8 +1857,13 @@ img.official-logo-panel {
     padding: 5rem 2.5rem;
   }
 
+  .library-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .page-hero,
-  .hero {
+  .hero,
+  .library-hero {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
   }

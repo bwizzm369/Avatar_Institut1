@@ -45,7 +45,7 @@ Lecteur étudiant : modules/leçons et `bunny_video_id` uniquement après inscri
 Environ 4 000 étudiants, 100 vidéos, 100 Go de stockage et potentiellement 40 000 heures de visionnage mensuel.
 
 ## État actuel
-**Phase 3A Light** + **Stripe Checkout Test** + **Supabase Light** sur `develop/avatar-platform` :
+**Phase 3A Light** + **Stripe Checkout Test** + **Supabase Light** + **Phase 3C Light / Bibliothèque digitale publique** sur `develop/avatar-platform` :
 - Clients `@supabase/supabase-js` / `@supabase/ssr` (browser, server, middleware, secret key serveur).
 - Migrations SQL locales : schéma + seed cours + seed curriculum Foundations (`modules` / `lessons` + champs contenu) + RLS `lesson_progress` écriture propriétaire inscrit.
 - Auth réelle (signup / login / logout / callback).
@@ -55,6 +55,9 @@ Environ 4 000 étudiants, 100 vidéos, 100 Go de stockage et potentiellement 40 
 - Emplacement Bunny Stream préparé (`hasBunnyVideo`) sans clés Bunny.
 - Import Light documenté : `content/import/` (CSV modèle + exemple) — **aucun import distant exécuté**.
 - Stripe Checkout hébergé (`mode: payment`) + webhook → enrollments actifs.
+- Bibliothèque publique `/library` EN/AR de liens externes (YouTube, Amazon, recherches, podcasts, PDF officiels) alimentée localement par `content/library/resources.json`.
+- Aucun hébergement local de livres protégés ; seuls des liens externes HTTPS publiés sont affichés.
+- Tableau d’administration futur pour la bibliothèque : hors périmètre de cette phase.
 **Non connectés :** PayPal, virement, Bunny Stream playback, migrations distantes automatiques.
 
 ## Décisions confirmées
@@ -74,6 +77,7 @@ Environ 4 000 étudiants, 100 vidéos, 100 Go de stockage et potentiellement 40 
 2. Catalogue, panier et interface étudiant. ← livré avec la fondation
 3. Supabase Auth et base de données. ← **Supabase Light livré localement** (sans projet distant)
 3A. Structure de contenu et lecteur étudiant. ← **livré localement** (sans import distant)
+3C. Bibliothèque digitale publique Light. ← **livrée localement** (liens externes uniquement)
 4. Stripe et PayPal. ← **Stripe Checkout Test livré localement** (PayPal non connecté)
 5. Bunny Stream et contrôle d’accès.
 6. Certificats.
@@ -95,6 +99,8 @@ Environ 4 000 étudiants, 100 vidéos, 100 Go de stockage et potentiellement 40 
 | 2026-07-26 | Fix / Auth+i18n | LocaleProvider sans course localStorage ; loginAction ne throw plus redirect (évite catch client) ; erreurs login bilingues ; form method=post ; restart Next après corruption webpack | `npm run check` exit 0 (41 tests). Aucun commit ni push. | — |
 | 2026-07-27 | 3A / Lecteur | Migration curriculum + RLS progress ; pages `/dashboard/courses/[courseSlug]` et leçons ; mark complete ; CSV import Light ; tests auth/progress | `npm run check` exit 0 (52 tests). Aucune migration distante. Aucun commit ni push. | — |
 | 2026-07-28 | UX / Post-paiement | Page `/cart/success` premium EN/AR + polling lecture seule ; bandeau technique masqué ; i18n sans jargon | `npm run check` exit 0 (55 tests). Aucun commit ni push. | — |
+| 2026-07-29 | 3C / Bibliothèque publique Light | Route `/library` publique EN/AR, filtres/recherche client, validation HTTPS, `content/library/resources.json` + modèles CSV/README, état vide premium, aucun livre hébergé localement | `npm run check` exit 0 (62 tests). Aucune migration distante. Aucun commit ni push. | — |
+| 2026-07-29 | 3C / Finalisation bibliothèque | `next/image` pour miniatures externes ; première ressource publiée Andrew Newberg Research ; vérification EN/AR/mobile | Validation via `npm run check`. Aucun commit ni push. | — |
 
 ## Points en attente
 - Nom de domaine définitif.
