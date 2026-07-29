@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { CartCheckoutButton } from "@/components/CartCheckoutButton";
 import { DemoBadge } from "@/components/DemoBadge";
 import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
@@ -68,10 +69,7 @@ export default function CartPage() {
                     {formatPrice(totalCents, currency, locale)}
                   </strong>
                 </div>
-                <button type="button" className="btn btn-primary btn-block" disabled>
-                  {msg("cart.checkout", locale)}
-                </button>
-                <div className="notice-box">{msg("cart.checkoutDisabled", locale)}</div>
+                <CartCheckoutButton />
               </div>
             </>
           )}

@@ -1,13 +1,9 @@
 "use client";
 
-import { useLocale } from "@/components/LocaleProvider";
-import { msg } from "@/lib/i18n";
-
+/**
+ * Technical platform banner is hidden for students and public visitors.
+ * Service status must never appear in the student-facing UI.
+ */
 export function PlatformNotice() {
-  const { locale } = useLocale();
-  return (
-    <div className="platform-notice" role="status">
-      {msg("notice.platformPhase", locale)}
-    </div>
-  );
+  return null;
 }

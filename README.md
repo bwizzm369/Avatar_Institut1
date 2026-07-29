@@ -9,10 +9,11 @@ Plateforme e-learning bilingue (anglais / arabe) d’Avatar Institut.
 
 ## État actuel
 
-Fondation Next.js (App Router, TypeScript strict) sur `develop/avatar-platform`.
+Fondation Next.js + **Supabase Light** (clients, auth UI, migration SQL locale, RLS) sur `develop/avatar-platform`.
 Site statique de référence conservé dans [`legacy/index.html`](./legacy/index.html).
 
-Supabase, Stripe, PayPal et Bunny Stream **ne sont pas connectés** à cette phase.
+Stripe, PayPal et Bunny Stream **ne sont pas connectés**.
+Aucune migration distante n’est exécutée depuis ce dépôt.
 
 ## Installation
 
@@ -26,6 +27,12 @@ npm install
 npm run dev
 ```
 
+Pour activer Auth Supabase en local, copier [`.env.example`](./.env.example) vers `.env.local` et renseigner les placeholders avec les valeurs de **votre** projet (jamais de clés dans Git).
+
+Appliquer manuellement la migration locale :
+
+[`supabase/migrations/20260723120000_supabase_light_schema.sql`](./supabase/migrations/20260723120000_supabase_light_schema.sql)
+
 ## Qualité
 
 ```bash
@@ -36,7 +43,12 @@ npm run check
 
 ## Variables d’environnement
 
-Copier [`.env.example`](./.env.example) vers `.env.local` si besoin.
+| Variable | Portée |
+|----------|--------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Public |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public (RLS) |
+| `SUPABASE_SERVICE_ROLE_KEY` | **Serveur uniquement** |
+
 Ne jamais committer de secrets.
 
 ## Git

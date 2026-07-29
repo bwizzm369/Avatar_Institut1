@@ -1,42 +1,42 @@
-/**
- * Official Avatar Institut logo — geometry preserved from legacy reference.
- * Circles, center point, and baseline proportions are unchanged.
- * Text size only is increased slightly for readability.
- */
-export function Logo({ className }: { className?: string }) {
+"use client";
+
+import Image from "next/image";
+import { useLocale } from "@/components/LocaleProvider";
+import { msg } from "@/lib/i18n";
+
+/** Official lockup — geometry and proportions preserved; never redrawn or stretched. */
+export const OFFICIAL_LOGO_SRC = "/brand/avatar-institut-official.jpeg";
+
+type LogoProps = {
+  className?: string;
+  /** header: compact nav mark; panel: about-section lockup */
+  variant?: "header" | "panel";
+};
+
+export function Logo({ className, variant = "header" }: LogoProps) {
+  const { locale } = useLocale();
+  const isPanel = variant === "panel";
+  const imageClass = isPanel ? "official-logo-panel" : "official-logo-header";
+  const wrapClass = isPanel
+    ? "official-logo-wrap official-logo-wrap--panel"
+    : "official-logo-wrap official-logo-wrap--header";
+
   return (
-    <svg
-      className={className}
-      width="48"
-      height="60"
-      viewBox="0 0 44 56"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <circle cx="22" cy="20" r="16" fill="none" stroke="#1F4D3A" strokeWidth="1" />
-      <circle cx="22" cy="20" r="2.8" fill="#1F4D3A" />
-      <line
-        x1="4"
-        y1="42"
-        x2="40"
-        y2="42"
-        stroke="#1F4D3A"
-        strokeWidth="0.3"
-        opacity="0.5"
+    <span className={[wrapClass, className].filter(Boolean).join(" ")}>
+      <Image
+        src={OFFICIAL_LOGO_SRC}
+        alt={msg("brand.logoAlt", locale)}
+        width={isPanel ? 220 : 110}
+        height={isPanel ? 220 : 110}
+        className={imageClass}
+        style={{ height: "auto" }}
+        sizes={
+          isPanel
+            ? "(max-width: 767px) 150px, 220px"
+            : "(max-width: 767px) 80px, 110px"
+        }
+        priority={variant === "header"}
       />
-      <text
-        x="22"
-        y="49"
-        textAnchor="middle"
-        fontFamily="Cormorant Garamond, serif"
-        fontSize="6"
-        fontWeight="600"
-        letterSpacing="1.2"
-        fill="#0F0F0F"
-      >
-        AVATAR INSTITUT
-      </text>
-    </svg>
+    </span>
   );
 }

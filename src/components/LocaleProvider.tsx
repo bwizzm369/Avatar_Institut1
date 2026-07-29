@@ -27,9 +27,15 @@ interface LocaleContextValue {
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
+function applyDocumentLocale(locale: Locale): void {
+  document.documentElement.lang = locale;
+  document.documentElement.dir = getDirection(locale);
+}
+
 /**
  * First server render and first client render both use DEFAULT_LOCALE.
  * Saved language is applied only after mount — no hydration mismatch.
+ * setLocale writes storage + dir/lang immediately (no race with a later effect).
  */
 export function LocaleProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE);
@@ -37,25 +43,17 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored = window.localStorage.getItem(LOCALE_STORAGE_KEY);
-    if (stored && isLocale(stored)) {
-      setLocaleState(stored);
-    }
+    const initial =
+      stored && isLocale(stored) ? stored : DEFAULT_LOCALE;
+    setLocaleState(initial);
+    applyDocumentLocale(initial);
     setReady(true);
   }, []);
 
-  useEffect(() => {
-    if (!ready) return;
-    document.documentElement.lang = locale;
-    document.documentElement.dir = getDirection(locale);
-  }, [locale, ready]);
-
-  useEffect(() => {
-    if (!ready) return;
-    window.localStorage.setItem(LOCALE_STORAGE_KEY, locale);
-  }, [locale, ready]);
-
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next);
+    window.localStorage.setItem(LOCALE_STORAGE_KEY, next);
+    applyDocumentLocale(next);
   }, []);
 
   const value = useMemo(
@@ -68,7 +66,9 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     [locale, setLocale, ready],
   );
 
-  return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
+  return (
+    <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
+  );
 }
 
 export function useLocale(): LocaleContextValue {

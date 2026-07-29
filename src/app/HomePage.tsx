@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Logo } from "@/components/Logo";
 import { useLocale } from "@/components/LocaleProvider";
 import { msg } from "@/lib/i18n";
 
@@ -53,33 +54,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="panel">
-            <div className="text-center">
-              <svg
-                width="120"
-                height="120"
-                viewBox="0 0 120 120"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                style={{ margin: "0 auto 1rem" }}
-              >
-                <circle cx="60" cy="60" r="50" fill="none" stroke="#1F4D3A" strokeWidth="1.5" />
-                <circle
-                  cx="60"
-                  cy="60"
-                  r="35"
-                  fill="none"
-                  stroke="#1F4D3A"
-                  strokeWidth="1"
-                  opacity="0.5"
-                />
-                <circle cx="60" cy="60" r="8" fill="#1F4D3A" />
-                <circle cx="60" cy="20" r="3" fill="#1F4D3A" opacity="0.6" />
-                <circle cx="100" cy="60" r="3" fill="#1F4D3A" opacity="0.6" />
-                <circle cx="60" cy="100" r="3" fill="#1F4D3A" opacity="0.6" />
-                <circle cx="20" cy="60" r="3" fill="#1F4D3A" opacity="0.6" />
-              </svg>
-              <p className="serif accent">{msg("brand.tagline", locale)}</p>
-            </div>
+            <Logo variant="panel" />
           </div>
         </div>
       </section>

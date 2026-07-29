@@ -7,10 +7,19 @@ describe("document titles", () => {
     expect(resolveTitleKey("/courses")).toBe("courses");
     expect(resolveTitleKey("/courses/foo")).toBe("courseDetail");
     expect(resolveTitleKey("/cart")).toBe("cart");
+    expect(resolveTitleKey("/cart/success")).toBe("cartSuccess");
     expect(resolveTitleKey("/login")).toBe("login");
     expect(resolveTitleKey("/signup")).toBe("signup");
     expect(resolveTitleKey("/dashboard")).toBe("dashboard");
     expect(resolveTitleKey("/dashboard/courses")).toBe("dashboardCourses");
+    expect(resolveTitleKey("/dashboard/courses/foundations-of-metaphysics")).toBe(
+      "dashboardCourseReader",
+    );
+    expect(
+      resolveTitleKey(
+        "/dashboard/courses/foundations-of-metaphysics/lessons/c1111111-1111-4111-8111-111111111101",
+      ),
+    ).toBe("dashboardLessonReader");
     expect(resolveTitleKey("/dashboard/certificates")).toBe("dashboardCertificates");
   });
 
