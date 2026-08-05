@@ -109,6 +109,7 @@ Environ 4 000 étudiants, 100 vidéos, 100 Go de stockage et potentiellement 40 
 | 2026-08-04 | Contenu / Éditorial+SEO | Accueil sans jargon démo ; valeurs adoucies ; CTA fondateur ; page fondateur (vision philosophique, landmarks, bibliographie `{titleEn,titleAr,category,link}`) ; meta `/` et `/courses` ; logo sizes confirmés ; `next-size-adjust` non forcé (génération Next.js) | `npm run check` exit 0 (76 tests). Aucun commit ni push. | — |
 | 2026-08-04 | UI / About+Founder design | Refonte design+copy `/about` et `/about/founder` : hero ivoire/vert, mission/vision/domaines, teaser fondateur, cartes bibliographie, CTA bibliothèque ; or mat discret | `npm run check` exit 0 (76 tests). Aucun commit ni push. | — |
 | 2026-08-04 | UI / About+Founder v2 | Hiérarchie resserrée ; valeurs ; TOC interne fondateur ; 6 sections biographiques ; textes fractionnés ; RTL/responsive | `npm run check` exit 0 (76 tests). Aucun commit ni push. | — |
+| 2026-08-05 | Nav / Header | Retrait du lien Founder du Header (desktop+mobile) ; route `/about/founder` et sous-nav About conservées ; Cart conservé | `npm run check` exit 0 (76 tests). Aucun commit ni push. | — |
 
 ## Points en attente
 - Nom de domaine définitif.

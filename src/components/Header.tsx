@@ -25,7 +25,6 @@ export function Header() {
   const links = [
     { href: "/", label: msg("nav.home", locale) },
     { href: "/about", label: msg("nav.about", locale) },
-    { href: "/about/founder", label: msg("nav.founder", locale) },
     { href: "/courses", label: msg("nav.courses", locale) },
     { href: "/library", label: msg("nav.library", locale) },
     { href: "/cart", label: msg("nav.cart", locale) },
