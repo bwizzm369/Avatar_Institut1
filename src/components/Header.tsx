@@ -8,6 +8,7 @@ import { Logo } from "@/components/Logo";
 import { useAuth } from "@/components/AuthProvider";
 import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
+import { isClientSignedIn } from "@/lib/auth/session-ui";
 import { msg } from "@/lib/i18n";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
@@ -23,17 +24,33 @@ export function Header() {
 
   const links = [
     { href: "/", label: msg("nav.home", locale) },
+    { href: "/about", label: msg("nav.about", locale) },
+    { href: "/about/founder", label: msg("nav.founder", locale) },
     { href: "/courses", label: msg("nav.courses", locale) },
     { href: "/library", label: msg("nav.library", locale) },
     { href: "/cart", label: msg("nav.cart", locale) },
     { href: "/dashboard", label: msg("nav.dashboard", locale) },
   ];
 
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    if (pathname === href) return true;
+    if (!pathname.startsWith(`${href}/`)) return false;
+    const hasMoreSpecificMatch = links.some(
+      (link) =>
+        link.href !== href &&
+        link.href.startsWith(`${href}/`) &&
+        (pathname === link.href || pathname.startsWith(`${link.href}/`)),
+    );
+    return !hasMoreSpecificMatch;
+  };
 
   const showCartBadge = cartReady && itemCount > 0;
-  const showSignedIn = configured && authReady && user;
+  const showSignedIn = isClientSignedIn({
+    configured,
+    ready: authReady,
+    user,
+  });
 
   async function handleLogout() {
     if (logoutPending) return;

@@ -2,6 +2,8 @@ import type { Locale, LocalizedString } from "@/types";
 
 export const pageTitles: Record<string, LocalizedString> = {
   home: { en: "Home", ar: "الرئيسية" },
+  about: { en: "About", ar: "عن المؤسسة" },
+  founder: { en: "Founder", ar: "المؤسس" },
   courses: { en: "Courses", ar: "الدورات" },
   library: { en: "Library", ar: "المكتبة" },
   courseDetail: { en: "Course detail", ar: "تفاصيل الدورة" },
@@ -20,6 +22,8 @@ const BRAND = "Avatar Institut";
 
 export function resolveTitleKey(pathname: string): keyof typeof pageTitles {
   if (pathname === "/") return "home";
+  if (pathname === "/about/founder") return "founder";
+  if (pathname === "/about" || pathname.startsWith("/about/")) return "about";
   if (pathname === "/courses") return "courses";
   if (pathname === "/library") return "library";
   if (pathname.startsWith("/courses/")) return "courseDetail";

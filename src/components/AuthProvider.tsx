@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import {
   createContext,
   useCallback,
@@ -25,8 +26,21 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+function toSummary(user: {
+  id: string;
+  email?: string | null;
+} | null): AuthUserSummary | null {
+  if (!user) return null;
+  return { id: user.id, email: user.email ?? null };
+}
+
+/**
+ * Cookie sessions and client sign-in must share one React auth state.
+ * Prefer the session from onAuthStateChange; getUser() hydrates from cookies.
+ */
 export function AuthProvider({ children }: { children: ReactNode }) {
   const configured = isSupabaseConfigured();
+  const pathname = usePathname();
   const [ready, setReady] = useState(!configured);
   const [user, setUser] = useState<AuthUserSummary | null>(null);
 
@@ -36,20 +50,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setReady(true);
       return;
     }
+
     const supabase = createBrowserSupabaseClient();
     const {
       data: { user: current },
     } = await supabase.auth.getUser();
-    setUser(
-      current
-        ? { id: current.id, email: current.email ?? null }
-        : null,
-    );
+    setUser(toSummary(current));
     setReady(true);
   }, []);
 
   useEffect(() => {
     if (!configured) {
+      setUser(null);
       setReady(true);
       return;
     }
@@ -57,32 +69,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     const supabase = createBrowserSupabaseClient();
 
-    void supabase.auth.getUser().then(({ data }) => {
+    async function syncFromCookies() {
+      const {
+        data: { user: current },
+      } = await supabase.auth.getUser();
       if (cancelled) return;
-      setUser(
-        data.user
-          ? { id: data.user.id, email: data.user.email ?? null }
-          : null,
-      );
+      setUser(toSummary(current));
       setReady(true);
-    });
+    }
+
+    void syncFromCookies();
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(
-        session?.user
-          ? { id: session.user.id, email: session.user.email ?? null }
-          : null,
-      );
+      // Apply the event session immediately — do not discard it and re-fetch,
+      // or a SIGNED_IN from client login can be overwritten by a stale getUser().
+      if (cancelled) return;
+      setUser(toSummary(session?.user ?? null));
       setReady(true);
     });
+
+    const onFocus = () => {
+      void syncFromCookies();
+    };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onFocus);
 
     return () => {
       cancelled = true;
       subscription.unsubscribe();
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onFocus);
     };
   }, [configured]);
+
+  // Re-hydrate from cookies on route changes (soft navigations).
+  useEffect(() => {
+    if (!configured) return;
+    void refresh();
+  }, [pathname, configured, refresh]);
 
   return (
     <AuthContext.Provider value={{ configured, ready, user, refresh }}>

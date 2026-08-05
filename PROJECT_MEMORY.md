@@ -101,6 +101,14 @@ Environ 4 000 étudiants, 100 vidéos, 100 Go de stockage et potentiellement 40 
 | 2026-07-28 | UX / Post-paiement | Page `/cart/success` premium EN/AR + polling lecture seule ; bandeau technique masqué ; i18n sans jargon | `npm run check` exit 0 (55 tests). Aucun commit ni push. | — |
 | 2026-07-29 | 3C / Bibliothèque publique Light | Route `/library` publique EN/AR, filtres/recherche client, validation HTTPS, `content/library/resources.json` + modèles CSV/README, état vide premium, aucun livre hébergé localement | `npm run check` exit 0 (62 tests). Aucune migration distante. Aucun commit ni push. | — |
 | 2026-07-29 | 3C / Finalisation bibliothèque | `next/image` pour miniatures externes ; première ressource publiée Andrew Newberg Research ; vérification EN/AR/mobile | Validation via `npm run check`. Aucun commit ni push. | — |
+| 2026-07-29 | Fix / Session panier | Sync AuthProvider cookies sur routes + login refresh ; rejet user_id client checkout ; CTA panier aligné Header | Validation via `npm run check`. Aucun commit ni push. | — |
+| 2026-07-30 | Fix / Panier par utilisateur | Stockage panier séparé invité/utilisateur Supabase, fusion invité→compte sans doublons, purge ciblée après succès paiement, tests isolement/logout/reconnexion | `npm run check` exit 0 (71 tests). Aucune migration distante. Aucun commit ni push. | — |
+| 2026-07-30 | Fix /cart/success activation | Vérifie inscriptions actives contre `course_ids` de la session Stripe ; activated immédiat ; polling continu après délai ; CTA « Open my course » | `npm run check` exit 0 (76 tests). Aucun commit ni push. | — |
+| 2026-08-01 | Contenu / Fondateur | Pages `/about` et `/about/founder` EN/AR+RTL ; portrait temporaire « م ر ح » ; 18 ouvrages fondateur en bibliothèque `is_published=false` sans liens Amazon | `npm run check` à la livraison. Aucun commit ni push. | — |
+| 2026-08-02 | UI / About+Founder | Refonte esthétique lumineuse `/about` et `/about/founder` : hero 2 colonnes, badges, sections premium, copy EN/AR, sans onglets redondants | `npm run check` exit 0 (76 tests). Aucun commit ni push. | — |
+| 2026-08-04 | Contenu / Éditorial+SEO | Accueil sans jargon démo ; valeurs adoucies ; CTA fondateur ; page fondateur (vision philosophique, landmarks, bibliographie `{titleEn,titleAr,category,link}`) ; meta `/` et `/courses` ; logo sizes confirmés ; `next-size-adjust` non forcé (génération Next.js) | `npm run check` exit 0 (76 tests). Aucun commit ni push. | — |
+| 2026-08-04 | UI / About+Founder design | Refonte design+copy `/about` et `/about/founder` : hero ivoire/vert, mission/vision/domaines, teaser fondateur, cartes bibliographie, CTA bibliothèque ; or mat discret | `npm run check` exit 0 (76 tests). Aucun commit ni push. | — |
+| 2026-08-04 | UI / About+Founder v2 | Hiérarchie resserrée ; valeurs ; TOC interne fondateur ; 6 sections biographiques ; textes fractionnés ; RTL/responsive | `npm run check` exit 0 (76 tests). Aucun commit ni push. | — |
 
 ## Points en attente
 - Nom de domaine définitif.
@@ -108,6 +116,7 @@ Environ 4 000 étudiants, 100 vidéos, 100 Go de stockage et potentiellement 40 
 - Prix et devises.
 - Conditions de délivrance des certificats.
 - Identité juridique et mentions légales.
+- Liens Amazon KDP officiels des ouvrages du fondateur (actuellement `is_published=false`).
 - Compte Supabase distant + application manuelle des migrations (schéma + seed démo + 3A).
 - Génération locale de `STRIPE_WEBHOOK_SECRET` via Stripe CLI (`stripe listen --forward-to localhost:3000/api/stripe/webhook`).
 - PayPal et Bunny Stream (playback signé).

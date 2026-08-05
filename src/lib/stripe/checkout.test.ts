@@ -22,6 +22,22 @@ describe("Stripe checkout request validation", () => {
     expect(result).toEqual({ ok: false, error: "client_price_rejected" });
   });
 
+  it("rejects browser-supplied user ids", () => {
+    expect(
+      parseCheckoutRequest("user-1", {
+        slugs: ["foundations-of-metaphysics"],
+        user_id: "attacker",
+      }),
+    ).toEqual({ ok: false, error: "invalid_body" });
+
+    expect(
+      parseCheckoutRequest("user-1", {
+        slugs: ["foundations-of-metaphysics"],
+        userId: "attacker",
+      }).ok,
+    ).toBe(false);
+  });
+
   it("rejects amount fields from the browser", () => {
     expect(
       parseCheckoutRequest("user-1", {

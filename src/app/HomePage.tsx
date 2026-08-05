@@ -23,11 +23,6 @@ export default function HomePage() {
         <div className="hero-content">
           <p className="eyebrow">{msg("home.eyebrow", locale)}</p>
           <h1 className="display display-xl">{msg("home.title", locale)}</h1>
-          {locale === "en" ? (
-            <p className="hero-ar" lang="ar" dir="rtl">
-              استكشف ميتافيزيقا الوعي الإنساني
-            </p>
-          ) : null}
           <p className="lead">{msg("home.subtitle", locale)}</p>
           <div className="hero-actions">
             <Link href="/courses" className="btn btn-primary">
@@ -48,8 +43,8 @@ export default function HomePage() {
             <p className="muted">{msg("home.aboutBody1", locale)}</p>
             <p className="muted">{msg("home.aboutBody2", locale)}</p>
             <div>
-              <Link href="/courses" className="btn btn-ghost">
-                {msg("home.ctaCourses", locale)}
+              <Link href="/about/founder" className="btn btn-ghost">
+                {msg("home.ctaFounder", locale)}
               </Link>
             </div>
           </div>

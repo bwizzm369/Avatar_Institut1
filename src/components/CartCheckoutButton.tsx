@@ -5,14 +5,22 @@ import { useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
+import { writePendingCheckoutSlugs } from "@/lib/cart";
+import { resolveCartCheckoutCta } from "@/lib/auth/session-ui";
 import { isStripePublishableConfigured } from "@/lib/stripe/env";
+import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { msg } from "@/lib/i18n";
 
 export function CartCheckoutButton() {
   const { locale } = useLocale();
   const router = useRouter();
   const { items } = useCart();
-  const { user, ready: authReady, configured: authConfigured } = useAuth();
+  const {
+    user,
+    ready: authReady,
+    configured: authConfigured,
+    refresh,
+  } = useAuth();
   const stripeConfigured = isStripePublishableConfigured();
 
   const [pending, setPending] = useState(false);
@@ -28,7 +36,14 @@ export function CartCheckoutButton() {
 
     if (!authReady) return;
 
-    if (!user) {
+    // Cookie sessions from Server Actions may be stale in React state — re-read.
+    await refresh();
+    const supabase = createBrowserSupabaseClient();
+    const {
+      data: { user: latestUser },
+    } = await supabase.auth.getUser();
+
+    if (!latestUser) {
       router.push("/login?next=/cart");
       return;
     }
@@ -40,9 +55,11 @@ export function CartCheckoutButton() {
 
     setPending(true);
     try {
+      // Server verifies the session from cookies — never trust a browser user_id.
       const response = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         body: JSON.stringify({
           slugs: items.map((item) => item.slug),
         }),
@@ -70,6 +87,11 @@ export function CartCheckoutButton() {
         return;
       }
 
+      writePendingCheckoutSlugs(
+        window.localStorage,
+        latestUser.id,
+        items.map((item) => item.slug),
+      );
       window.location.assign(data.url);
     } catch {
       setErrorKey("cart.checkoutError");
@@ -77,6 +99,12 @@ export function CartCheckoutButton() {
       setPending(false);
     }
   }
+
+  const cta = resolveCartCheckoutCta({
+    pending,
+    ready: authReady,
+    user,
+  });
 
   const disabled =
     pending || !authReady || items.length === 0 || !stripeConfigured;
@@ -89,9 +117,9 @@ export function CartCheckoutButton() {
         disabled={disabled}
         onClick={() => void handleCheckout()}
       >
-        {pending
+        {cta === "loading"
           ? msg("cart.checkoutLoading", locale)
-          : !user && authReady
+          : cta === "login_required"
             ? msg("cart.checkoutLoginRequired", locale)
             : msg("cart.checkout", locale)}
       </button>

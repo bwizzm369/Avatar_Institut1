@@ -41,6 +41,14 @@ export function parseCheckoutRequest(
   const record = body as Record<string, unknown>;
 
   if (
+    "user_id" in record ||
+    "userId" in record ||
+    "user" in record
+  ) {
+    return { ok: false, error: "invalid_body" };
+  }
+
+  if (
     "priceCents" in record ||
     "price_cents" in record ||
     "amount" in record ||

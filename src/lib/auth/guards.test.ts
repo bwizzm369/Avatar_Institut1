@@ -46,6 +46,7 @@ describe("dashboard route protection", () => {
 
   it("sanitizes post-login redirects", () => {
     expect(safeAuthRedirect("/dashboard/courses")).toBe("/dashboard/courses");
+    expect(safeAuthRedirect("/cart")).toBe("/cart");
     expect(safeAuthRedirect("https://evil.example")).toBe("/dashboard");
     expect(safeAuthRedirect("//evil.example")).toBe("/dashboard");
     expect(safeAuthRedirect(null)).toBe("/dashboard");

@@ -1,18 +1,31 @@
 import { NextResponse } from "next/server";
-import type { AccessStatusPayload } from "@/lib/enrollments/access-status";
+import {
+  resolveAccessFromSessionCourses,
+  type AccessStatusPayload,
+} from "@/lib/enrollments/access-status";
+import { parseCourseIdsFromMetadata } from "@/lib/enrollments/grant";
+import { getStripeClient } from "@/lib/stripe/client";
+import { isStripeCheckoutConfigured } from "@/lib/stripe/env";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
+const emptyStatus = {
+  activated: false,
+  courseSlug: null,
+  courseSlugs: [],
+} satisfies AccessStatusPayload;
+
 /**
  * Read-only enrollment check for the post-payment success page.
- * Never creates or updates enrollments. Never trusts session_id / URL params.
- * Access is granted only by the Stripe webhook path elsewhere.
+ * Uses Stripe session metadata course_ids only to know what to look for.
+ * Access is confirmed solely by an existing active enrollment in Supabase.
+ * Never creates or updates enrollments. Never unlocks from session_id alone.
  */
-export async function GET(): Promise<NextResponse<AccessStatusPayload | { error: string }>> {
+export async function GET(
+  request: Request,
+): Promise<NextResponse<AccessStatusPayload | { error: string }>> {
   if (!isSupabaseConfigured()) {
-    return NextResponse.json(
-      { activated: false, courseSlug: null } satisfies AccessStatusPayload,
-    );
+    return NextResponse.json(emptyStatus);
   }
 
   const supabase = await createServerSupabaseClient();
@@ -21,38 +34,62 @@ export async function GET(): Promise<NextResponse<AccessStatusPayload | { error:
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json(
-      { activated: false, courseSlug: null } satisfies AccessStatusPayload,
-    );
+    return NextResponse.json(emptyStatus);
   }
 
-  const { data: enrollment } = await supabase
+  const sessionId = new URL(request.url).searchParams.get("session_id")?.trim();
+  if (!sessionId || !isStripeCheckoutConfigured()) {
+    return NextResponse.json(emptyStatus);
+  }
+
+  let expectedCourseIds: string[] = [];
+  try {
+    const stripe = getStripeClient();
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    const sessionUserId =
+      session.metadata?.user_id?.trim() ||
+      session.client_reference_id?.trim() ||
+      null;
+
+    // session_id must belong to the signed-in student; never unlock from URL alone.
+    if (!sessionUserId || sessionUserId !== user.id) {
+      return NextResponse.json(emptyStatus);
+    }
+
+    expectedCourseIds = parseCourseIdsFromMetadata(session.metadata);
+  } catch {
+    return NextResponse.json(emptyStatus);
+  }
+
+  if (expectedCourseIds.length === 0) {
+    return NextResponse.json(emptyStatus);
+  }
+
+  const { data: enrollments } = await supabase
     .from("enrollments")
     .select("course_id")
     .eq("user_id", user.id)
     .eq("status", "active")
     .not("payment_confirmed_at", "is", null)
-    .order("enrolled_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
+    .in("course_id", expectedCourseIds);
 
-  if (!enrollment) {
-    return NextResponse.json(
-      { activated: false, courseSlug: null } satisfies AccessStatusPayload,
-    );
+  if (!enrollments || enrollments.length === 0) {
+    return NextResponse.json(emptyStatus);
   }
 
-  const courseId = (enrollment as { course_id: string }).course_id;
-  const { data: course } = await supabase
+  const { data: courses } = await supabase
     .from("courses")
-    .select("slug")
-    .eq("id", courseId)
-    .maybeSingle();
+    .select("id, slug")
+    .in(
+      "id",
+      enrollments.map((enrollment) => enrollment.course_id),
+    );
 
-  const slug = (course as { slug: string } | null)?.slug ?? null;
+  const status = resolveAccessFromSessionCourses({
+    expectedCourseIds,
+    enrollments,
+    courses: courses ?? [],
+  });
 
-  return NextResponse.json({
-    activated: true,
-    courseSlug: slug,
-  } satisfies AccessStatusPayload);
+  return NextResponse.json(status);
 }

@@ -20,6 +20,8 @@ type Dictionary = Record<string, LocalizedString>;
 
 export const messages: Dictionary = {
   "nav.home": { en: "Home", ar: "الرئيسية" },
+  "nav.about": { en: "About", ar: "عن المؤسسة" },
+  "nav.founder": { en: "Founder", ar: "المؤسس" },
   "nav.courses": { en: "Courses", ar: "الدورات" },
   "nav.library": { en: "Library", ar: "المكتبة" },
   "nav.cart": { en: "Cart", ar: "السلة" },
@@ -50,11 +52,15 @@ export const messages: Dictionary = {
     ar: "استكشف ميتافيزيقا الوعي الإنساني",
   },
   "home.subtitle": {
-    en: "An international academy dedicated to metaphysics, consciousness, and human development through rigorous research and transformative education.",
-    ar: "أكاديمية دولية مكرسة للميتافيزيقا والوعي والتنمية البشرية عبر البحث الرصين والتعليم التحويلي.",
+    en: "An international academy dedicated to metaphysics, consciousness, and human development through thoughtful inquiry and transformative education.",
+    ar: "أكاديمية دولية مكرسة للميتافيزيقا والوعي والتنمية البشرية عبر التأمّل الفكري والتعليم التحويلي.",
   },
   "home.ctaCourses": { en: "Explore courses", ar: "استكشف الدورات" },
   "home.ctaAbout": { en: "Our mission", ar: "رسالتنا" },
+  "home.ctaFounder": {
+    en: "Meet our founder",
+    ar: "تعرّف على المؤسس",
+  },
   "home.aboutEyebrow": { en: "About Avatar Institut", ar: "عن مؤسسة الأڤاتار" },
   "home.aboutTitle": { en: "Bridging Science and Spirit", ar: "جسر بين العلم والروح" },
   "home.aboutBody1": {
@@ -62,38 +68,38 @@ export const messages: Dictionary = {
     ar: "مؤسسة الأڤاتار للميتافيزيقا هي أكاديمية دولية مكرسة لتطوير دراسة الميتافيزيقا والوعي والتنمية البشرية.",
   },
   "home.aboutBody2": {
-    en: "Our mission unites academic excellence with spiritual wisdom, creating pathways for researchers, students, and professionals.",
-    ar: "تجمع رسالتنا بين التميز الأكاديمي والحكمة الروحية، وتفتح مسارات للباحثين والطلاب والمهنيين.",
+    en: "Our mission brings together philosophical inquiry and spiritual wisdom, opening pathways for researchers, students, and professionals in Arabic and English.",
+    ar: "تجمع رسالتنا بين التأمّل الفلسفي والحكمة الروحية، وتفتح مسارات للباحثين والطلاب والمهنيين بالعربية والإنجليزية.",
   },
   "home.valuesEyebrow": { en: "Core principles", ar: "المبادئ الأساسية" },
   "home.valuesTitle": { en: "Our values guide us", ar: "قيمنا ترشدنا" },
   "home.value.wisdom": { en: "Wisdom", ar: "الحكمة" },
   "home.value.wisdomBody": {
-    en: "Deep understanding rooted in ancient traditions and modern inquiry.",
-    ar: "فهم عميق متجذر في التقاليد القديمة والاستقصاء المعاصر.",
+    en: "Reflective understanding that joins metaphysical thought with spiritual insight, as cultivated at Avatar Institut.",
+    ar: "فهم تأمّلي يجمع الفكر الميتافيزيقي بالبصيرة الروحية، كما تُنمّيه مؤسسة الأڤاتار.",
   },
   "home.value.research": { en: "Research", ar: "البحث" },
   "home.value.researchBody": {
-    en: "Rigorous methodology applied to metaphysical questions.",
-    ar: "منهجية صارمة مطبقة على الأسئلة الميتافيزيقية.",
+    en: "Careful exploration of consciousness and metaphysical questions through structured study and open dialogue.",
+    ar: "استكشاف متأنٍ للوعي والأسئلة الميتافيزيقية عبر الدراسة المنظّمة والحوار المفتوح.",
   },
   "home.value.integrity": { en: "Integrity", ar: "النزاهة" },
   "home.value.integrityBody": {
-    en: "Honest inquiry and authentic engagement with all seekers.",
-    ar: "استقصاء صادق ومشاركة أصيلة مع جميع الباحثين.",
+    en: "Honest inquiry and clear communication, without exaggeration or unsupported claims.",
+    ar: "استقصاء صادق وتواصل واضح، بلا مبالغة ولا ادّعاءات غير موثّقة.",
   },
   "home.value.transformation": { en: "Transformation", ar: "التحول" },
   "home.value.transformationBody": {
-    en: "Empowering individuals to evolve and reach their potential.",
-    ar: "تمكين الأفراد من التطور وتحقيق إمكاناتهم.",
+    en: "Supporting personal growth and the development of human consciousness through accessible education.",
+    ar: "دعم النمو الشخصي وتنمية الوعي الإنساني عبر تعليم واضح ومتاح.",
   },
   "home.ctaBannerTitle": {
     en: "Ready to begin your journey?",
     ar: "هل أنت مستعد لبدء رحلتك؟",
   },
   "home.ctaBannerBody": {
-    en: "Browse demonstration courses and explore the student experience being built for Avatar Institut.",
-    ar: "تصفح الدورات التجريبية واستكشف تجربة الطالب قيد البناء لمؤسسة الأڤاتار.",
+    en: "Explore the Avatar Institut course catalogue and begin your learning journey.",
+    ar: "استكشف كتالوج دورات مؤسسة الأڤاتار وابدأ رحلتك التعليمية.",
   },
 
   "courses.eyebrow": { en: "Learning pathways", ar: "مسارات التعلم" },
@@ -116,6 +122,209 @@ export const messages: Dictionary = {
   "courses.level": { en: "Level", ar: "المستوى" },
   "courses.duration": { en: "Duration", ar: "المدة" },
   "courses.price": { en: "Price", ar: "السعر" },
+
+  "about.eyebrow": {
+    en: "About the Institute",
+    ar: "عن المؤسسة",
+  },
+  "about.title": {
+    en: "Avatar Institut für Metaphysik",
+    ar: "مؤسسة الأفاتار للميتافيزيقا",
+  },
+  "about.location": {
+    en: "Kiel, Germany",
+    ar: "كيل، ألمانيا",
+  },
+  "about.intro": {
+    en: "A knowledge and education platform dedicated to human consciousness and metaphysical thought, with structured programmes in Arabic and English.",
+    ar: "منصة معرفية وتعليمية مكرّسة للوعي الإنساني والفكر الميتافيزيقي، ببرامج منظّمة بالعربية والإنجليزية.",
+  },
+  "about.subnavLabel": { en: "About sections", ar: "أقسام عن المؤسسة" },
+  "about.tab.institute": {
+    en: "About the Institute",
+    ar: "عن المؤسسة",
+  },
+  "about.tab.founder": {
+    en: "The Founder",
+    ar: "عن المؤسس",
+  },
+  "about.pillarsEyebrow": {
+    en: "Foundations",
+    ar: "الأسس",
+  },
+  "about.pillarsTitle": {
+    en: "Mission, vision, and values",
+    ar: "الرسالة والرؤية والقيم",
+  },
+  "about.missionEyebrow": { en: "Mission", ar: "الرسالة" },
+  "about.missionTitle": {
+    en: "Our mission",
+    ar: "رسالتنا",
+  },
+  "about.missionBody": {
+    en: "To make serious ideas clear and accessible, and to open a space for dialogue between philosophy, consciousness studies, and spiritual inquiry.",
+    ar: "تقديم معرفة جادة وواضحة، وفتح مساحة للحوار بين الفكر الفلسفي ودراسات الوعي والتجربة الروحية.",
+  },
+  "about.visionEyebrow": { en: "Vision", ar: "الرؤية" },
+  "about.visionTitle": {
+    en: "Our vision",
+    ar: "رؤيتنا",
+  },
+  "about.visionBody": {
+    en: "An international institution that joins careful thought with the depth of human questioning, connecting cultures and languages without exaggeration or unsupported claims.",
+    ar: "مؤسسة معرفية دولية تجمع بين التأمّل المتأني وعمق السؤال الإنساني، وتصل بين الثقافات واللغات دون مبالغة أو ادّعاءات غير موثّقة.",
+  },
+  "about.valuesEyebrow": { en: "Values", ar: "القيم" },
+  "about.valuesTitle": {
+    en: "Our values",
+    ar: "قيمنا",
+  },
+  "about.value.clarity": {
+    en: "Clarity",
+    ar: "الوضوح",
+  },
+  "about.value.clarityBody": {
+    en: "Serious ideas presented with care, so learning remains accessible and precise.",
+    ar: "أفكار جادة تُقدَّم بعناية، ليبقى التعلّم واضحًا ودقيقًا.",
+  },
+  "about.value.dialogue": {
+    en: "Dialogue",
+    ar: "الحوار",
+  },
+  "about.value.dialogueBody": {
+    en: "A meeting place for philosophy, consciousness studies, and spiritual inquiry.",
+    ar: "مساحة للقاء بين الفكر الفلسفي ودراسات الوعي والتجربة الروحية.",
+  },
+  "about.value.integrity": {
+    en: "Integrity",
+    ar: "النزاهة",
+  },
+  "about.value.integrityBody": {
+    en: "Honest inquiry without exaggeration or unsupported claims.",
+    ar: "استقصاء صادق بلا مبالغة ولا ادّعاءات غير موثّقة.",
+  },
+  "about.value.bridge": {
+    en: "Connection",
+    ar: "الوصل",
+  },
+  "about.value.bridgeBody": {
+    en: "Pathways that connect cultures and languages through Arabic and English.",
+    ar: "مسارات تصل بين الثقافات واللغات عبر العربية والإنجليزية.",
+  },
+  "about.domainsEyebrow": { en: "Inquiry", ar: "مجالات الاهتمام" },
+  "about.domainsTitle": {
+    en: "Fields of inquiry",
+    ar: "مجالات الاهتمام",
+  },
+  "about.domainsBody": {
+    en: "Our programmes bring together research, reflection, and lived human experience around metaphysics, consciousness, and spiritual inquiry.",
+    ar: "تجمع برامجنا بين البحث والتأمّل والتجربة الإنسانية حول الميتافيزيقا والوعي والاستقصاء الروحي.",
+  },
+  "about.domain.metaphysics": {
+    en: "Metaphysical thought",
+    ar: "الفكر الميتافيزيقي",
+  },
+  "about.domain.consciousness": {
+    en: "Human consciousness",
+    ar: "الوعي الإنساني",
+  },
+  "about.domain.dialogue": {
+    en: "Philosophy and spiritual inquiry",
+    ar: "الفلسفة والاستقصاء الروحي",
+  },
+  "about.domain.languages": {
+    en: "Arabic and English learning pathways",
+    ar: "مسارات تعلّم بالعربية والإنجليزية",
+  },
+  "about.missionBody1": {
+    en: "To make serious ideas clear and accessible, and to open a space for dialogue between philosophy, consciousness studies, and spiritual inquiry.",
+    ar: "تقديم معرفة جادة وواضحة، وفتح مساحة للحوار بين الفكر الفلسفي ودراسات الوعي والتجربة الروحية.",
+  },
+  "about.missionBody2": {
+    en: "An international institution that joins careful thought with the depth of human questioning, connecting cultures and languages without exaggeration or unsupported claims.",
+    ar: "مؤسسة معرفية دولية تجمع بين التأمّل المتأني وعمق السؤال الإنساني، وتصل بين الثقافات واللغات دون مبالغة أو ادّعاءات غير موثّقة.",
+  },
+  "about.founderEyebrow": {
+    en: "Founder & Director",
+    ar: "المؤسس والمدير",
+  },
+  "about.founderTitle": {
+    en: "Meet the founder",
+    ar: "تعرّف على المؤسس",
+  },
+  "about.founderCta": {
+    en: "Read the biography",
+    ar: "اقرأ السيرة",
+  },
+
+  "founder.eyebrow": {
+    en: "Founder & Director",
+    ar: "المؤسس والمدير",
+  },
+  "founder.institutionalNote": {
+    en: "An intellectual and institutional journey devoted to metaphysics, consciousness, and responsible dialogue.",
+    ar: "مسيرة فكرية ومؤسسية مكرّسة للميتافيزيقا والوعي والحوار المسؤول.",
+  },
+  "founder.tocLabel": {
+    en: "On this page",
+    ar: "في هذه الصفحة",
+  },
+  "founder.cta.biography": {
+    en: "Read the biography",
+    ar: "اقرأ السيرة",
+  },
+  "founder.cta.works": {
+    en: "Selected works",
+    ar: "مؤلفات مختارة",
+  },
+  "founder.cta.library": {
+    en: "Visit the digital library",
+    ar: "زيارة المكتبة الرقمية",
+  },
+  "founder.backToAbout": {
+    en: "Back to About the Institute",
+    ar: "العودة إلى عن المؤسسة",
+  },
+  "founder.section.presentation": {
+    en: "Presentation",
+    ar: "تقديم",
+  },
+  "founder.section.responsibilities": {
+    en: "Institutional responsibilities",
+    ar: "المسؤوليات المؤسسية",
+  },
+  "founder.section.research": {
+    en: "Research and vision",
+    ar: "البحث والرؤية",
+  },
+  "founder.section.landmarks": {
+    en: "Biographical landmarks",
+    ar: "محطات من السيرة",
+  },
+  "founder.section.bibliography": {
+    en: "Selected works",
+    ar: "مؤلفات مختارة",
+  },
+  "founder.section.intellectual": {
+    en: "Intellectual and Sufi works",
+    ar: "المؤلفات الفكرية والصوفية",
+  },
+  "founder.section.poetry": {
+    en: "Poetic works",
+    ar: "المؤلفات الشعرية",
+  },
+  "founder.section.translations": {
+    en: "Translations and international dimension",
+    ar: "الترجمات والبُعد العالمي",
+  },
+  "founder.worksNote": {
+    en: "Titles listed as provided by Avatar Institut. Official Amazon KDP links will be added when available.",
+    ar: "العناوين كما قدّمتها مؤسسة الأفاتار. ستُضاف روابط أمازون KDP الرسمية عند توفرها.",
+  },
+  "founder.externalPending": {
+    en: "External reference pending",
+    ar: "المرجع الخارجي قيد الإضافة",
+  },
 
   "library.eyebrow": {
     en: "Public resources",
@@ -219,20 +428,24 @@ export const messages: Dictionary = {
     ar: "ستظهر دورتك عادةً في قسم «دوراتي» خلال لحظات قليلة.",
   },
   "cart.successActivated": {
-    en: "Your course is ready. You can start learning now.",
-    ar: "دورتك جاهزة. يمكنك البدء في التعلم الآن.",
+    en: "Your course has been added to My courses",
+    ar: "تمت إضافة دورتك إلى دوراتي",
   },
   "cart.successDelayed": {
-    en: "Your payment was received, but activation is taking a little longer than expected.",
-    ar: "تم استلام دفعتك، لكن تفعيل الوصول يستغرق وقتًا أطول قليلًا من المعتاد.",
+    en: "Your payment was received. We are still confirming access and will update this page automatically.",
+    ar: "تم استلام دفعتك. ما زلنا نؤكد الوصول وسنحدّث هذه الصفحة تلقائيًا.",
   },
   "cart.successGoCourses": {
     en: "Go to My courses",
     ar: "الانتقال إلى دوراتي",
   },
   "cart.successStartCourse": {
-    en: "Start my course",
-    ar: "ابدأ دورتي",
+    en: "Open my course",
+    ar: "افتح دورتي",
+  },
+  "cart.successOpenCourse": {
+    en: "Open my course",
+    ar: "افتح دورتي",
   },
   "cart.successCheckAgain": {
     en: "Check again",

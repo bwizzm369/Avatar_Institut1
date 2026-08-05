@@ -23,7 +23,16 @@ export function Footer() {
               <Link href="/">{msg("nav.home", locale)}</Link>
             </li>
             <li>
+              <Link href="/about">{msg("nav.about", locale)}</Link>
+            </li>
+            <li>
+              <Link href="/about/founder">{msg("nav.founder", locale)}</Link>
+            </li>
+            <li>
               <Link href="/courses">{msg("nav.courses", locale)}</Link>
+            </li>
+            <li>
+              <Link href="/library">{msg("nav.library", locale)}</Link>
             </li>
             <li>
               <Link href="/cart">{msg("nav.cart", locale)}</Link>

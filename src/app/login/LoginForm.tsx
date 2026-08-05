@@ -4,9 +4,11 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { useLocale } from "@/components/LocaleProvider";
-import { loginAction } from "@/lib/auth/actions";
+import { useAuth } from "@/components/AuthProvider";
+import { safeAuthRedirect } from "@/lib/auth/guards";
 import { validateLogin } from "@/lib/auth/validation";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { msg } from "@/lib/i18n";
 
 function fieldErrorMessage(
@@ -19,10 +21,36 @@ function fieldErrorMessage(
   return msg("auth.validationFailed", locale);
 }
 
+function mapBrowserSignInError(error: {
+  message?: string;
+  code?: string;
+}): string {
+  const code = (error.code ?? "").toLowerCase();
+  const message = (error.message ?? "").toLowerCase();
+
+  if (
+    code === "email_not_confirmed" ||
+    message.includes("email not confirmed")
+  ) {
+    return "auth.emailNotConfirmed";
+  }
+
+  if (
+    message.includes("fetch failed") ||
+    message.includes("network") ||
+    message.includes("failed to fetch")
+  ) {
+    return "auth.networkError";
+  }
+
+  return "auth.invalidCredentials";
+}
+
 export function LoginForm() {
   const { locale } = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { refresh } = useAuth();
   const next = searchParams.get("next") ?? "/dashboard";
   const urlError = searchParams.get("error");
   const configured = isSupabaseConfigured();
@@ -63,19 +91,23 @@ export function LoginForm() {
 
     setPending(true);
     try {
-      const result = await loginAction(formData);
-      if (!result.ok) {
-        setFeedback(msg(result.errorKey ?? "auth.invalidCredentials", locale));
-        if (result.fieldErrors) {
-          setEmailError(fieldErrorMessage(result.fieldErrors.email, locale));
-          setPasswordError(
-            fieldErrorMessage(result.fieldErrors.password, locale),
-          );
-        }
+      // Sign in on the browser client so AuthProvider receives SIGNED_IN and
+      // cookies are written where getUser() / Header / cart CTA can see them.
+      // Server Action login alone left the browser session null → SIGN IN TO PAY.
+      const supabase = createBrowserSupabaseClient();
+      const { error } = await supabase.auth.signInWithPassword({
+        email: parsed.values.email,
+        password: parsed.values.password,
+      });
+
+      if (error) {
+        setFeedback(msg(mapBrowserSignInError(error), locale));
         return;
       }
 
-      router.push(result.redirectTo ?? next);
+      const redirectTo = safeAuthRedirect(next);
+      await refresh();
+      router.push(redirectTo);
       router.refresh();
     } catch {
       setFeedback(msg("auth.networkError", locale));

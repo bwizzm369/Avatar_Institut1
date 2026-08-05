@@ -13,10 +13,12 @@ import {
   addItemToCart,
   canPersistCart,
   getCartTotalCents,
-  readCartFromStorage,
+  loadCartForActor,
+  persistCartForActor,
+  removePurchasedCartItems,
   removeItemFromCart,
-  writeCartToStorage,
 } from "@/lib/cart";
+import { useAuth } from "@/components/AuthProvider";
 import type { CartItem, Course } from "@/types";
 
 interface CartContextValue {
@@ -27,25 +29,32 @@ interface CartContextValue {
   ready: boolean;
   addCourse: (course: Course) => void;
   removeCourse: (courseId: string) => void;
+  removePurchasedCourses: (slugs: string[]) => void;
   hasCourse: (courseId: string) => boolean;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  const { user, ready: authReady, configured: authConfigured } = useAuth();
   const [items, setItems] = useState<CartItem[]>([]);
   const [ready, setReady] = useState(false);
 
-  // Single mount effect: read storage first, then mark ready (batched).
   useEffect(() => {
-    setItems(readCartFromStorage(window.localStorage));
+    if (authConfigured && !authReady) {
+      setItems([]);
+      setReady(false);
+      return;
+    }
+
+    setItems(loadCartForActor(window.localStorage, user?.id ?? null));
     setReady(true);
-  }, []);
+  }, [authConfigured, authReady, user?.id]);
 
   useEffect(() => {
     if (!canPersistCart(ready)) return;
-    writeCartToStorage(window.localStorage, items);
-  }, [items, ready]);
+    persistCartForActor(window.localStorage, user?.id ?? null, items);
+  }, [items, ready, user?.id]);
 
   const addCourse = useCallback((course: Course) => {
     setItems((current) => addItemToCart(current, course));
@@ -53,6 +62,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const removeCourse = useCallback((courseId: string) => {
     setItems((current) => removeItemFromCart(current, courseId));
+  }, []);
+
+  const removePurchasedCourses = useCallback((slugs: string[]) => {
+    setItems((current) => removePurchasedCartItems(current, slugs));
   }, []);
 
   const hasCourse = useCallback(
@@ -68,9 +81,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       ready,
       addCourse,
       removeCourse,
+      removePurchasedCourses,
       hasCourse,
     }),
-    [items, ready, addCourse, removeCourse, hasCourse],
+    [items, ready, addCourse, removeCourse, removePurchasedCourses, hasCourse],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

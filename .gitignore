@@ -47,3 +47,6 @@ next-env.d.ts
 
 # local QA artifacts
 /qa-report.txt
+
+.vercel
+.env*

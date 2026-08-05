@@ -4,6 +4,8 @@ import { formatDocumentTitle, resolveTitleKey, englishAbsoluteTitle } from "@/li
 describe("document titles", () => {
   it("resolves route keys", () => {
     expect(resolveTitleKey("/")).toBe("home");
+    expect(resolveTitleKey("/about")).toBe("about");
+    expect(resolveTitleKey("/about/founder")).toBe("founder");
     expect(resolveTitleKey("/courses")).toBe("courses");
     expect(resolveTitleKey("/library")).toBe("library");
     expect(resolveTitleKey("/courses/foo")).toBe("courseDetail");

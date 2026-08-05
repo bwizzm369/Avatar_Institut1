@@ -3,12 +3,18 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useAuth } from "@/components/AuthProvider";
+import { useCart } from "@/components/CartProvider";
 import { Logo } from "@/components/Logo";
 import { useLocale } from "@/components/LocaleProvider";
 import {
+  clearPendingCheckoutSlugs,
+  readPendingCheckoutSlugs,
+} from "@/lib/cart";
+import {
   ACCESS_POLL_INTERVAL_MS,
-  ACCESS_POLL_MAX_MS,
   deriveAccessUiState,
+  shouldContinueAccessPolling,
   type AccessStatusPayload,
   type AccessUiState,
 } from "@/lib/enrollments/access-status";
@@ -17,11 +23,14 @@ import { msg } from "@/lib/i18n";
 /**
  * Premium post-payment experience.
  * Does NOT grant course access — only polls a read-only enrollment status API.
- * session_id in the URL is never used to unlock content.
+ * session_id selects which course_ids to verify; unlock requires Supabase enrollment.
  */
 export default function CartSuccessClient() {
   const { locale } = useLocale();
+  const { removePurchasedCourses } = useCart();
+  const { user, ready: authReady } = useAuth();
   const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id");
   const simulateDelayed = searchParams.get("simulate") === "delayed";
   const previewDelayed = searchParams.get("preview") === "delayed";
 
@@ -29,9 +38,10 @@ export default function CartSuccessClient() {
     previewDelayed ? "delayed" : "waiting",
   );
   const [courseSlug, setCourseSlug] = useState<string | null>(null);
-  const [checking, setChecking] = useState(false);
   const startedAtRef = useRef<number>(Date.now());
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const removedPurchaseSignatureRef = useRef<string>("");
+  const activatedRef = useRef(false);
 
   const clearPoll = useCallback(() => {
     if (timerRef.current) {
@@ -41,7 +51,8 @@ export default function CartSuccessClient() {
   }, []);
 
   const runCheck = useCallback(async () => {
-    setChecking(true);
+    if (activatedRef.current) return;
+
     try {
       if (simulateDelayed) {
         const elapsed = Date.now() - startedAtRef.current;
@@ -52,7 +63,10 @@ export default function CartSuccessClient() {
         return;
       }
 
-      const response = await fetch("/api/enrollments/access-status", {
+      const query = sessionId
+        ? `?session_id=${encodeURIComponent(sessionId)}`
+        : "";
+      const response = await fetch(`/api/enrollments/access-status${query}`, {
         method: "GET",
         credentials: "same-origin",
         cache: "no-store",
@@ -63,46 +77,61 @@ export default function CartSuccessClient() {
       const next = deriveAccessUiState({ activated, elapsedMs: elapsed });
       setUiState(next);
       setCourseSlug(activated ? data.courseSlug : null);
-      if (next === "activated" || next === "delayed") {
+
+      if (activated) {
+        activatedRef.current = true;
         clearPoll();
+        if (authReady && user) {
+          const purchasedSlugs = readPendingCheckoutSlugs(
+            window.localStorage,
+            user.id,
+          );
+          const signature = purchasedSlugs.slice().sort().join("|");
+          if (signature && removedPurchaseSignatureRef.current !== signature) {
+            removePurchasedCourses(purchasedSlugs);
+            clearPendingCheckoutSlugs(window.localStorage, user.id);
+            removedPurchaseSignatureRef.current = signature;
+          }
+        }
       }
     } catch {
+      if (activatedRef.current) return;
       const elapsed = Date.now() - startedAtRef.current;
       setUiState(
         deriveAccessUiState({ activated: false, elapsedMs: elapsed }),
       );
-    } finally {
-      setChecking(false);
     }
-  }, [clearPoll, simulateDelayed]);
-
-  const startPolling = useCallback(() => {
-    clearPoll();
-    startedAtRef.current = Date.now();
-    setUiState("waiting");
-    setCourseSlug(null);
-    void runCheck();
-    timerRef.current = setInterval(() => {
-      const elapsed = Date.now() - startedAtRef.current;
-      if (elapsed >= ACCESS_POLL_MAX_MS) {
-        setUiState((current) =>
-          current === "activated" ? current : "delayed",
-        );
-        clearPoll();
-        return;
-      }
-      void runCheck();
-    }, ACCESS_POLL_INTERVAL_MS);
-  }, [clearPoll, runCheck]);
+  }, [
+    authReady,
+    clearPoll,
+    removePurchasedCourses,
+    sessionId,
+    simulateDelayed,
+    user,
+  ]);
 
   useEffect(() => {
     if (previewDelayed) {
       setUiState("delayed");
       return;
     }
-    startPolling();
+
+    activatedRef.current = false;
+    startedAtRef.current = Date.now();
+    setUiState("waiting");
+    setCourseSlug(null);
+    void runCheck();
+
+    timerRef.current = setInterval(() => {
+      if (activatedRef.current) {
+        clearPoll();
+        return;
+      }
+      void runCheck();
+    }, ACCESS_POLL_INTERVAL_MS);
+
     return () => clearPoll();
-  }, [clearPoll, previewDelayed, startPolling]);
+  }, [clearPoll, previewDelayed, runCheck]);
 
   const statusMessage =
     uiState === "activated"
@@ -115,6 +144,11 @@ export default function CartSuccessClient() {
     uiState === "activated" && courseSlug
       ? `/dashboard/courses/${courseSlug}`
       : "/dashboard/courses";
+
+  const primaryLabel =
+    uiState === "activated"
+      ? msg("cart.successOpenCourse", locale)
+      : msg("cart.successGoCourses", locale);
 
   return (
     <section className="payment-success">
@@ -157,31 +191,18 @@ export default function CartSuccessClient() {
             <p>{statusMessage}</p>
           </div>
 
-          {uiState === "waiting" ? (
+          {shouldContinueAccessPolling(uiState) ? (
             <div className="payment-success-progress" aria-hidden="true">
               <span />
             </div>
           ) : null}
 
-          {uiState === "delayed" ? (
-            <button
-              type="button"
-              className="btn btn-primary payment-success-cta"
-              onClick={startPolling}
-              disabled={checking}
-            >
-              {msg("cart.successCheckAgain", locale)}
-            </button>
-          ) : (
-            <Link
-              href={primaryHref}
-              className="btn btn-primary payment-success-cta"
-            >
-              {uiState === "activated"
-                ? msg("cart.successStartCourse", locale)
-                : msg("cart.successGoCourses", locale)}
-            </Link>
-          )}
+          <Link
+            href={primaryHref}
+            className="btn btn-primary payment-success-cta"
+          >
+            {primaryLabel}
+          </Link>
 
           <Link href="/cart" className="payment-success-secondary">
             {msg("cart.successBackToCart", locale)}

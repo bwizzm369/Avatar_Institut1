@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { safeAuthRedirect } from "@/lib/auth/guards";
 import { validateLogin, validateSignup } from "@/lib/auth/validation";
@@ -82,6 +83,8 @@ export async function loginAction(
     const next = safeAuthRedirect(
       String(formData.get("next") ?? "/dashboard"),
     );
+    // Invalidate cached layouts so server components re-read the new session.
+    revalidatePath("/", "layout");
     // Return redirect path to the client — do not throw redirect() here.
     // LoginForm's try/catch would otherwise swallow NEXT_REDIRECT.
     return { ok: true, redirectTo: next };
