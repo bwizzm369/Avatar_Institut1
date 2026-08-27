@@ -7,6 +7,7 @@ import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { writePendingCheckoutSlugs } from "@/lib/cart";
 import { resolveCartCheckoutCta } from "@/lib/auth/session-ui";
+import { dashboardCoursePath } from "@/lib/courses/course-slug";
 import { isStripePublishableConfigured } from "@/lib/stripe/env";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { msg } from "@/lib/i18n";
@@ -69,6 +70,7 @@ export function CartCheckoutButton() {
         ok?: boolean;
         url?: string;
         error?: string;
+        redirectSlug?: string;
       };
 
       if (response.status === 401) {
@@ -76,9 +78,21 @@ export function CartCheckoutButton() {
         return;
       }
 
+      if (data.error === "included_with_pass") {
+        const slug = data.redirectSlug ?? items[0]?.slug;
+        if (slug) {
+          router.push(dashboardCoursePath(slug));
+          return;
+        }
+        setErrorKey("cart.checkoutIncludedWithPass");
+        return;
+      }
+
       if (!response.ok || !data.ok || !data.url) {
         if (data.error === "client_price_rejected") {
           setErrorKey("cart.checkoutPriceRejected");
+        } else if (data.error === "zero_amount") {
+          setErrorKey("cart.checkoutZeroAmount");
         } else if (data.error === "stripe_not_configured") {
           setErrorKey("cart.checkoutConfigMissing");
         } else {

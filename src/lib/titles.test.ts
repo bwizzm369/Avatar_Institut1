@@ -13,6 +13,8 @@ describe("document titles", () => {
     expect(resolveTitleKey("/cart/success")).toBe("cartSuccess");
     expect(resolveTitleKey("/login")).toBe("login");
     expect(resolveTitleKey("/signup")).toBe("signup");
+    expect(resolveTitleKey("/forgot-password")).toBe("forgotPassword");
+    expect(resolveTitleKey("/update-password")).toBe("updatePassword");
     expect(resolveTitleKey("/dashboard")).toBe("dashboard");
     expect(resolveTitleKey("/dashboard/courses")).toBe("dashboardCourses");
     expect(resolveTitleKey("/dashboard/courses/foundations-of-metaphysics")).toBe(
@@ -24,6 +26,7 @@ describe("document titles", () => {
       ),
     ).toBe("dashboardLessonReader");
     expect(resolveTitleKey("/dashboard/certificates")).toBe("dashboardCertificates");
+    expect(resolveTitleKey("/verify/AVT-2026-000001")).toBe("verifyCertificate");
   });
 
   it("formats bilingual titles", () => {

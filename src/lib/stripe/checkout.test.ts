@@ -3,8 +3,12 @@ import {
   buildCheckoutSessionParams,
   parseCheckoutRequest,
   resolveCheckoutCourses,
+  resolveCheckoutCoursesForUser,
+  type CheckoutCourseSource,
 } from "@/lib/stripe/checkout";
 import { DEMO_COURSE_DB_IDS } from "@/lib/courses/demoDbIds";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 
 describe("Stripe checkout request validation", () => {
   it("refuses unauthenticated users", () => {
@@ -92,6 +96,113 @@ describe("Stripe checkout request validation", () => {
     expect(params.success_url).toContain("/cart/success");
     expect(params.cancel_url).toContain("/cart");
     expect(params).not.toHaveProperty("payment_method_types");
+  });
+
+  it("does not trust client-supplied prices in the request body", () => {
+    expect(
+      parseCheckoutRequest("user-1", {
+        slugs: ["foundations-of-metaphysics"],
+        priceCents: 1,
+        student_pass_discount_percent: 90,
+      }).ok,
+    ).toBe(false);
+  });
+
+  it("resolveCheckoutCoursesForUser reloads trusted sources and Pass status", () => {
+    const sources: CheckoutCourseSource[] = [
+      {
+        id: DEMO_COURSE_DB_IDS["consciousness-exploration"],
+        slug: "consciousness-exploration",
+        titleEn: "Consciousness Exploration",
+        priceCents: 14900,
+        currency: "EUR",
+        studentPassIncluded: false,
+        studentPassDiscountPercent: 20,
+      },
+    ];
+
+    const withPass = resolveCheckoutCoursesForUser({
+      slugs: ["consciousness-exploration"],
+      sources,
+      hasActiveStudentPass: true,
+    });
+    expect(withPass.ok).toBe(true);
+    if (!withPass.ok) return;
+    expect(withPass.courses[0]?.priceCents).toBe(11920);
+    expect(withPass.hasActiveStudentPass).toBe(true);
+
+    const withoutPass = resolveCheckoutCoursesForUser({
+      slugs: ["consciousness-exploration"],
+      sources,
+      hasActiveStudentPass: false,
+    });
+    expect(withoutPass.ok).toBe(true);
+    if (!withoutPass.ok) return;
+    expect(withoutPass.courses[0]?.priceCents).toBe(14900);
+  });
+
+  it("refuses checkout when Pass includes the course", () => {
+    const result = resolveCheckoutCoursesForUser({
+      slugs: ["foundations-of-metaphysics"],
+      sources: [
+        {
+          id: DEMO_COURSE_DB_IDS["foundations-of-metaphysics"],
+          slug: "foundations-of-metaphysics",
+          titleEn: "Foundations",
+          priceCents: 9900,
+          currency: "EUR",
+          studentPassIncluded: true,
+          studentPassDiscountPercent: 50,
+        },
+      ],
+      hasActiveStudentPass: true,
+    });
+    expect(result).toMatchObject({
+      ok: false,
+      error: "included_with_pass",
+      redirectSlug: "foundations-of-metaphysics",
+    });
+  });
+
+  it("checkout route reloads courses and Student Pass on the server", () => {
+    const routePath = path.resolve(
+      process.cwd(),
+      "src/app/api/stripe/checkout/route.ts",
+    );
+    const source = readFileSync(routePath, "utf8");
+    expect(source).toMatch(/loadCheckoutCourseSources/);
+    expect(source).toMatch(/hasActiveStudentPassForProfile/);
+    expect(source).toMatch(/resolveCheckoutCoursesForUser/);
+    expect(source).not.toMatch(/resolveCheckoutCourses\(/);
+  });
+
+  it("builds success/cancel URLs from the Preview deployment host", () => {
+    vi.stubEnv("VERCEL_ENV", "preview");
+    vi.stubEnv(
+      "VERCEL_URL",
+      "avatar-institut-platform-preview.vercel.app",
+    );
+    vi.stubEnv("NEXT_PUBLIC_APP_URL", "http://localhost:3000");
+
+    try {
+      const resolved = resolveCheckoutCourses(["consciousness-exploration"]);
+      expect(resolved.ok).toBe(true);
+      if (!resolved.ok) return;
+
+      const params = buildCheckoutSessionParams({
+        userId: "user-42",
+        courses: resolved.courses,
+      });
+
+      expect(params.success_url).toBe(
+        "https://avatar-institut-platform-preview.vercel.app/cart/success?session_id={CHECKOUT_SESSION_ID}",
+      );
+      expect(params.cancel_url).toBe(
+        "https://avatar-institut-platform-preview.vercel.app/cart",
+      );
+    } finally {
+      vi.unstubAllEnvs();
+    }
   });
 });
 

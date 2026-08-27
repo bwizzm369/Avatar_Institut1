@@ -12,18 +12,28 @@ export type SessionCookie = {
 /**
  * Refreshes the Auth session cookies when Supabase is configured.
  * Returns the response and whether a user session exists.
+ * Optional requestHeaders are forwarded on NextResponse.next (e.g. x-pathname).
  */
-export async function updateSession(request: NextRequest): Promise<{
+export async function updateSession(
+  request: NextRequest,
+  requestHeaders?: Headers,
+): Promise<{
   response: NextResponse;
   userId: string | null;
   configured: boolean;
   cookiesToApply: SessionCookie[];
 }> {
-  let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  });
+  const buildNext = (headers: Headers) =>
+    NextResponse.next({
+      request: {
+        headers,
+      },
+    });
+
+  let headersForRequest = requestHeaders
+    ? new Headers(requestHeaders)
+    : new Headers(request.headers);
+  let response = buildNext(headersForRequest);
   let cookiesToApply: SessionCookie[] = [];
 
   const config = getSupabasePublicConfig();
@@ -41,11 +51,10 @@ export async function updateSession(request: NextRequest): Promise<{
         cookiesToSet.forEach(({ name, value }) => {
           request.cookies.set(name, value);
         });
-        response = NextResponse.next({
-          request: {
-            headers: request.headers,
-          },
-        });
+        headersForRequest = requestHeaders
+          ? new Headers(requestHeaders)
+          : new Headers(request.headers);
+        response = buildNext(headersForRequest);
         cookiesToSet.forEach(({ name, value, options }) => {
           response.cookies.set(name, value, options);
         });

@@ -2,14 +2,12 @@
 
 import Link from "next/link";
 import { useLocale } from "@/components/LocaleProvider";
+import { dashboardLessonPath } from "@/lib/courses/course-slug";
+import { studentLocalizedText } from "@/lib/courses/student-display";
 import type { StudentCourseView, StudentLessonSummary } from "@/lib/learning/queries";
 import type { LessonProgressStatus, LessonType } from "@/lib/learning/progress";
 import { msg } from "@/lib/i18n";
 import type { Locale } from "@/types";
-
-function pick(en: string, ar: string, locale: Locale): string {
-  return locale === "ar" ? ar : en;
-}
 
 function typeLabel(type: LessonType, locale: Locale): string {
   if (type === "video") return msg("learning.type.video", locale);
@@ -59,7 +57,7 @@ export function StudentCourseClient({
   const { course, modules, progress } = view;
   const nextLesson = findNextLesson(view);
   const nextHref = nextLesson
-    ? `/dashboard/courses/${course.slug}/lessons/${nextLesson.id}`
+    ? dashboardLessonPath(course.slug, nextLesson.id)
     : null;
   const durationTotal = totalDurationMinutes(view);
   const certificateReady = progress.percent >= 100;
@@ -70,7 +68,7 @@ export function StudentCourseClient({
         <div className="learning-hero-main">
           <p className="eyebrow">{msg("learning.courseEyebrow", locale)}</p>
           <h2 className="display display-md learning-hero-title">
-            {pick(course.title_en, course.title_ar, locale)}
+            {studentLocalizedText(course.title_en, course.title_ar, locale)}
           </h2>
           {course.is_demo ? (
             <span className="learning-badge">
@@ -78,7 +76,11 @@ export function StudentCourseClient({
             </span>
           ) : null}
           <p className="learning-hero-lead">
-            {pick(course.description_en, course.description_ar, locale)}
+            {studentLocalizedText(
+              course.description_en,
+              course.description_ar,
+              locale,
+            )}
           </p>
 
           <div
@@ -168,7 +170,7 @@ export function StudentCourseClient({
               >
                 <summary className="learning-accordion-summary">
                   <span className="learning-accordion-title display display-sm">
-                    {pick(mod.title_en, mod.title_ar, locale)}
+                    {studentLocalizedText(mod.title_en, mod.title_ar, locale)}
                   </span>
                   <span className="learning-accordion-count muted">
                     {msg("learning.moduleLessonCount", locale).replace(
@@ -200,10 +202,14 @@ export function StudentCourseClient({
                           </span>
                           <div className="learning-lesson-meta">
                             <Link
-                              href={`/dashboard/courses/${course.slug}/lessons/${lesson.id}`}
+                              href={dashboardLessonPath(course.slug, lesson.id)}
                               className="learning-lesson-title"
                             >
-                              {pick(lesson.title_en, lesson.title_ar, locale)}
+                              {studentLocalizedText(
+                                lesson.title_en,
+                                lesson.title_ar,
+                                locale,
+                              )}
                               {isNext ? (
                                 <span className="learning-next-pill">
                                   {msg("learning.nextLesson", locale)}
@@ -228,7 +234,7 @@ export function StudentCourseClient({
                           </div>
                         </div>
                         <Link
-                          href={`/dashboard/courses/${course.slug}/lessons/${lesson.id}`}
+                          href={dashboardLessonPath(course.slug, lesson.id)}
                           className="btn btn-ghost learning-open-lesson"
                         >
                           {msg("learning.openLesson", locale)}

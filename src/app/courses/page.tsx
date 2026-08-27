@@ -1,32 +1,10 @@
-"use client";
+import { CoursesCatalogueClient } from "@/components/CoursesCatalogueClient";
+import { loadCoursePassOffersForCourses } from "@/lib/courses/load-pass-offers";
+import { listPublicCourses } from "@/lib/courses/public-catalogue";
 
-import { CourseCard } from "@/components/CourseCard";
-import { useLocale } from "@/components/LocaleProvider";
-import { getAllCourses } from "@/lib/courses";
-import { msg } from "@/lib/i18n";
+export default async function CoursesPage() {
+  const courses = await listPublicCourses();
+  const { offers } = await loadCoursePassOffersForCourses(courses);
 
-export default function CoursesPage() {
-  const { locale } = useLocale();
-  const courses = getAllCourses();
-
-  return (
-    <>
-      <section className="page-hero">
-        <div className="container stack-lg">
-          <p className="eyebrow">{msg("courses.eyebrow", locale)}</p>
-          <h1 className="display display-lg">{msg("courses.title", locale)}</h1>
-          <p className="lead">{msg("courses.intro", locale)}</p>
-        </div>
-      </section>
-      <section className="section">
-        <div className="container">
-          <div className="courses-grid">
-            {courses.map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
-  );
+  return <CoursesCatalogueClient courses={courses} offers={offers} />;
 }

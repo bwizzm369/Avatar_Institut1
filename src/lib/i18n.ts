@@ -16,6 +16,24 @@ export function t(value: LocalizedString, locale: Locale): string {
   return value[locale];
 }
 
+/**
+ * Course/catalogue display: use the requested locale, then the other language.
+ * Does not invent a translation.
+ */
+export function displayLocalized(
+  value: LocalizedString,
+  locale: Locale,
+): string {
+  const primary = (value[locale] ?? "").trim();
+  if (primary) return primary;
+  const other: Locale = locale === "en" ? "ar" : "en";
+  return (value[other] ?? "").trim();
+}
+
+export function hasLocalizedTitle(value: LocalizedString): boolean {
+  return Boolean((value.en ?? "").trim() || (value.ar ?? "").trim());
+}
+
 type Dictionary = Record<string, LocalizedString>;
 
 export const messages: Dictionary = {
@@ -44,18 +62,19 @@ export const messages: Dictionary = {
   },
 
   "home.eyebrow": {
-    en: "Where Science Meets Consciousness",
-    ar: "حيث يلتقي العلم بالوعي",
+    en: "Online Institute",
+    ar: "معهد إلكتروني",
   },
   "home.title": {
-    en: "Explore the Metaphysics of Human Consciousness",
-    ar: "استكشف ميتافيزيقا الوعي الإنساني",
+    en: "Avatar Institute for\nConsciousness &\nMetaphysical Studies",
+    ar: "معهد الأڤاتار\nلدراسات الوعي\nوالميتافيزيقا",
   },
   "home.subtitle": {
-    en: "An international academy dedicated to metaphysics, consciousness, and human development through thoughtful inquiry and transformative education.",
-    ar: "أكاديمية دولية مكرسة للميتافيزيقا والوعي والتنمية البشرية عبر التأمّل الفكري والتعليم التحويلي.",
+    en: "An international online institute dedicated to philosophy,\nconsciousness studies,\nand structured learning in Arabic and English.",
+    ar: "معهد دولي للتعليم عبر الإنترنت مكرّس للفلسفة،\nودراسات الوعي،\nوالتعلم المنظّم بالعربية والإنجليزية.",
   },
-  "home.ctaCourses": { en: "Explore courses", ar: "استكشف الدورات" },
+  "home.ctaCourses": { en: "Explore Courses", ar: "استكشف الدورات" },
+  "home.ctaLibrary": { en: "Digital Library", ar: "المكتبة الرقمية" },
   "home.ctaAbout": { en: "Our mission", ar: "رسالتنا" },
   "home.ctaFounder": {
     en: "Meet our founder",
@@ -101,12 +120,32 @@ export const messages: Dictionary = {
     en: "Explore the Avatar Institut course catalogue and begin your learning journey.",
     ar: "استكشف كتالوج دورات مؤسسة الأڤاتار وابدأ رحلتك التعليمية.",
   },
+  "connect.eyebrow": {
+    en: "Official Channels",
+    ar: "القنوات الرسمية",
+  },
+  "connect.title": {
+    en: "Connect with Us",
+    ar: "تواصل معنا",
+  },
+  "connect.description": {
+    en: "Stay connected with Avatar Institute through our official channels.",
+    ar: "ابقَ على تواصل مع معهد الأفاتار عبر قنواتنا الرسمية.",
+  },
+  "connect.open": {
+    en: "Open",
+    ar: "فتح",
+  },
 
   "courses.eyebrow": { en: "Learning pathways", ar: "مسارات التعلم" },
   "courses.title": { en: "Course catalogue", ar: "كتالوج الدورات" },
   "courses.intro": {
-    en: "Three demonstration programmes for platform testing. They are not live enrollments.",
-    ar: "ثلاثة برامج تجريبية لاختبار المنصة. ليست تسجيلات حية.",
+    en: "Explore the Avatar Institut programmes currently open for enrolment.",
+    ar: "استكشف برامج معهد الأفاتار المتاحة للتسجيل حالياً.",
+  },
+  "courses.empty": {
+    en: "No published programmes are available yet.",
+    ar: "لا توجد برامج منشورة متاحة حالياً.",
   },
   "courses.demoBadge": { en: "Demonstration course", ar: "دورة تجريبية" },
   "courses.weeks": { en: "{n} weeks", ar: "{n} أسابيع" },
@@ -122,135 +161,159 @@ export const messages: Dictionary = {
   "courses.level": { en: "Level", ar: "المستوى" },
   "courses.duration": { en: "Duration", ar: "المدة" },
   "courses.price": { en: "Price", ar: "السعر" },
+  "courses.passIncludedShort": {
+    en: "Included with Student Pass",
+    ar: "مشمول ضمن Student Pass",
+  },
+  "courses.passIncludedMember": {
+    en: "Included with your Student Pass",
+    ar: "مشمول ضمن عضويتك في Student Pass",
+  },
+  "courses.normalPrice": {
+    en: "Normal price:",
+    ar: "السعر العادي:",
+  },
+  "courses.passPrice": {
+    en: "Student Pass price:",
+    ar: "سعر Student Pass:",
+  },
+  "courses.passSave": {
+    en: "Save {n}%",
+    ar: "وفّر {n}%",
+  },
+  "courses.passBenefitDiscount": {
+    en: "Student Pass: {n}% off",
+    ar: "Student Pass: خصم {n}٪",
+  },
+  "courses.startCourse": {
+    en: "Start Course",
+    ar: "ابدأ الدورة",
+  },
+  "courses.continueCourse": {
+    en: "Continue Course",
+    ar: "متابعة الدورة",
+  },
 
   "about.eyebrow": {
     en: "About the Institute",
-    ar: "عن المؤسسة",
+    ar: "عن المعهد",
   },
   "about.title": {
-    en: "Avatar Institut für Metaphysik",
-    ar: "مؤسسة الأفاتار للميتافيزيقا",
+    en: "About Avatar Institute",
+    ar: "نبذة عن المعهد",
   },
-  "about.location": {
-    en: "Kiel, Germany",
-    ar: "كيل، ألمانيا",
+  "about.overviewTitle": {
+    en: "About Avatar Institute",
+    ar: "نبذة عن المعهد",
   },
-  "about.intro": {
-    en: "A knowledge and education platform dedicated to human consciousness and metaphysical thought, with structured programmes in Arabic and English.",
-    ar: "منصة معرفية وتعليمية مكرّسة للوعي الإنساني والفكر الميتافيزيقي، ببرامج منظّمة بالعربية والإنجليزية.",
+  "about.overviewBody1": {
+    en: "Avatar Institute is an international institute dedicated to the study of Metaphysical Sciences. Its mission is to develop a balanced scientific and intellectual perspective on the relationship between human beings, consciousness, and the universe by bringing together physics, philosophy, Sufism, consciousness studies, parapsychology, and metaphysics within an academic framework based on research, analysis, and scholarly inquiry.",
+    ar: "الأفاتار (AVATAR) هو معهد عالمي متخصص في علوم الميتافيزيقا، يهدف إلى بناء رؤية علمية وفكرية متوازنة تستكشف العلاقة بين الإنسان والكون والوعي، من خلال الجمع بين الفيزياء، والفلسفة، والتصوف، ودراسات الوعي، والعلوم الباراسيكولوجية، والميتافيزيقا، ضمن منهج أكاديمي يقوم على البحث والتحليل والدراسة.",
   },
-  "about.subnavLabel": { en: "About sections", ar: "أقسام عن المؤسسة" },
+  "about.overviewBody2": {
+    en: "The Institute believes that genuine knowledge does not emerge from separating disciplines, but from meaningful dialogue between them. It therefore seeks to develop an interdisciplinary model that brings together the natural sciences, the humanities, and spiritual knowledge, opening new pathways toward a deeper understanding of existence and the human being.",
+    ar: "ويؤمن المعهد بأن المعرفة الحقيقية لا تنشأ من الفصل بين العلوم، بل من الحوار العميق بينها، لذلك يسعى إلى تقديم نموذج معرفي يجمع بين العلوم الطبيعية والعلوم الإنسانية والروحية، بما يفتح آفاقاً جديدة لفهم الوجود والإنسان.",
+  },
+  "about.subnavLabel": { en: "About sections", ar: "أقسام عن المعهد" },
   "about.tab.institute": {
     en: "About the Institute",
-    ar: "عن المؤسسة",
+    ar: "عن المعهد",
   },
   "about.tab.founder": {
     en: "The Founder",
-    ar: "عن المؤسس",
+    ar: "المؤسس",
   },
-  "about.pillarsEyebrow": {
-    en: "Foundations",
-    ar: "الأسس",
-  },
-  "about.pillarsTitle": {
-    en: "Mission, vision, and values",
-    ar: "الرسالة والرؤية والقيم",
-  },
-  "about.missionEyebrow": { en: "Mission", ar: "الرسالة" },
   "about.missionTitle": {
-    en: "Our mission",
+    en: "Our Mission",
     ar: "رسالتنا",
   },
   "about.missionBody": {
-    en: "To make serious ideas clear and accessible, and to open a space for dialogue between philosophy, consciousness studies, and spiritual inquiry.",
-    ar: "تقديم معرفة جادة وواضحة، وفتح مساحة للحوار بين الفكر الفلسفي ودراسات الوعي والتجربة الروحية.",
+    en: "To establish the world’s first international academic reference dedicated to Metaphysical Sciences by producing knowledge, publishing research, developing academic courses, and preparing researchers and learners through a rigorous methodology that combines intellectual depth with scientific openness.",
+    ar: "تأسيس أول مرجعية أكاديمية عالمية متخصصة في علوم الميتافيزيقا، تُعنى بإنتاج المعرفة، ونشر الأبحاث، وإعداد الدورات العلمية، وتأهيل الباحثين والمهتمين بهذا المجال وفق منهجية رصينة تجمع بين العمق الفكري والانفتاح العلمي.",
   },
-  "about.visionEyebrow": { en: "Vision", ar: "الرؤية" },
   "about.visionTitle": {
-    en: "Our vision",
+    en: "Our Vision",
     ar: "رؤيتنا",
   },
   "about.visionBody": {
-    en: "An international institution that joins careful thought with the depth of human questioning, connecting cultures and languages without exaggeration or unsupported claims.",
-    ar: "مؤسسة معرفية دولية تجمع بين التأمّل المتأني وعمق السؤال الإنساني، وتصل بين الثقافات واللغات دون مبالغة أو ادّعاءات غير موثّقة.",
+    en: "To make AVATAR the leading international reference in Metaphysical Sciences and a global platform bringing together scientists, researchers, thinkers, and learners from diverse cultures to contribute to a deeper understanding of consciousness, humanity, and the universe.",
+    ar: "أن يصبح AVATAR المرجع الدولي الأول في علوم الميتافيزيقا، ومنصة عالمية تجمع العلماء والباحثين والمفكرين والمهتمين من مختلف الثقافات، للمساهمة في تطوير فهم أعمق للوعي والإنسان والكون.",
   },
-  "about.valuesEyebrow": { en: "Values", ar: "القيم" },
-  "about.valuesTitle": {
-    en: "Our values",
-    ar: "قيمنا",
+  "about.areasTitle": {
+    en: "Areas of Interest",
+    ar: "مجالات اهتمامنا",
   },
-  "about.value.clarity": {
-    en: "Clarity",
-    ar: "الوضوح",
+  "about.area.1": {
+    en: "Metaphysics and the philosophy of existence.",
+    ar: "الميتافيزيقا وفلسفة الوجود.",
   },
-  "about.value.clarityBody": {
-    en: "Serious ideas presented with care, so learning remains accessible and precise.",
-    ar: "أفكار جادة تُقدَّم بعناية، ليبقى التعلّم واضحًا ودقيقًا.",
+  "about.area.2": {
+    en: "The relationship between physics and metaphysics.",
+    ar: "العلاقة بين الفيزياء والميتافيزيقا.",
   },
-  "about.value.dialogue": {
-    en: "Dialogue",
-    ar: "الحوار",
+  "about.area.3": {
+    en: "Sufism and the philosophy of spiritual knowledge.",
+    ar: "التصوف وفلسفة المعرفة الروحية.",
   },
-  "about.value.dialogueBody": {
-    en: "A meeting place for philosophy, consciousness studies, and spiritual inquiry.",
-    ar: "مساحة للقاء بين الفكر الفلسفي ودراسات الوعي والتجربة الروحية.",
+  "about.area.4": {
+    en: "Consciousness and perception studies.",
+    ar: "دراسات الوعي والإدراك.",
   },
-  "about.value.integrity": {
-    en: "Integrity",
-    ar: "النزاهة",
+  "about.area.5": {
+    en: "Parapsychology and anomalous phenomena.",
+    ar: "العلوم الباراسيكولوجية والظواهر غير الاعتيادية.",
   },
-  "about.value.integrityBody": {
-    en: "Honest inquiry without exaggeration or unsupported claims.",
-    ar: "استقصاء صادق بلا مبالغة ولا ادّعاءات غير موثّقة.",
+  "about.area.6": {
+    en: "Symbols, language, and universal meanings.",
+    ar: "الرموز واللغة والمعاني الكونية.",
   },
-  "about.value.bridge": {
-    en: "Connection",
-    ar: "الوصل",
+  "about.area.7": {
+    en: "Human intellectual and spiritual development.",
+    ar: "الإنسان وتطوره الفكري والروحي.",
   },
-  "about.value.bridgeBody": {
-    en: "Pathways that connect cultures and languages through Arabic and English.",
-    ar: "مسارات تصل بين الثقافات واللغات عبر العربية والإنجليزية.",
+  "about.area.8": {
+    en: "Interdisciplinary research and studies.",
+    ar: "الأبحاث والدراسات متعددة التخصصات.",
   },
-  "about.domainsEyebrow": { en: "Inquiry", ar: "مجالات الاهتمام" },
-  "about.domainsTitle": {
-    en: "Fields of inquiry",
-    ar: "مجالات الاهتمام",
+  "about.offerTitle": {
+    en: "What We Offer",
+    ar: "ماذا نقدم؟",
   },
-  "about.domainsBody": {
-    en: "Our programmes bring together research, reflection, and lived human experience around metaphysics, consciousness, and spiritual inquiry.",
-    ar: "تجمع برامجنا بين البحث والتأمّل والتجربة الإنسانية حول الميتافيزيقا والوعي والاستقصاء الروحي.",
+  "about.offer.1": {
+    en: "Specialized academic programs and courses.",
+    ar: "برامج ودورات أكاديمية متخصصة.",
   },
-  "about.domain.metaphysics": {
-    en: "Metaphysical thought",
-    ar: "الفكر الميتافيزيقي",
+  "about.offer.2": {
+    en: "A scientific library of books, studies, and research.",
+    ar: "مكتبة علمية تضم الكتب والدراسات والأبحاث.",
   },
-  "about.domain.consciousness": {
-    en: "Human consciousness",
-    ar: "الوعي الإنساني",
+  "about.offer.3": {
+    en: "Lectures, seminars, and academic conferences.",
+    ar: "محاضرات وندوات ومؤتمرات علمية.",
   },
-  "about.domain.dialogue": {
-    en: "Philosophy and spiritual inquiry",
-    ar: "الفلسفة والاستقصاء الروحي",
+  "about.offer.4": {
+    en: "International research and collaborative projects.",
+    ar: "مشاريع بحثية وتعاونية دولية.",
   },
-  "about.domain.languages": {
-    en: "Arabic and English learning pathways",
-    ar: "مسارات تعلّم بالعربية والإنجليزية",
+  "about.offer.5": {
+    en: "Academic certificates and authorizations for approved programs.",
+    ar: "شهادات وإجازات علمية في البرامج المعتمدة.",
   },
-  "about.missionBody1": {
-    en: "To make serious ideas clear and accessible, and to open a space for dialogue between philosophy, consciousness studies, and spiritual inquiry.",
-    ar: "تقديم معرفة جادة وواضحة، وفتح مساحة للحوار بين الفكر الفلسفي ودراسات الوعي والتجربة الروحية.",
+  "about.offer.6": {
+    en: "A global knowledge community bringing together researchers and people interested in metaphysics.",
+    ar: "مجتمع معرفي عالمي يجمع الباحثين والمهتمين بالميتافيزيقا.",
   },
-  "about.missionBody2": {
-    en: "An international institution that joins careful thought with the depth of human questioning, connecting cultures and languages without exaggeration or unsupported claims.",
-    ar: "مؤسسة معرفية دولية تجمع بين التأمّل المتأني وعمق السؤال الإنساني، وتصل بين الثقافات واللغات دون مبالغة أو ادّعاءات غير موثّقة.",
+  "about.messageTitle": {
+    en: "The Avatar Message",
+    ar: "رسالة AVATAR",
   },
-  "about.founderEyebrow": {
-    en: "Founder & Director",
-    ar: "المؤسس والمدير",
+  "about.messageBody1": {
+    en: "We are not an institution for imposing ideas, but a space for research, a platform for dialogue, and a bridge connecting scientific knowledge, philosophical reflection, and human experience.",
+    ar: "لسنا مؤسسة لتلقين الأفكار، بل فضاء للبحث، ومنصة للحوار، وجسر يصل بين المعرفة العلمية والتأمل الفلسفي والخبرة الإنسانية.",
   },
-  "about.founderTitle": {
-    en: "Meet the founder",
-    ar: "تعرّف على المؤسس",
+  "about.messageBody2": {
+    en: "We believe that self-discovery is the first step toward understanding the universe, and that every genuine form of knowledge begins with a profound question, continues through research, matures through evidence, and remains open to new horizons.",
+    ar: "نؤمن بأن اكتشاف الإنسان لذاته هو الخطوة الأولى لفهم الكون، وأن كل معرفة حقيقية تبدأ بسؤال عميق، وتستمر بالبحث، وتنضج بالدليل، وتبقى منفتحة على آفاق جديدة.",
   },
   "about.founderCta": {
     en: "Read the biography",
@@ -258,12 +321,12 @@ export const messages: Dictionary = {
   },
 
   "founder.eyebrow": {
-    en: "Founder & Director",
-    ar: "المؤسس والمدير",
+    en: "The Founder",
+    ar: "المؤسس",
   },
   "founder.institutionalNote": {
-    en: "An intellectual and institutional journey devoted to metaphysics, consciousness, and responsible dialogue.",
-    ar: "مسيرة فكرية ومؤسسية مكرّسة للميتافيزيقا والوعي والحوار المسؤول.",
+    en: "Institutional biography provided by Avatar Institut. Biographical statements are presented as supplied and are not independent scientific verification.",
+    ar: "سيرة مؤسسية قدّمتها مؤسسة الأفاتار. تُعرض الإفادات البيوغرافية كما وردت، وليست تحققًا علميًا مستقلًا.",
   },
   "founder.tocLabel": {
     en: "On this page",
@@ -283,11 +346,15 @@ export const messages: Dictionary = {
   },
   "founder.backToAbout": {
     en: "Back to About the Institute",
-    ar: "العودة إلى عن المؤسسة",
+    ar: "العودة إلى عن المعهد",
+  },
+  "founder.section.biography": {
+    en: "Biography",
+    ar: "السيرة الذاتية",
   },
   "founder.section.presentation": {
-    en: "Presentation",
-    ar: "تقديم",
+    en: "Biography",
+    ar: "السيرة الذاتية",
   },
   "founder.section.responsibilities": {
     en: "Institutional responsibilities",
@@ -306,15 +373,15 @@ export const messages: Dictionary = {
     ar: "مؤلفات مختارة",
   },
   "founder.section.intellectual": {
-    en: "Intellectual and Sufi works",
+    en: "Intellectual and Sufi Works",
     ar: "المؤلفات الفكرية والصوفية",
   },
   "founder.section.poetry": {
-    en: "Poetic works",
+    en: "Poetry",
     ar: "المؤلفات الشعرية",
   },
   "founder.section.translations": {
-    en: "Translations and international dimension",
+    en: "Translations and International Reach",
     ar: "الترجمات والبُعد العالمي",
   },
   "founder.worksNote": {
@@ -398,6 +465,14 @@ export const messages: Dictionary = {
   "cart.checkoutError": {
     en: "Could not start checkout. Please try again.",
     ar: "تعذّر بدء الدفع. يرجى المحاولة مرة أخرى.",
+  },
+  "cart.checkoutIncludedWithPass": {
+    en: "This course is included with your Student Pass. Opening your course…",
+    ar: "هذه الدورة مشمولة ضمن عضويتك في Student Pass. جاري فتح دورتك…",
+  },
+  "cart.checkoutZeroAmount": {
+    en: "This Student Pass discount brings the price to zero. Please contact the academy or use an included course.",
+    ar: "تخفيض Student Pass يجعل السعر صفرًا. يرجى التواصل مع المعهد أو استخدام دورة مشمولة.",
   },
   "cart.checkoutPriceRejected": {
     en: "Checkout amounts are set securely by the academy. Please try again.",
@@ -516,6 +591,66 @@ export const messages: Dictionary = {
     en: "Password must be at least 8 characters.",
     ar: "يجب أن تكون كلمة المرور 8 أحرف على الأقل.",
   },
+  "auth.forgotPassword": {
+    en: "Forgot password?",
+    ar: "نسيت كلمة المرور؟",
+  },
+  "auth.forgotTitle": {
+    en: "Reset your password",
+    ar: "إعادة تعيين كلمة المرور",
+  },
+  "auth.forgotNotice": {
+    en: "Enter the email for your Avatar Institut account. If an account exists, a reset link will be sent.",
+    ar: "أدخل البريد الإلكتروني لحساب مؤسسة الأڤاتار. إذا كان الحساب موجودًا، فسيتم إرسال رابط إعادة التعيين.",
+  },
+  "auth.sendResetLink": {
+    en: "Send reset link",
+    ar: "إرسال رابط إعادة التعيين",
+  },
+  "auth.resetSent": {
+    en: "If an account exists for this email, a password reset link has been sent.",
+    ar: "إذا كان هناك حساب مرتبط بهذا البريد الإلكتروني، فقد تم إرسال رابط لإعادة تعيين كلمة المرور.",
+  },
+  "auth.backToLogin": {
+    en: "Back to log in",
+    ar: "العودة إلى تسجيل الدخول",
+  },
+  "auth.updatePasswordTitle": {
+    en: "Choose a new password",
+    ar: "اختيار كلمة مرور جديدة",
+  },
+  "auth.updatePasswordNotice": {
+    en: "Enter a new password, then confirm it to finish resetting your account.",
+    ar: "أدخل كلمة مرور جديدة ثم أكّدها لإكمال إعادة تعيين الحساب.",
+  },
+  "auth.newPassword": {
+    en: "New password",
+    ar: "كلمة المرور الجديدة",
+  },
+  "auth.confirmPassword": {
+    en: "Confirm password",
+    ar: "تأكيد كلمة المرور",
+  },
+  "auth.submitNewPassword": {
+    en: "Update password",
+    ar: "تحديث كلمة المرور",
+  },
+  "auth.resetSuccess": {
+    en: "Your password has been updated. You can now log in.",
+    ar: "تم تحديث كلمة المرور. يمكنك الآن تسجيل الدخول.",
+  },
+  "auth.resetInvalid": {
+    en: "This reset link is invalid or has expired. Request a new one.",
+    ar: "رابط إعادة التعيين غير صالح أو منتهٍ. اطلب رابطًا جديدًا.",
+  },
+  "auth.resetUpdateFailed": {
+    en: "Could not update the password. Request a new reset link and try again.",
+    ar: "تعذّر تحديث كلمة المرور. اطلب رابطًا جديدًا وحاول مرة أخرى.",
+  },
+  "auth.error.passwordMismatch": {
+    en: "Passwords do not match.",
+    ar: "كلمتا المرور غير متطابقتين.",
+  },
 
   "dashboard.title": { en: "Student dashboard", ar: "لوحة تحكم الطالب" },
   "dashboard.notice": {
@@ -548,8 +683,41 @@ export const messages: Dictionary = {
   },
   "dashboard.certificatesTitle": { en: "My certificates", ar: "شهاداتي" },
   "dashboard.certificatesEmpty": {
-    en: "No certificates yet. Certificates will be issued only after verified course completion in a later phase.",
-    ar: "لا توجد شهادات بعد. ستُصدر الشهادات فقط بعد إتمام الدورة الموثّق في مرحلة لاحقة.",
+    en: "No certificates have been issued to this account yet.",
+    ar: "لم تُصدر أي شهادات لهذا الحساب بعد.",
+  },
+  "dashboard.certificateView": {
+    en: "View verification",
+    ar: "عرض التحقق",
+  },
+  "dashboard.certificateDownload": {
+    en: "Download PDF",
+    ar: "تحميل PDF",
+  },
+  "dashboard.certificateIssued": { en: "Issued", ar: "صادرة" },
+  "dashboard.certificateRevoked": { en: "Revoked", ar: "ملغاة" },
+  "verify.eyebrow": {
+    en: "Official verification",
+    ar: "تحقق رسمي",
+  },
+  "verify.valid": { en: "Certificate Valid", ar: "الشهادة صالحة" },
+  "verify.revoked": { en: "Certificate Revoked", ar: "الشهادة ملغاة" },
+  "verify.notFound": { en: "Certificate Not Found", ar: "الشهادة غير موجودة" },
+  "verify.notFoundBody": {
+    en: "No official Avatar Institut certificate matches this number.",
+    ar: "لا توجد شهادة رسمية لمعهد الأفاتار بهذا الرقم.",
+  },
+  "verify.revokedBody": {
+    en: "This certificate has been revoked and is no longer valid.",
+    ar: "تم إلغاء هذه الشهادة ولم تعد صالحة.",
+  },
+  "verify.number": { en: "Certificate number", ar: "رقم الشهادة" },
+  "verify.holder": { en: "Holder", ar: "حامل الشهادة" },
+  "verify.course": { en: "Programme", ar: "البرنامج" },
+  "verify.issuedAt": { en: "Date of issue", ar: "تاريخ الإصدار" },
+  "verify.institute": {
+    en: "Avatar Institut für Metaphysik GmbH",
+    ar: "Avatar Institut für Metaphysik GmbH",
   },
   "dashboard.courseReaderTitle": { en: "Course", ar: "الدورة" },
   "dashboard.lessonReaderTitle": { en: "Lesson", ar: "الدرس" },
@@ -640,8 +808,8 @@ export const messages: Dictionary = {
     ar: "الشهادة",
   },
   "learning.certificateReady": {
-    en: "Course complete — certificate issuance comes in a later phase.",
-    ar: "الدورة مكتملة — إصدار الشهادة في مرحلة لاحقة.",
+    en: "Course complete — your official certificate is available in My certificates.",
+    ar: "الدورة مكتملة — شهادتك الرسمية متاحة في شهاداتي.",
   },
   "learning.certificatePending": {
     en: "Complete all lessons to unlock certificate eligibility.",

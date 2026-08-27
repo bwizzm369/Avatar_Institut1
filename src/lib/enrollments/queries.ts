@@ -1,3 +1,4 @@
+import { isVisibleToEnrolledStudent } from "@/lib/courses/student-visibility";
 import { computeCourseProgress } from "@/lib/learning/progress";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
@@ -109,7 +110,7 @@ export async function getDashboardStudentState(): Promise<DashboardStudentState>
 
     for (const enrollment of rows) {
       const course = courseMap.get(enrollment.course_id);
-      if (!course) continue;
+      if (!course || !isVisibleToEnrolledStudent(course)) continue;
       const lessonIds = lessonsByCourse.get(course.id) ?? [];
       const completed = lessonIds.filter((id) =>
         completedLessonIds.has(id),

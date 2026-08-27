@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { safeAuthRedirect } from "@/lib/auth/guards";
+import { callbackFailureRedirect } from "@/lib/auth/password-reset";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -17,7 +18,7 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (error) {
       return NextResponse.redirect(
-        new URL(`/login?error=callback`, url.origin),
+        new URL(callbackFailureRedirect(next), url.origin),
       );
     }
   }

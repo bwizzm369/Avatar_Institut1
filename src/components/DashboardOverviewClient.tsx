@@ -2,23 +2,13 @@
 
 import Link from "next/link";
 import { useLocale } from "@/components/LocaleProvider";
+import { dashboardCoursePath } from "@/lib/courses/course-slug";
+import {
+  studentCourseSummary,
+  studentCourseTitle,
+} from "@/lib/courses/student-display";
 import type { DashboardStudentState } from "@/lib/enrollments/types";
 import { msg } from "@/lib/i18n";
-import type { Locale } from "@/types";
-
-function courseTitle(
-  course: { title_en: string; title_ar: string },
-  locale: Locale,
-): string {
-  return locale === "ar" ? course.title_ar : course.title_en;
-}
-
-function courseSummary(
-  course: { summary_en: string; summary_ar: string },
-  locale: Locale,
-): string {
-  return locale === "ar" ? course.summary_ar : course.summary_en;
-}
 
 export function DashboardOverviewClient({
   state,
@@ -66,9 +56,9 @@ export function DashboardOverviewClient({
             <li key={enrollment.id} className="course-list-item">
               <div>
                 <h3 className="display display-sm">
-                  {courseTitle(course, locale)}
+                  {studentCourseTitle(course, locale)}
                 </h3>
-                <p className="muted">{courseSummary(course, locale)}</p>
+                <p className="muted">{studentCourseSummary(course, locale)}</p>
                 {course.is_demo ? (
                   <span className="demo-badge">
                     {msg("courses.demoBadge", locale)}
@@ -76,7 +66,7 @@ export function DashboardOverviewClient({
                 ) : null}
               </div>
               <Link
-                href={`/dashboard/courses/${course.slug}`}
+                href={dashboardCoursePath(course.slug)}
                 className="btn btn-ghost"
               >
                 {msg("courses.view", locale)}

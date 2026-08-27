@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import {
   Cairo,
   Cormorant_Garamond,
@@ -9,6 +10,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { PlatformNotice } from "@/components/PlatformNotice";
 import { Providers } from "@/components/Providers";
+import { isAdminPath } from "@/lib/admin/guards";
 import "./globals.css";
 
 const inter = Inter({
@@ -49,11 +51,15 @@ export const metadata: Metadata = {
     "Avatar Institut — bilingual e-learning platform for metaphysics, consciousness, and human development.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headerList = await headers();
+  const pathname = headerList.get("x-pathname") ?? "";
+  const adminShell = isAdminPath(pathname);
+
   return (
     <html
       lang="en"
@@ -62,12 +68,16 @@ export default function RootLayout({
     >
       <body>
         <Providers>
-          <div className="app-shell">
-            <PlatformNotice />
-            <Header />
-            <main className="main-content">{children}</main>
-            <Footer />
-          </div>
+          {adminShell ? (
+            children
+          ) : (
+            <div className="app-shell">
+              <PlatformNotice />
+              <Header />
+              <main className="main-content">{children}</main>
+              <Footer />
+            </div>
+          )}
         </Providers>
       </body>
     </html>

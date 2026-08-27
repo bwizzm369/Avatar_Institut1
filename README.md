@@ -39,7 +39,11 @@ Appliquer manuellement la migration locale :
 npm run check
 ```
 
-Équivalent : `npm run lint && npm run typecheck && npm test && npm run build`.
+Alias de `npm run check:safe` : arrête le `next dev` du projet s’il tourne, lance lint / typecheck / tests / build, puis relance un seul `npm run dev` et vérifie `localhost:3000`.
+
+Ne pas lancer `next build` pendant qu’un `next dev` est actif : les deux utilisent `.next`, ce qui casse le CSS (404) et le HMR.
+
+Chaîne brute, sans garde (CI interne / debug) : `npm run check:run`.
 
 ## Variables d’environnement
 

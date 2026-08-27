@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1600"
+  height="400"
+  viewBox="0 0 1600 400"
+  role="img"
+  aria-labelledby="bannerTitle bannerDesc"
+>
+  <title id="bannerTitle">Avatar Institut � banni�re Google Forms</title>
+  <desc id="bannerDesc">
+    Marque officielle (cercle et point central) � gauche.
+    Titre arabe ???? ???????? et raison sociale
+    Avatar Institut f�r Metaphysik GmbH � droite.
+    Zone utile centr�e pour le recadrage Google Forms (1600 � 400).
+  </desc>
+
+  <defs>
+    <style type="text/css">
+      @import url("https://fonts.googleapis.com/css2?family=Amiri:wght@400&amp;family=Cormorant+Garamond:wght@400&amp;display=swap");
+
+      .ar {
+        font-family: Amiri, "Noto Naskh Arabic", "Times New Roman", serif;
+        font-size: 52px;
+        font-weight: 400;
+        fill: #1A1A1A;
+        direction: rtl;
+        unicode-bidi: isolate;
+      }
+
+      .de {
+        font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+        font-size: 20px;
+        font-weight: 400;
+        fill: #1F4D3A;
+        letter-spacing: 0.06em;
+      }
+    </style>
+  </defs>
+
+  <!-- Fond cr�me. Contenu dans la zone centrale (recadrage Google Forms / mobile). -->
+  <rect width="1600" height="400" fill="#FBFAF7"/>
+
+  <!-- Marque officielle : cercle + point central. G�om�trie conserv�e, non d�form�e. -->
+  <g transform="translate(560 200)">
+    <circle r="72.9" fill="none" stroke="#1A1A1A" stroke-width="2.15"/>
+    <circle r="5.2" fill="#1A1A1A"/>
+  </g>
+
+  <text class="ar" x="690" y="188" text-anchor="start">???? ????????</text>
+  <rect x="690" y="208" width="56" height="1.25" rx="0.6" fill="#B6823C"/>
+  <text class="de" x="690" y="244" text-anchor="start">Avatar Institut f�r Metaphysik GmbH</text>
+</svg>

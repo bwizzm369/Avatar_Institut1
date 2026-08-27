@@ -1,8 +1,9 @@
 import type { Course } from "@/types";
 
 /**
- * Three clearly identified demonstration courses.
- * Not a real catalogue — prices and content are placeholders for UI development.
+ * Isolated demonstration catalogue for cart/checkout unit tests.
+ * The public storefront loads published courses from Supabase
+ * (`src/lib/courses/public-catalogue.ts`) — do not use these as the live source.
  */
 export const DEMO_COURSES: Course[] = [
   {
@@ -171,10 +172,12 @@ export const DEMO_COURSES: Course[] = [
   },
 ];
 
+/** Demo helper only — public pages must use listPublicCourses(). */
 export function getAllCourses(): Course[] {
   return DEMO_COURSES;
 }
 
+/** Demo helper only — public pages must use getPublicCourseBySlug(). */
 export function getCourseBySlug(slug: string): Course | undefined {
   return DEMO_COURSES.find((course) => course.slug === slug);
 }
@@ -185,10 +188,12 @@ export function formatPrice(
   locale: "en" | "ar",
 ): string {
   const amount = priceCents / 100;
+  const hasFraction = Math.round(priceCents) % 100 !== 0;
   return new Intl.NumberFormat(locale === "ar" ? "ar" : "en", {
     style: "currency",
     currency,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: hasFraction ? 2 : 0,
+    maximumFractionDigits: 2,
   }).format(amount);
 }
 

@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
   MIN_PASSWORD_LENGTH,
+  validateForgotPassword,
   validateLogin,
+  validatePasswordReset,
   validateSignup,
 } from "@/lib/auth/validation";
 
@@ -51,5 +53,42 @@ describe("auth form validation", () => {
     });
     expect(result.ok).toBe(true);
     expect(result.values.firstName).toBe("Ada");
+  });
+
+  it("validates forgot-password email without touching passwords", () => {
+    expect(validateForgotPassword({ email: "" }).errors.email).toBe("required");
+    expect(validateForgotPassword({ email: "nope" }).errors.email).toBe(
+      "invalid",
+    );
+    const ok = validateForgotPassword({
+      email: " bwizzm369@gmail.com ",
+    });
+    expect(ok.ok).toBe(true);
+    expect(ok.values.email).toBe("bwizzm369@gmail.com");
+  });
+
+  it("rejects mismatched or short password resets", () => {
+    const short = validatePasswordReset({
+      password: "short",
+      confirmPassword: "short",
+    });
+    expect(short.ok).toBe(false);
+    expect(short.errors.password).toBe("tooShort");
+
+    const mismatch = validatePasswordReset({
+      password: "longenough",
+      confirmPassword: "different1",
+    });
+    expect(mismatch.ok).toBe(false);
+    expect(mismatch.errors.confirmPassword).toBe("mismatch");
+  });
+
+  it("accepts a matching new password", () => {
+    const result = validatePasswordReset({
+      password: "longenough",
+      confirmPassword: "longenough",
+    });
+    expect(result.ok).toBe(true);
+    expect(result.values.password).toBe("longenough");
   });
 });

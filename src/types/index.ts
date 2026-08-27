@@ -38,13 +38,16 @@ export interface Course {
   currency: "EUR" | "USD" | "CHF";
   durationWeeks: number;
   level: LocalizedString;
-  /** Demo catalogue entries must always be flagged. */
+  /** Demo catalogue entries must always be flagged. Public catalogue maps this to false. */
   isDemo: boolean;
   modules: Module[];
   skills: {
     en: string[];
     ar: string[];
   };
+  imageUrl?: string | null;
+  studentPassIncluded?: boolean;
+  studentPassDiscountPercent?: number;
 }
 
 export interface CartItem {
@@ -81,10 +84,36 @@ export interface Enrollment {
   paymentConfirmedAt: string | null;
 }
 
+export type CertificateStatus = "issued" | "revoked";
+
+/**
+ * Official certificate (modern profile and/or legacy student).
+ * Public verification uses CertificatePublicVerify — never this full record.
+ */
 export interface Certificate {
   id: string;
-  studentId: string;
-  courseId: string;
-  issuedAt: string;
   certificateNumber: string;
+  status: CertificateStatus;
+  issuedAt: string;
+  revokedAt: string | null;
+  courseId: string | null;
+  profileId: string | null;
+  legacyStudentId: string | null;
+  enrollmentId: string | null;
+  legacyCompletionId: string | null;
+  oldCertificateNumber: string | null;
+  language: Locale | null;
+  holderDisplayName: string;
+  courseTitleAr: string;
+  courseTitleEn: string;
 }
+
+/** Fields returned by verify_certificate() — snapshots only, no private data. */
+export type CertificatePublicVerify = {
+  certificateNumber: string;
+  status: CertificateStatus;
+  holderDisplayName: string;
+  courseTitleEn: string;
+  courseTitleAr: string;
+  issuedAt: string;
+};

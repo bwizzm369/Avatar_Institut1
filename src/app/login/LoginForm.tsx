@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { useLocale } from "@/components/LocaleProvider";
 import { useAuth } from "@/components/AuthProvider";
-import { safeAuthRedirect } from "@/lib/auth/guards";
+import { resolveStudentLoginDestination } from "@/lib/admin/auth-policy";
 import { validateLogin } from "@/lib/auth/validation";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
@@ -53,16 +53,19 @@ export function LoginForm() {
   const { refresh } = useAuth();
   const next = searchParams.get("next") ?? "/dashboard";
   const urlError = searchParams.get("error");
+  const resetOk = searchParams.get("reset") === "ok";
   const configured = isSupabaseConfigured();
 
   const [pending, setPending] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(() => {
+    if (resetOk) return msg("auth.resetSuccess", locale);
     if (urlError === "config") return msg("auth.configMissing", locale);
     if (urlError === "callback") return msg("auth.callbackFailed", locale);
     return null;
   });
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -105,7 +108,7 @@ export function LoginForm() {
         return;
       }
 
-      const redirectTo = safeAuthRedirect(next);
+      const redirectTo = resolveStudentLoginDestination(next);
       await refresh();
       router.push(redirectTo);
       router.refresh();
@@ -150,19 +153,75 @@ export function LoginForm() {
           </div>
           <div className="form-field">
             <label htmlFor="login-password">{msg("auth.password", locale)}</label>
-            <input
-              id="login-password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              aria-invalid={passwordError ? true : undefined}
-            />
+            <div className="password-field">
+              <input
+                id="login-password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                required
+                aria-invalid={passwordError ? true : undefined}
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                aria-label={
+                  showPassword
+                    ? locale === "ar"
+                      ? "إخفاء كلمة المرور"
+                      : "Hide password"
+                    : locale === "ar"
+                      ? "إظهار كلمة المرور"
+                      : "Show password"
+                }
+                aria-pressed={showPassword}
+                onClick={() => setShowPassword((visible) => !visible)}
+              >
+                {showPassword ? (
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M3 3l18 18" />
+                    <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8" />
+                    <path d="M9.9 5.1A10.5 10.5 0 0 1 12 5c7 0 10 7 10 7a17.5 17.5 0 0 1-3.2 4.4" />
+                    <path d="M6.1 6.1A17.7 17.7 0 0 0 2 12s3 7 10 7a9.8 9.8 0 0 0 4.3-1" />
+                  </svg>
+                ) : (
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                )}
+              </button>
+            </div>
             {passwordError ? (
               <p className="form-error" role="alert">
                 {passwordError}
               </p>
             ) : null}
+            <p className="auth-forgot">
+              <Link href="/forgot-password">
+                {msg("auth.forgotPassword", locale)}
+              </Link>
+            </p>
           </div>
           <button
             type="submit"
@@ -175,7 +234,7 @@ export function LoginForm() {
           </button>
         </form>
         {feedback ? (
-          <div className="notice-box" role="alert">
+          <div className="notice-box" role={resetOk ? "status" : "alert"}>
             {feedback}
           </div>
         ) : null}

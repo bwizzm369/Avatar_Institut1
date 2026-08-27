@@ -1,3 +1,6 @@
+import { hasActiveStudentPassForProfile } from "@/lib/admin/student-pass/access";
+import { resolveCourseSlugParam } from "@/lib/courses/course-slug";
+import { isVisibleToEnrolledStudent } from "@/lib/courses/student-visibility";
 import {
   computeCourseProgress,
   deriveLessonProgressStatus,
@@ -50,7 +53,9 @@ export type StudentCourseView = {
     | "is_demo"
     | "duration_weeks"
   >;
-  enrollment: EnrollmentRow;
+  /** Null when access is via active Student Pass + included course. */
+  enrollment: EnrollmentRow | null;
+  accessVia: "enrollment" | "student_pass";
   modules: StudentModuleSummary[];
   progress: CourseProgressSummary;
 };
@@ -105,8 +110,9 @@ type ProgressDbRow = {
 };
 
 /**
- * Server-side active enrollment check for a course id.
- * Never trusts URL parameters alone.
+ * Server-side course access check.
+ * Allows active individual enrollment OR (active Student Pass + included course).
+ * Never trusts URL parameters alone. Does not revoke individual enrollments.
  */
 export async function requireActiveEnrollmentForCourse(
   courseId: string,
@@ -114,7 +120,12 @@ export async function requireActiveEnrollmentForCourse(
   | { kind: "unconfigured" }
   | { kind: "unauthenticated" }
   | { kind: "forbidden" }
-  | { kind: "ok"; userId: string; enrollment: EnrollmentRow }
+  | {
+      kind: "ok";
+      userId: string;
+      enrollment: EnrollmentRow | null;
+      accessVia: "enrollment" | "student_pass";
+    }
 > {
   if (!isSupabaseConfigured()) {
     return { kind: "unconfigured" };
@@ -137,11 +148,34 @@ export async function requireActiveEnrollmentForCourse(
     .maybeSingle();
 
   const enrollment = data as EnrollmentRow | null;
-  if (!isActiveEnrollmentRow(enrollment)) {
-    return { kind: "forbidden" };
+  if (isActiveEnrollmentRow(enrollment)) {
+    return {
+      kind: "ok",
+      userId: user.id,
+      enrollment,
+      accessVia: "enrollment",
+    };
   }
 
-  return { kind: "ok", userId: user.id, enrollment };
+  const { data: courseFlags } = await supabase
+    .from("courses")
+    .select("student_pass_included")
+    .eq("id", courseId)
+    .maybeSingle();
+
+  if (
+    courseFlags?.student_pass_included &&
+    (await hasActiveStudentPassForProfile(user.id))
+  ) {
+    return {
+      kind: "ok",
+      userId: user.id,
+      enrollment: null,
+      accessVia: "student_pass",
+    };
+  }
+
+  return { kind: "forbidden" };
 }
 
 export async function getStudentCourseBySlug(
@@ -160,12 +194,17 @@ export async function getStudentCourseBySlug(
     return { kind: "unauthenticated" };
   }
 
+  const slug = resolveCourseSlugParam(courseSlug);
+  if (!slug) {
+    return { kind: "not_found" };
+  }
+
   const { data: courseData } = await supabase
     .from("courses")
     .select(
       "id, slug, title_en, title_ar, summary_en, summary_ar, description_en, description_ar, is_demo, duration_weeks",
     )
-    .eq("slug", courseSlug)
+    .eq("slug", slug)
     .maybeSingle();
 
   if (!courseData) {
@@ -173,6 +212,9 @@ export async function getStudentCourseBySlug(
   }
 
   const course = courseData as StudentCourseView["course"];
+  if (!isVisibleToEnrolledStudent(course)) {
+    return { kind: "not_found" };
+  }
 
   const access = await requireActiveEnrollmentForCourse(course.id);
   if (access.kind !== "ok") {
@@ -236,6 +278,7 @@ export async function getStudentCourseBySlug(
     data: {
       course,
       enrollment: access.enrollment,
+      accessVia: access.accessVia,
       modules,
       progress: computeCourseProgress(allLessons.length, completedLessons),
     },

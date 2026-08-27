@@ -44,4 +44,9 @@ alwaysApply: true
 - Développement sur `develop/avatar-platform`.
 
 ## Qualité
-- Exécuter lint, typecheck et build avant de déclarer une phase terminée.
+- Exécuter `npm run check` (alias de `check:safe`) avant de déclarer une phase terminée.
+- Ne jamais lancer `next build` pendant qu’un `next dev` du projet tourne : les deux écrasent `.next` et le CSS admin disparaît.
+- `npm run check:safe` arrête le `next dev` du projet s’il est actif, lance lint/typecheck/tests/build, puis relance un seul `npm run dev`.
+- Ne pas lancer deux builds Next.js ni deux serveurs `next dev` simultanément.
+- Une page admin soudainement non stylée est d’abord un problème `.next` / bundle CSS / serveur local, pas un besoin de redesign.
+- Le design admin actuel (`admin.css` + shell) est la référence ; ne le modifier que si la fonctionnalité l’exige.

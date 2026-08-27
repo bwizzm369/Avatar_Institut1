@@ -11,11 +11,14 @@ export const pageTitles: Record<string, LocalizedString> = {
   cartSuccess: { en: "Payment received", ar: "تم استلام الدفع" },
   login: { en: "Login", ar: "تسجيل الدخول" },
   signup: { en: "Sign up", ar: "إنشاء حساب" },
+  forgotPassword: { en: "Forgot password", ar: "نسيت كلمة المرور" },
+  updatePassword: { en: "New password", ar: "كلمة مرور جديدة" },
   dashboard: { en: "Dashboard", ar: "لوحة التحكم" },
   dashboardCourses: { en: "My courses", ar: "دوراتي" },
   dashboardCourseReader: { en: "Course", ar: "الدورة" },
   dashboardLessonReader: { en: "Lesson", ar: "الدرس" },
   dashboardCertificates: { en: "My certificates", ar: "شهاداتي" },
+  verifyCertificate: { en: "Certificate verification", ar: "التحقق من الشهادة" },
 };
 
 const BRAND = "Avatar Institut";
@@ -31,6 +34,8 @@ export function resolveTitleKey(pathname: string): keyof typeof pageTitles {
   if (pathname === "/cart") return "cart";
   if (pathname === "/login") return "login";
   if (pathname === "/signup") return "signup";
+  if (pathname === "/forgot-password") return "forgotPassword";
+  if (pathname === "/update-password") return "updatePassword";
   if (/^\/dashboard\/courses\/[^/]+\/lessons\/[^/]+$/.test(pathname)) {
     return "dashboardLessonReader";
   }
@@ -39,6 +44,9 @@ export function resolveTitleKey(pathname: string): keyof typeof pageTitles {
   }
   if (pathname === "/dashboard/courses") return "dashboardCourses";
   if (pathname === "/dashboard/certificates") return "dashboardCertificates";
+  if (pathname === "/verify" || pathname.startsWith("/verify/")) {
+    return "verifyCertificate";
+  }
   if (pathname === "/dashboard" || pathname.startsWith("/dashboard/")) {
     return "dashboard";
   }

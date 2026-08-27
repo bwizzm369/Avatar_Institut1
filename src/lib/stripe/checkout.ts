@@ -3,6 +3,7 @@ import {
   getDemoCourseDbId,
   isDemoCourseSlug,
 } from "@/lib/courses/demoDbIds";
+import { getCoursePriceForUser } from "@/lib/pricing/student-pass-price";
 import { getAppOrigin } from "@/lib/stripe/env";
 import type { Course } from "@/types";
 
@@ -13,6 +14,36 @@ export type CheckoutCourse = {
   priceCents: number;
   currency: Course["currency"];
 };
+
+/** Trusted course row for checkout pricing (from Supabase, never from the browser). */
+export type CheckoutCourseSource = {
+  id: string;
+  slug: string;
+  titleEn: string;
+  priceCents: number | null;
+  currency: string;
+  studentPassIncluded: boolean;
+  studentPassDiscountPercent: number;
+};
+
+export type ResolveCheckoutForUserResult =
+  | {
+      ok: true;
+      courses: CheckoutCourse[];
+      includedSlugs: string[];
+      hasActiveStudentPass: boolean;
+    }
+  | {
+      ok: false;
+      error:
+        | "unknown_slug"
+        | "empty_cart"
+        | "included_with_pass"
+        | "zero_amount"
+        | "missing_price";
+      includedSlugs?: string[];
+      redirectSlug?: string;
+    };
 
 export type ParseCheckoutRequestResult =
   | { ok: true; slugs: string[] }
@@ -105,6 +136,91 @@ export function resolveCheckoutCourses(
   }
 
   return { ok: true, courses };
+}
+
+function asCheckoutCurrency(value: string): Course["currency"] | null {
+  const upper = value.trim().toUpperCase();
+  if (upper === "EUR" || upper === "USD" || upper === "CHF") return upper;
+  return null;
+}
+
+/**
+ * Applies Student Pass pricing from trusted server sources.
+ * Browser must never supply priceCents / discount / pass status.
+ */
+export function resolveCheckoutCoursesForUser(input: {
+  slugs: string[];
+  sources: CheckoutCourseSource[];
+  hasActiveStudentPass: boolean;
+}): ResolveCheckoutForUserResult {
+  if (input.slugs.length === 0) {
+    return { ok: false, error: "empty_cart" };
+  }
+
+  const bySlug = new Map(
+    input.sources.map((course) => [course.slug, course] as const),
+  );
+  const payable: CheckoutCourse[] = [];
+  const includedSlugs: string[] = [];
+
+  for (const slug of input.slugs) {
+    const source = bySlug.get(slug);
+    if (!source) {
+      return { ok: false, error: "unknown_slug" };
+    }
+
+    const currency = asCheckoutCurrency(source.currency);
+    if (!currency) {
+      return { ok: false, error: "unknown_slug" };
+    }
+
+    const priced = getCoursePriceForUser({
+      priceCents: source.priceCents,
+      studentPassIncluded: source.studentPassIncluded,
+      studentPassDiscountPercent: source.studentPassDiscountPercent,
+      hasActiveStudentPass: input.hasActiveStudentPass,
+    });
+
+    if (priced.accessIncluded) {
+      includedSlugs.push(slug);
+      continue;
+    }
+
+    if (priced.priceCents == null) {
+      return { ok: false, error: "missing_price" };
+    }
+
+    if (priced.priceCents <= 0) {
+      return { ok: false, error: "zero_amount" };
+    }
+
+    payable.push({
+      dbId: source.id,
+      slug: source.slug,
+      titleEn: source.titleEn || source.slug,
+      priceCents: priced.priceCents,
+      currency,
+    });
+  }
+
+  if (payable.length === 0) {
+    if (includedSlugs.length > 0) {
+      return {
+        ok: false,
+        error: "included_with_pass",
+        includedSlugs,
+        redirectSlug: includedSlugs[0],
+      };
+    }
+    return { ok: false, error: "empty_cart" };
+  }
+
+  return {
+    ok: true,
+    courses: payable,
+    includedSlugs,
+    hasActiveStudentPass: input.hasActiveStudentPass,
+  };
 }
 
 export function buildCheckoutSessionParams(input: {

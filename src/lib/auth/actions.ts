@@ -2,8 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { safeAuthRedirect } from "@/lib/auth/guards";
-import { validateLogin, validateSignup } from "@/lib/auth/validation";
+import { resolveStudentLoginDestination } from "@/lib/admin/auth-policy";
+import { genericResetRequestResult, passwordResetEmailRedirectTo, PASSWORD_RESET_LOGIN_PATH } from "@/lib/auth/password-reset";
+import {
+  validateForgotPassword,
+  validateLogin,
+  validatePasswordReset,
+  validateSignup,
+} from "@/lib/auth/validation";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -80,7 +86,7 @@ export async function loginAction(
       return { ok: false, errorKey: mapSignInError(error) };
     }
 
-    const next = safeAuthRedirect(
+    const next = resolveStudentLoginDestination(
       String(formData.get("next") ?? "/dashboard"),
     );
     // Invalidate cached layouts so server components re-read the new session.
@@ -151,4 +157,79 @@ export async function logoutAction(): Promise<void> {
   const supabase = await createServerSupabaseClient();
   await supabase.auth.signOut();
   redirect("/");
+}
+
+export async function requestPasswordResetAction(
+  formData: FormData,
+): Promise<AuthActionResult> {
+  if (!isSupabaseConfigured()) {
+    return { ok: false, errorKey: "auth.configMissing" };
+  }
+
+  const parsed = validateForgotPassword({
+    email: String(formData.get("email") ?? ""),
+  });
+
+  if (!parsed.ok) {
+    return {
+      ok: false,
+      errorKey: "auth.validationFailed",
+      fieldErrors: parsed.errors,
+    };
+  }
+
+  try {
+    const supabase = await createServerSupabaseClient();
+    await supabase.auth.resetPasswordForEmail(parsed.values.email, {
+      redirectTo: passwordResetEmailRedirectTo(),
+    });
+  } catch {
+    // Still return the generic success so the UI cannot enumerate accounts.
+  }
+
+  return genericResetRequestResult();
+}
+
+export async function updatePasswordAction(
+  formData: FormData,
+): Promise<AuthActionResult> {
+  if (!isSupabaseConfigured()) {
+    return { ok: false, errorKey: "auth.configMissing" };
+  }
+
+  const parsed = validatePasswordReset({
+    password: String(formData.get("password") ?? ""),
+    confirmPassword: String(formData.get("confirmPassword") ?? ""),
+  });
+
+  if (!parsed.ok) {
+    return {
+      ok: false,
+      errorKey: "auth.validationFailed",
+      fieldErrors: parsed.errors,
+    };
+  }
+
+  try {
+    const supabase = await createServerSupabaseClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      return { ok: false, errorKey: "auth.resetInvalid" };
+    }
+
+    const { error } = await supabase.auth.updateUser({
+      password: parsed.values.password,
+    });
+    if (error) {
+      return { ok: false, errorKey: "auth.resetUpdateFailed" };
+    }
+
+    await supabase.auth.signOut();
+    revalidatePath("/", "layout");
+    return { ok: true, redirectTo: PASSWORD_RESET_LOGIN_PATH };
+  } catch {
+    return { ok: false, errorKey: "auth.networkError" };
+  }
 }

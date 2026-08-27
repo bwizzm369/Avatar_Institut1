@@ -65,9 +65,40 @@ export function assertStripeCheckoutConfigured(): {
   return { publishableKey, secretKey };
 }
 
+/**
+ * Origin used for Stripe Checkout success_url / cancel_url.
+ *
+ * Priority:
+ * 1. Vercel Preview → current deployment host (`VERCEL_URL`), never localhost
+ * 2. Explicit `NEXT_PUBLIC_APP_URL` (local or production canonical)
+ * 3. Other Vercel deployments without explicit URL → `VERCEL_URL`
+ * 4. Local fallback → http://localhost:3000
+ */
 export function getAppOrigin(): string {
-  return (
-    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ||
-    "http://localhost:3000"
-  );
+  const vercelEnv = process.env.VERCEL_ENV;
+  const vercelHost = normalizeHost(process.env.VERCEL_URL);
+
+  // Preview URLs are unique per deployment; always return here so a
+  // mis-set NEXT_PUBLIC_APP_URL=http://localhost:3000 cannot break Checkout.
+  if (vercelEnv === "preview" && vercelHost) {
+    return `https://${vercelHost}`;
+  }
+
+  const configured = process.env.NEXT_PUBLIC_APP_URL?.trim().replace(/\/$/, "");
+  if (configured) {
+    return configured;
+  }
+
+  if (vercelHost) {
+    return `https://${vercelHost}`;
+  }
+
+  return "http://localhost:3000";
+}
+
+function normalizeHost(value: string | undefined): string | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  return trimmed.replace(/^https?:\/\//i, "").replace(/\/$/, "");
 }

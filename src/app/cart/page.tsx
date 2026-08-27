@@ -6,7 +6,9 @@ import { DemoBadge } from "@/components/DemoBadge";
 import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { formatPrice } from "@/lib/courses";
-import { msg, t } from "@/lib/i18n";
+import { publicCoursePath } from "@/lib/courses/course-slug";
+import { isDemoCourseSlug } from "@/lib/courses/demoDbIds";
+import { displayLocalized, msg } from "@/lib/i18n";
 
 export default function CartPage() {
   const { locale } = useLocale();
@@ -43,9 +45,11 @@ export default function CartPage() {
                 {items.map((item) => (
                   <article key={item.courseId} className="cart-item">
                     <div className="stack-lg" style={{ gap: "0.5rem" }}>
-                      <DemoBadge />
+                      {isDemoCourseSlug(item.slug) ? <DemoBadge /> : null}
                       <h2 className="display display-md" style={{ fontSize: "1.35rem" }}>
-                        <Link href={`/courses/${item.slug}`}>{t(item.title, locale)}</Link>
+                        <Link href={publicCoursePath(item.slug)}>
+                          {displayLocalized(item.title, locale)}
+                        </Link>
                       </h2>
                       <p className="price" style={{ fontSize: "1.35rem" }}>
                         {formatPrice(item.priceCents, item.currency, locale)}

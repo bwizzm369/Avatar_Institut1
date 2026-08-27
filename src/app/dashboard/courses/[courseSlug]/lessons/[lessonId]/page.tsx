@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 import { DashboardShell } from "@/components/DashboardShell";
 import { LearningAccessDenied } from "@/components/LearningAccessDenied";
 import { StudentLessonClient } from "@/components/StudentLessonClient";
+import {
+  dashboardLessonPath,
+  resolveCourseSlugParam,
+} from "@/lib/courses/course-slug";
 import { getStudentLesson } from "@/lib/learning/queries";
 import { englishAbsoluteTitle } from "@/lib/titles";
 
@@ -16,13 +20,12 @@ export default async function DashboardLessonPage({
   params: Promise<{ courseSlug: string; lessonId: string }>;
 }) {
   const { courseSlug, lessonId } = await params;
-  const result = await getStudentLesson(courseSlug, lessonId);
+  const slug = resolveCourseSlugParam(courseSlug);
+  const result = await getStudentLesson(slug, lessonId);
 
   if (result.kind === "unauthenticated") {
     redirect(
-      `/login?next=${encodeURIComponent(
-        `/dashboard/courses/${courseSlug}/lessons/${lessonId}`,
-      )}`,
+      `/login?next=${encodeURIComponent(dashboardLessonPath(slug, lessonId))}`,
     );
   }
 

@@ -3,6 +3,7 @@ export const MIN_PASSWORD_LENGTH = 8;
 export type AuthFieldErrors = {
   email?: string;
   password?: string;
+  confirmPassword?: string;
   firstName?: string;
   lastName?: string;
 };
@@ -90,5 +91,57 @@ export function validateSignup(input: SignupInput): {
     ok: Object.keys(errors).length === 0,
     errors,
     values: { email, password, firstName, lastName },
+  };
+}
+
+export function validateForgotPassword(input: { email: string }): {
+  ok: boolean;
+  errors: AuthFieldErrors;
+  values: { email: string };
+} {
+  const errors: AuthFieldErrors = {};
+  const email = normalizeEmail(input.email);
+
+  if (!email) {
+    errors.email = "required";
+  } else if (!isValidEmail(email)) {
+    errors.email = "invalid";
+  }
+
+  return {
+    ok: Object.keys(errors).length === 0,
+    errors,
+    values: { email },
+  };
+}
+
+export function validatePasswordReset(input: {
+  password: string;
+  confirmPassword: string;
+}): {
+  ok: boolean;
+  errors: AuthFieldErrors;
+  values: { password: string };
+} {
+  const errors: AuthFieldErrors = {};
+  const password = input.password;
+  const confirmPassword = input.confirmPassword;
+
+  if (!password) {
+    errors.password = "required";
+  } else if (password.length < MIN_PASSWORD_LENGTH) {
+    errors.password = "tooShort";
+  }
+
+  if (!confirmPassword) {
+    errors.confirmPassword = "required";
+  } else if (password && confirmPassword !== password) {
+    errors.confirmPassword = "mismatch";
+  }
+
+  return {
+    ok: Object.keys(errors).length === 0,
+    errors,
+    values: { password },
   };
 }

@@ -10,6 +10,7 @@ describe("dashboard route protection", () => {
     expect(isDashboardPath("/dashboard")).toBe(true);
     expect(isDashboardPath("/dashboard/courses")).toBe(true);
     expect(isDashboardPath("/courses")).toBe(false);
+    expect(isDashboardPath("/verify/AVT-2026-000001")).toBe(false);
   });
 
   it("redirects unauthenticated users to login with next", () => {
@@ -44,8 +45,19 @@ describe("dashboard route protection", () => {
     expect(result.redirectTo).toBeNull();
   });
 
+  it("leaves public certificate verification unauthenticated", () => {
+    const result = resolveDashboardAccess({
+      pathname: "/verify/AVT-2026-000001",
+      userId: null,
+      supabaseConfigured: true,
+    });
+    expect(result.allowed).toBe(true);
+    expect(result.redirectTo).toBeNull();
+  });
+
   it("sanitizes post-login redirects", () => {
-    expect(safeAuthRedirect("/dashboard/courses")).toBe("/dashboard/courses");
+    expect(safeAuthRedirect("/update-password")).toBe("/update-password");
+    expect(safeAuthRedirect("/forgot-password")).toBe("/forgot-password");
     expect(safeAuthRedirect("/cart")).toBe("/cart");
     expect(safeAuthRedirect("https://evil.example")).toBe("/dashboard");
     expect(safeAuthRedirect("//evil.example")).toBe("/dashboard");

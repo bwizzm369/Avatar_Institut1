@@ -1,7 +1,14 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { createCertificateIssueStore } from "@/lib/admin/certificates/issue";
+import {
+  loadModernCourseAutoIssueSnapshot,
+  maybeIssueModernCourseCertificate,
+  utcIssuedAtDate,
+} from "@/lib/certificates/auto-issue";
 import { requireActiveEnrollmentForCourse } from "@/lib/learning/queries";
+import { createServiceRoleSupabaseClient } from "@/lib/supabase/admin";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -75,6 +82,28 @@ export async function markLessonCompleteAction(input: {
 
   if (error) {
     return { ok: false, errorKey: "learning.progressSaveFailed" };
+  }
+
+  try {
+    const snapshot = await loadModernCourseAutoIssueSnapshot(supabase, {
+      actorUserId: user.id,
+      courseId,
+      enrollment: access.enrollment,
+    });
+    const autoIssue = await maybeIssueModernCourseCertificate({
+      snapshot,
+      issuedAt: utcIssuedAtDate(),
+      createIssueStore: () =>
+        createCertificateIssueStore(createServiceRoleSupabaseClient()),
+    });
+    if (
+      autoIssue.status === "issued" ||
+      autoIssue.status === "already_issued"
+    ) {
+      revalidatePath("/dashboard/certificates");
+    }
+  } catch {
+    // Lesson completion must succeed even if issuance is unavailable.
   }
 
   revalidatePath(`/dashboard/courses/${courseSlug}`);

@@ -2,23 +2,14 @@
 
 import Link from "next/link";
 import { useLocale } from "@/components/LocaleProvider";
+import { dashboardCoursePath } from "@/lib/courses/course-slug";
+import {
+  studentCourseSummary,
+  studentCourseTitle,
+} from "@/lib/courses/student-display";
 import type { DashboardStudentState } from "@/lib/enrollments/types";
 import { msg } from "@/lib/i18n";
 import type { Locale } from "@/types";
-
-function courseTitle(
-  course: { title_en: string; title_ar: string },
-  locale: Locale,
-): string {
-  return locale === "ar" ? course.title_ar : course.title_en;
-}
-
-function courseSummary(
-  course: { summary_en: string; summary_ar: string },
-  locale: Locale,
-): string {
-  return locale === "ar" ? course.summary_ar : course.summary_en;
-}
 
 function ctaLabel(percent: number, locale: Locale): string {
   if (percent <= 0) return msg("learning.ctaStart", locale);
@@ -64,8 +55,8 @@ export function DashboardCoursesClient({
     <div className="learning-courses-root">
       <ul className="learning-course-grid">
         {state.enrollments.map(({ course, enrollment, progress }) => {
-          const href = `/dashboard/courses/${course.slug}`;
-          const title = courseTitle(course, locale);
+          const href = dashboardCoursePath(course.slug);
+          const title = studentCourseTitle(course, locale);
 
           return (
             <li key={enrollment.id} className="learning-course-card">
@@ -100,7 +91,7 @@ export function DashboardCoursesClient({
                 </h3>
 
                 <p className="learning-course-card-summary muted">
-                  {courseSummary(course, locale)}
+                  {studentCourseSummary(course, locale)}
                 </p>
 
                 <div

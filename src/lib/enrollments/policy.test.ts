@@ -24,6 +24,15 @@ describe("enrollment creation is not allowed from the browser", () => {
     ]);
   });
 
+  it("dashboard student state hides is_demo courses without filtering unpublished real enrollments", () => {
+    const source = readFileSync(
+      path.resolve(process.cwd(), "src/lib/enrollments/queries.ts"),
+      "utf8",
+    );
+    expect(source).toMatch(/isVisibleToEnrolledStudent/);
+    expect(source).not.toMatch(/\.eq\("is_published"/);
+  });
+
   it("RLS migration has no INSERT policy on enrollments", () => {
     const migrationPath = path.resolve(
       process.cwd(),

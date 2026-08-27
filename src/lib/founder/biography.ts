@@ -67,24 +67,26 @@ export const founderBiography: FounderBiography = {
   summary_ar: [
     "مؤسس ومدير مؤسسة الأفاتار (Avatar Institut für Metaphysik GmbH) في مدينة كيل – ألمانيا.",
     "شخصية جمعت بين العلم والروح، وبين البحث الأكاديمي والقيادة الروحية.",
-    "ألّف أكثر من عشرات الكتب في الفكر الصوفي، الميتافيزيقا، والشعر الروحاني.",
+    "ألّف مئات المؤلفات في الفكر الصوفي، الميتافيزيقا، والشعر الروحاني.",
   ],
   summary_en: [
     "Founder and Director of Avatar Institut für Metaphysik GmbH in Kiel, Germany.",
     "A figure who brings together science and spirit, academic research and spiritual leadership.",
-    "He has authored more than dozens of books on Sufi thought, metaphysics, and spiritual poetry.",
+    "He has authored hundreds of publications on Sufi thought, metaphysics, and spiritual poetry.",
   ],
   presentation_ar: [
     "الدكتور محمد رمضان الحسيني شخصية جمعت بين العلم والروح، وبين البحث الأكاديمي والقيادة الروحية.",
     "فهو مؤسس ومدير مؤسسة الأفاتار (Avatar Institut für Metaphysik GmbH) في مدينة كيل – ألمانيا، المؤسسة التي تُعنى بالبحث في علوم الميتافيزيقا والوعي الإنساني.",
     "كما يشغل منصب مدير معهد طاووس العارفين، والأمين العام للمعهد الدولي للأنساب، إضافة إلى كونه شيخ الطريقة الرفاعية وحامل سرّها.",
-    "ألّف الدكتور الحسيني أكثر من عشرات الكتب في الفكر الصوفي، الميتافيزيقا، والشعر الروحاني.",
+    "يمتد عطاؤه إلى مجال الفيزياء النظرية؛ إذ يُعدّ من أصحاب النظريات في الفيزياء الكمية والجمع بينها وبين الفيزياء النسبية، حيث يسعى للكشف عن وحدة القوانين بين العالمين المجهري والكوني.",
+    "ألّف الدكتور الحسيني مئات المؤلفات في الفكر الصوفي، الميتافيزيقا، والشعر الروحاني.",
   ],
   presentation_en: [
     "Dr. Mohamed Ramadan Al-Husseini is a figure who brings together science and spirit, academic research and spiritual leadership.",
     "He is the Founder and Director of Avatar Institut für Metaphysik GmbH in Kiel, Germany, an institution devoted to research in the metaphysical sciences and human consciousness.",
     "He also serves as Director of the Institute of Tawus al-Arifeen and as Secretary-General of the International Institute of Genealogy, in addition to being Sheikh of the Rifa‘i Order and bearer of its secret.",
-    "Dr. Al-Husseini has authored more than dozens of books on Sufi thought, metaphysics, and spiritual poetry.",
+    "His contribution also extends to theoretical physics; he is regarded among those who advance theories in quantum physics and their conjunction with relativistic physics, seeking to uncover the unity of laws between the microscopic and cosmic realms.",
+    "Dr. Al-Husseini has authored hundreds of publications on Sufi thought, metaphysics, and spiritual poetry.",
   ],
   responsibilities: [
     {

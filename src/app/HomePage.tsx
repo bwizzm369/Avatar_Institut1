@@ -1,9 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
+import { ConnectSection } from "@/components/connect/ConnectSection";
 import { Logo } from "@/components/Logo";
 import { useLocale } from "@/components/LocaleProvider";
 import { msg } from "@/lib/i18n";
+
+const HERO_IMAGE_SRC = "/hero/avatar-online-institute-hero-v2.png";
 
 export default function HomePage() {
   const { locale } = useLocale();
@@ -17,26 +21,43 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="hero">
-        <div className="hero-decor-a" aria-hidden="true" />
-        <div className="hero-decor-b" aria-hidden="true" />
-        <div className="hero-content">
-          <p className="eyebrow">{msg("home.eyebrow", locale)}</p>
-          <h1 className="display display-xl">{msg("home.title", locale)}</h1>
-          <p className="lead">{msg("home.subtitle", locale)}</p>
-          <div className="hero-actions">
-            <Link href="/courses" className="btn btn-primary">
-              {msg("home.ctaCourses", locale)}
-            </Link>
-            <a href="#about" className="btn btn-ghost">
-              {msg("home.ctaAbout", locale)}
-            </a>
+      <section className="hero" aria-labelledby="home-hero-title">
+        <div className="hero-visual" aria-hidden="true">
+          <Image
+            src={HERO_IMAGE_SRC}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="hero-image"
+          />
+          <div className="hero-overlay" />
+        </div>
+        <div className="container hero-grid">
+          <div
+            className="hero-copy"
+            dir={locale === "ar" ? "rtl" : "ltr"}
+          >
+            <p className="hero-badge">{msg("home.eyebrow", locale)}</p>
+            <h1 id="home-hero-title" className="hero-title">
+              {msg("home.title", locale)}
+            </h1>
+            <p className="hero-lead">{msg("home.subtitle", locale)}</p>
+            <div className="hero-actions">
+              <Link href="/courses" className="btn btn-primary">
+                {msg("home.ctaCourses", locale)}
+              </Link>
+              <Link href="/library" className="btn btn-ghost">
+                {msg("home.ctaLibrary", locale)}
+              </Link>
+            </div>
           </div>
+          <div className="hero-spacer" aria-hidden="true" />
         </div>
       </section>
 
-      <section id="about" className="section">
-        <div className="container split">
+      <section id="about" className="section home-about">
+        <div className="container split home-about-grid">
           <div className="stack-lg">
             <p className="eyebrow">{msg("home.aboutEyebrow", locale)}</p>
             <h2 className="display display-lg">{msg("home.aboutTitle", locale)}</h2>
@@ -48,7 +69,7 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="panel">
+          <div className="home-about-logo">
             <Logo variant="panel" />
           </div>
         </div>
@@ -84,6 +105,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <ConnectSection />
     </>
   );
 }

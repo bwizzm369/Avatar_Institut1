@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
+import { hasActiveStudentPassForProfile } from "@/lib/admin/student-pass/access";
 import {
   assertSingleCurrency,
   buildCheckoutSessionParams,
   parseCheckoutRequest,
-  resolveCheckoutCourses,
+  resolveCheckoutCoursesForUser,
 } from "@/lib/stripe/checkout";
 import { getStripeClient } from "@/lib/stripe/client";
 import { isStripeCheckoutConfigured } from "@/lib/stripe/env";
+import { loadCheckoutCourseSources } from "@/lib/stripe/load-checkout-courses";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -54,8 +56,33 @@ export async function POST(request: Request) {
     );
   }
 
-  const resolved = resolveCheckoutCourses(parsed.slugs);
+  const sources = await loadCheckoutCourseSources(supabase, parsed.slugs);
+  if (sources.length !== parsed.slugs.length) {
+    return NextResponse.json(
+      { ok: false, error: "unknown_slug" },
+      { status: 400 },
+    );
+  }
+
+  const hasActiveStudentPass = await hasActiveStudentPassForProfile(user!.id);
+  const resolved = resolveCheckoutCoursesForUser({
+    slugs: parsed.slugs,
+    sources,
+    hasActiveStudentPass,
+  });
+
   if (!resolved.ok) {
+    if (resolved.error === "included_with_pass") {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "included_with_pass",
+          redirectSlug: resolved.redirectSlug,
+          includedSlugs: resolved.includedSlugs,
+        },
+        { status: 409 },
+      );
+    }
     return NextResponse.json(
       { ok: false, error: resolved.error },
       { status: 400 },

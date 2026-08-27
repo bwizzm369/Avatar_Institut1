@@ -11,6 +11,7 @@ import {
   clearPendingCheckoutSlugs,
   readPendingCheckoutSlugs,
 } from "@/lib/cart";
+import { dashboardCoursePath } from "@/lib/courses/course-slug";
 import {
   ACCESS_POLL_INTERVAL_MS,
   deriveAccessUiState,
@@ -142,7 +143,7 @@ export default function CartSuccessClient() {
 
   const primaryHref =
     uiState === "activated" && courseSlug
-      ? `/dashboard/courses/${courseSlug}`
+      ? dashboardCoursePath(courseSlug)
       : "/dashboard/courses";
 
   const primaryLabel =

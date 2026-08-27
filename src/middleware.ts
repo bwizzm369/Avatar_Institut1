@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { resolveAdminSessionAccess } from "@/lib/admin/guards";
 import { resolveDashboardAccess } from "@/lib/auth/guards";
 import {
   applySessionCookies,
@@ -6,18 +7,37 @@ import {
 } from "@/lib/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
-  const { response, userId, configured, cookiesToApply } =
-    await updateSession(request);
   const { pathname } = request.nextUrl;
 
-  const access = resolveDashboardAccess({
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", pathname);
+
+  const { response, userId, configured, cookiesToApply } = await updateSession(
+    request,
+    requestHeaders,
+  );
+
+  const dashboardAccess = resolveDashboardAccess({
     pathname,
     userId,
     supabaseConfigured: configured,
   });
 
-  if (!access.allowed && access.redirectTo) {
-    const redirectUrl = new URL(access.redirectTo, request.url);
+  if (!dashboardAccess.allowed && dashboardAccess.redirectTo) {
+    const redirectUrl = new URL(dashboardAccess.redirectTo, request.url);
+    const redirectResponse = NextResponse.redirect(redirectUrl);
+    applySessionCookies(redirectResponse, cookiesToApply);
+    return redirectResponse;
+  }
+
+  const adminAccess = resolveAdminSessionAccess({
+    pathname,
+    userId,
+    supabaseConfigured: configured,
+  });
+
+  if (!adminAccess.allowed && adminAccess.redirectTo) {
+    const redirectUrl = new URL(adminAccess.redirectTo, request.url);
     const redirectResponse = NextResponse.redirect(redirectUrl);
     applySessionCookies(redirectResponse, cookiesToApply);
     return redirectResponse;

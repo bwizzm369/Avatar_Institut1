@@ -10,6 +10,8 @@ export function isAuthPath(pathname: string): boolean {
   return (
     pathname === "/login" ||
     pathname === "/signup" ||
+    pathname === "/forgot-password" ||
+    pathname === "/update-password" ||
     pathname.startsWith("/auth/")
   );
 }

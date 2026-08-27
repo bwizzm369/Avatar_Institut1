@@ -60,8 +60,6 @@ export default function FounderPageClient() {
     locale === "ar"
       ? founderBiography.presentation_ar
       : founderBiography.presentation_en;
-  const research =
-    locale === "ar" ? founderBiography.research_ar : founderBiography.research_en;
   const translations =
     locale === "ar"
       ? founderBiography.translations_ar
@@ -70,12 +68,7 @@ export default function FounderPageClient() {
   const poetry = getFounderWorksByCategory("poetry");
 
   const toc = [
-    { href: "#founder-presentation", label: "founder.section.presentation" },
-    {
-      href: "#founder-responsibilities",
-      label: "founder.section.responsibilities",
-    },
-    { href: "#founder-research", label: "founder.section.research" },
+    { href: "#founder-biography", label: "founder.section.biography" },
     { href: "#founder-intellectual", label: "founder.section.intellectual" },
     { href: "#founder-poetry", label: "founder.section.poetry" },
     { href: "#founder-translations", label: "founder.section.translations" },
@@ -106,7 +99,7 @@ export default function FounderPageClient() {
             <div className="about-hero-rule" aria-hidden="true" />
             <p className="founder-hero-lead">{heroLead}</p>
             <div className="founder-hero-actions">
-              <a href="#founder-presentation" className="btn btn-primary">
+              <a href="#founder-biography" className="btn btn-primary">
                 {msg("founder.cta.biography", locale)}
               </a>
               <a
@@ -116,16 +109,15 @@ export default function FounderPageClient() {
                 {msg("founder.cta.works", locale)}
               </a>
             </div>
-            <p className="institutional-note">
-              {msg("founder.institutionalNote", locale)}
-            </p>
           </div>
         </div>
       </section>
 
       <nav className="founder-toc" aria-label={msg("founder.tocLabel", locale)}>
         <div className="container founder-toc-inner">
-          <span className="founder-toc-label">{msg("founder.tocLabel", locale)}</span>
+          <span className="founder-toc-label">
+            {msg("founder.tocLabel", locale)}
+          </span>
           <ul className="founder-toc-list">
             {toc.map((item) => (
               <li key={item.href}>
@@ -137,79 +129,21 @@ export default function FounderPageClient() {
       </nav>
 
       <section
-        id="founder-presentation"
+        id="founder-biography"
         className="founder-block"
-        aria-labelledby="founder-presentation-heading"
-      >
-        <div className="container founder-block-inner">
-          <header className="founder-block-header">
-            <h2 id="founder-presentation-heading" className="founder-block-title">
-              {msg("founder.section.presentation", locale)}
-            </h2>
-          </header>
-          <div className="founder-card founder-card--stack">
-            {presentation.map((paragraph) => (
-              <p key={paragraph.slice(0, 48)} className="founder-prose">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="founder-responsibilities"
-        className="founder-block founder-block--soft"
-        aria-labelledby="founder-responsibilities-heading"
+        aria-labelledby="founder-biography-heading"
       >
         <div className="container founder-block-inner">
           <header className="founder-block-header">
             <h2
-              id="founder-responsibilities-heading"
+              id="founder-biography-heading"
               className="founder-block-title"
             >
-              {msg("founder.section.responsibilities", locale)}
-            </h2>
-          </header>
-          <ul className="founder-list">
-            {founderBiography.responsibilities.map((item) => {
-              const label = locale === "ar" ? item.labelAr : item.labelEn;
-              return (
-                <li key={label.slice(0, 48)}>
-                  <span>{label}</span>{" "}
-                  {item.link ? (
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {item.link}
-                    </a>
-                  ) : (
-                    <span className="muted small">
-                      ({msg("founder.externalPending", locale)})
-                    </span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
-
-      <section
-        id="founder-research"
-        className="founder-block"
-        aria-labelledby="founder-research-heading"
-      >
-        <div className="container founder-block-inner">
-          <header className="founder-block-header">
-            <h2 id="founder-research-heading" className="founder-block-title">
-              {msg("founder.section.research", locale)}
+              {msg("founder.section.biography", locale)}
             </h2>
           </header>
           <div className="founder-card founder-card--stack">
-            {research.map((paragraph) => (
+            {presentation.map((paragraph) => (
               <p key={paragraph.slice(0, 48)} className="founder-prose">
                 {paragraph}
               </p>
@@ -225,10 +159,12 @@ export default function FounderPageClient() {
       >
         <div className="container founder-block-inner">
           <header className="founder-block-header">
-            <h2 id="founder-intellectual-heading" className="founder-block-title">
+            <h2
+              id="founder-intellectual-heading"
+              className="founder-block-title"
+            >
               {msg("founder.section.intellectual", locale)}
             </h2>
-            <p className="founder-works-note">{msg("founder.worksNote", locale)}</p>
           </header>
           <ul className="founder-works">
             {intellectual.map((work) => (

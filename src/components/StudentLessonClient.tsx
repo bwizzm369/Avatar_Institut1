@@ -4,14 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useLocale } from "@/components/LocaleProvider";
+import { dashboardCoursePath } from "@/lib/courses/course-slug";
+import { studentLocalizedText } from "@/lib/courses/student-display";
 import { markLessonCompleteAction } from "@/lib/learning/actions";
 import type { StudentLessonView } from "@/lib/learning/queries";
 import { msg } from "@/lib/i18n";
-import type { Locale } from "@/types";
-
-function pick(en: string, ar: string, locale: Locale): string {
-  return locale === "ar" ? ar : en;
-}
 
 export function StudentLessonClient({
   view,
@@ -44,13 +41,13 @@ export function StudentLessonClient({
     <div className="dashboard-panel stack-lg learning-lesson">
       <div>
         <p className="eyebrow">
-          {pick(view.courseTitle_en, view.courseTitle_ar, locale)}
+          {studentLocalizedText(view.courseTitle_en, view.courseTitle_ar, locale)}
         </p>
         <h2 className="display display-md">
-          {pick(lesson.title_en, lesson.title_ar, locale)}
+          {studentLocalizedText(lesson.title_en, lesson.title_ar, locale)}
         </h2>
         <p className="muted">
-          {pick(view.moduleTitle_en, view.moduleTitle_ar, locale)}
+          {studentLocalizedText(view.moduleTitle_en, view.moduleTitle_ar, locale)}
           {" · "}
           {msg(`learning.type.${lesson.lessonType}`, locale)}
           {" · "}
@@ -95,7 +92,11 @@ export function StudentLessonClient({
       {lesson.lessonType === "text" ? (
         <article className="learning-text-content">
           <p>
-            {pick(lesson.text_content_en, lesson.text_content_ar, locale)}
+            {studentLocalizedText(
+              lesson.text_content_en,
+              lesson.text_content_ar,
+              locale,
+            )}
           </p>
         </article>
       ) : null}
@@ -142,7 +143,7 @@ export function StudentLessonClient({
       </div>
 
       <Link
-        href={`/dashboard/courses/${view.courseSlug}`}
+        href={dashboardCoursePath(view.courseSlug)}
         className="btn btn-ghost"
       >
         {msg("learning.backToCourse", locale)}
