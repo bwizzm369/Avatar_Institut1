@@ -7,6 +7,7 @@ import {
   STUDENT_PASS_PRICE_LABEL,
   type StudentPassStatus,
 } from "@/lib/admin/student-pass/types";
+import { studentMemberId } from "@/lib/student-pass/membership";
 
 export type AdminStudentPassListItem = {
   profileId: string;
@@ -130,7 +131,8 @@ export async function listAdminStudentPassMembers(
 
   const filtered = query
     ? members.filter((item) => {
-        const hay = `${item.name} ${item.email} ${item.status} ${item.source ?? ""}`.toLowerCase();
+        const hay =
+          `${item.name} ${item.email} ${studentMemberId(item.profileId)} ${item.status} ${item.source ?? ""}`.toLowerCase();
         return hay.includes(query.toLowerCase());
       })
     : members;

@@ -185,6 +185,10 @@ export const messages: Dictionary = {
     en: "Student Pass: {n}% off",
     ar: "Student Pass: خصم {n}٪",
   },
+  "courses.passDigitalMembership": {
+    en: "Digital Membership",
+    ar: "العضوية الرقمية",
+  },
   "courses.startCourse": {
     en: "Start Course",
     ar: "ابدأ الدورة",
@@ -675,11 +679,42 @@ export const messages: Dictionary = {
   },
   "dashboard.nav.overview": { en: "Overview", ar: "نظرة عامة" },
   "dashboard.nav.courses": { en: "My courses", ar: "دوراتي" },
+  "dashboard.nav.studentPass": { en: "Student Pass", ar: "Student Pass" },
   "dashboard.nav.certificates": { en: "My certificates", ar: "شهاداتي" },
   "dashboard.coursesTitle": { en: "My courses", ar: "دوراتي" },
   "dashboard.coursesEmpty": {
     en: "No enrollments yet. Purchased courses appear here once access is ready.",
     ar: "لا توجد تسجيلات بعد. تظهر الدورات المشتراة هنا عندما يصبح الوصول جاهزًا.",
+  },
+  "dashboard.studentPassTitle": { en: "Student Pass", ar: "Student Pass" },
+  "dashboard.studentPassMembership": {
+    en: "Digital Membership",
+    ar: "العضوية الرقمية",
+  },
+  "dashboard.studentPassMembershipBilingual": {
+    en: "Digital Membership / العضوية الرقمية",
+    ar: "العضوية الرقمية / Digital Membership",
+  },
+  "dashboard.studentPassMaintains": {
+    en: "Student Pass maintains your active member status within Avatar Institut.",
+    ar: "يحافظ Student Pass على صفتك كعضو فعّال في معهد الأفاتار.",
+  },
+  "dashboard.studentPassNotice": {
+    en: "Your Digital Membership card reflects your current Student Pass status.",
+    ar: "تعكس بطاقة العضوية الرقمية حالة Student Pass الحالية.",
+  },
+  "dashboard.memberCardName": { en: "Full name", ar: "الاسم الكامل" },
+  "dashboard.memberCardId": { en: "Member ID", ar: "رقم العضو" },
+  "dashboard.memberCardStatus": { en: "Status", ar: "الحالة" },
+  "dashboard.memberCardJoined": {
+    en: "Membership date",
+    ar: "تاريخ الانضمام",
+  },
+  "dashboard.memberCardActive": { en: "ACTIVE", ar: "ACTIVE" },
+  "dashboard.memberCardInactive": { en: "INACTIVE", ar: "INACTIVE" },
+  "dashboard.studentPassPrice": {
+    en: "12 € / month",
+    ar: "12 € / الشهر",
   },
   "dashboard.certificatesTitle": { en: "My certificates", ar: "شهاداتي" },
   "dashboard.certificatesEmpty": {

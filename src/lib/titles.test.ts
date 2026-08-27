@@ -26,6 +26,7 @@ describe("document titles", () => {
       ),
     ).toBe("dashboardLessonReader");
     expect(resolveTitleKey("/dashboard/certificates")).toBe("dashboardCertificates");
+    expect(resolveTitleKey("/dashboard/student-pass")).toBe("dashboardStudentPass");
     expect(resolveTitleKey("/verify/AVT-2026-000001")).toBe("verifyCertificate");
   });
 

@@ -8,6 +8,7 @@ import {
   deactivateStudentPassAction,
 } from "@/app/admin/(console)/student-pass/actions";
 import type { AdminStudentPassListItem } from "@/lib/admin/student-pass/list";
+import { studentMemberId } from "@/lib/student-pass/membership";
 
 function formatDate(value: string | null): string {
   if (!value) return "—";
@@ -76,7 +77,7 @@ export function StudentPassClient({
         <input
           id="student-pass-search"
           type="search"
-          placeholder="Search by name, email, status, or source"
+          placeholder="Search by name, email, member ID, status, or source"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
@@ -97,6 +98,7 @@ export function StudentPassClient({
             <tr>
               <th>Student</th>
               <th>Email</th>
+              <th>Member ID</th>
               <th>Status</th>
               <th>Started</th>
               <th>Expires</th>
@@ -107,7 +109,7 @@ export function StudentPassClient({
           <tbody>
             {members.length === 0 ? (
               <tr>
-                <td colSpan={7} className="admin-table-empty">
+                <td colSpan={8} className="admin-table-empty">
                   No students found.
                 </td>
               </tr>
@@ -118,6 +120,9 @@ export function StudentPassClient({
                   <tr key={member.profileId}>
                     <td>{member.name}</td>
                     <td>{member.email}</td>
+                    <td className="admin-member-id" dir="ltr">
+                      {studentMemberId(member.profileId)}
+                    </td>
                     <td>
                       <span className={statusClass(member.status)}>
                         {member.status}

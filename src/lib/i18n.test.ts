@@ -34,6 +34,15 @@ describe("i18n helpers", () => {
     expect(msg("courses.startCourse", "ar")).toBe("ابدأ الدورة");
     expect(msg("courses.intro", "en")).not.toMatch(/demonstration/i);
     expect(msg("courses.passBenefitDiscount", "en")).toContain("% off");
+    expect(msg("courses.passDigitalMembership", "en")).toBe("Digital Membership");
+    expect(msg("courses.passDigitalMembership", "ar")).toBe("العضوية الرقمية");
+    expect(msg("dashboard.studentPassMaintains", "en")).toBe(
+      "Student Pass maintains your active member status within Avatar Institut.",
+    );
+    expect(msg("dashboard.studentPassMaintains", "ar")).toBe(
+      "يحافظ Student Pass على صفتك كعضو فعّال في معهد الأفاتار.",
+    );
+    expect(msg("dashboard.studentPassPrice", "en")).toBe("12 € / month");
   });
 
   it("includes password reset strings in EN/AR", () => {

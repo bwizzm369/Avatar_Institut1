@@ -18,6 +18,7 @@ export const pageTitles: Record<string, LocalizedString> = {
   dashboardCourseReader: { en: "Course", ar: "الدورة" },
   dashboardLessonReader: { en: "Lesson", ar: "الدرس" },
   dashboardCertificates: { en: "My certificates", ar: "شهاداتي" },
+  dashboardStudentPass: { en: "Student Pass", ar: "Student Pass" },
   verifyCertificate: { en: "Certificate verification", ar: "التحقق من الشهادة" },
 };
 
@@ -44,6 +45,7 @@ export function resolveTitleKey(pathname: string): keyof typeof pageTitles {
   }
   if (pathname === "/dashboard/courses") return "dashboardCourses";
   if (pathname === "/dashboard/certificates") return "dashboardCertificates";
+  if (pathname === "/dashboard/student-pass") return "dashboardStudentPass";
   if (pathname === "/verify" || pathname.startsWith("/verify/")) {
     return "verifyCertificate";
   }

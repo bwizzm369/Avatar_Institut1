@@ -29,6 +29,11 @@ export function CoursePassPricing({
             locale,
           )}
         </p>
+        {!compact ? (
+          <p className="pass-membership">
+            {msg("courses.passDigitalMembership", locale)}
+          </p>
+        ) : null}
       </div>
     );
   }
@@ -49,11 +54,16 @@ export function CoursePassPricing({
           {formatPrice(offer.memberPriceCents, currency, locale)}
         </p>
         {!compact ? (
-          <p className="pass-save">
-            {msgReplace("courses.passSave", locale, {
-              n: String(offer.discountPercentApplied),
-            })}
-          </p>
+          <>
+            <p className="pass-save">
+              {msgReplace("courses.passSave", locale, {
+                n: String(offer.discountPercentApplied),
+              })}
+            </p>
+            <p className="pass-membership">
+              {msg("courses.passDigitalMembership", locale)}
+            </p>
+          </>
         ) : null}
       </div>
     );
@@ -74,6 +84,11 @@ export function CoursePassPricing({
           {msgReplace("courses.passBenefitDiscount", locale, {
             n: String(discountPercent),
           })}
+        </p>
+      ) : null}
+      {!compact && (included || discountPercent > 0) ? (
+        <p className="pass-membership">
+          {msg("courses.passDigitalMembership", locale)}
         </p>
       ) : null}
     </div>

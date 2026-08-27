@@ -19,9 +19,11 @@ export default async function AdminStudentPassPage({
     <div className="admin-page">
       <header className="admin-page-header">
         <h1>Student Pass</h1>
+        <p className="admin-kicker">Digital Membership / العضوية الرقمية</p>
         <p>
-          Manual and offline subscription management. Stripe billing is not
-          connected yet.
+          Student Pass maintains your active member status within Avatar
+          Institut. Manual and offline subscription management. Stripe billing
+          is not connected yet.
         </p>
       </header>
 

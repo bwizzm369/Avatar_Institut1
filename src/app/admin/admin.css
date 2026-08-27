@@ -239,6 +239,22 @@
   max-width: 42rem;
 }
 
+.admin-kicker {
+  margin-top: 0.2rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--admin-green);
+}
+
+.admin-member-id {
+  font-size: 0.72rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  word-break: break-all;
+  max-width: 11rem;
+}
+
 .admin-stat-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

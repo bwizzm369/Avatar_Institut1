@@ -48,6 +48,9 @@ export function DashboardOverviewClient({
         {msg("dashboard.welcomeNamed", locale).replace("{name}", displayName)}
       </h2>
       <p className="muted">{msg("dashboard.intro", locale)}</p>
+      <Link href="/dashboard/student-pass" className="btn btn-ghost">
+        {msg("dashboard.nav.studentPass", locale)}
+      </Link>
       {state.enrollments.length === 0 ? (
         <div className="empty-state">{msg("dashboard.coursesEmpty", locale)}</div>
       ) : (

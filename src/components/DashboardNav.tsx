@@ -17,6 +17,11 @@ export function DashboardNav() {
       exact: false,
     },
     {
+      href: "/dashboard/student-pass",
+      label: msg("dashboard.nav.studentPass", locale),
+      exact: false,
+    },
+    {
       href: "/dashboard/certificates",
       label: msg("dashboard.nav.certificates", locale),
       exact: false,
