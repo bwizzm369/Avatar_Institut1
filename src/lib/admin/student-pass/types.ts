@@ -1,10 +1,54 @@
 /**
  * Student Pass subscription domain types and pure helpers.
- * Billing (Stripe) is not wired — stripe_* fields are storage only.
+ * Stripe billing writes source = stripe via the webhook sync helper.
  */
 
 export const STUDENT_PASS_PRICE_EUR = 12;
+export const STUDENT_PASS_PRICE_CENTS = 1200;
 export const STUDENT_PASS_PRICE_LABEL = "12 €/month";
+export const STUDENT_PASS_STRIPE_SOURCE = "stripe";
+
+export const STUDENT_PASS_STRIPE_PLANS = [
+  "monthly",
+  "semiannual",
+  "annual",
+] as const;
+
+export type StudentPassStripePlan = (typeof STUDENT_PASS_STRIPE_PLANS)[number];
+
+export const STUDENT_PASS_STRIPE_PLAN_SPECS = {
+  monthly: {
+    eur: 12,
+    cents: 1200,
+    interval: "month",
+    intervalCount: 1,
+    label: "12 €/month",
+  },
+  semiannual: {
+    eur: 72,
+    cents: 7200,
+    interval: "month",
+    intervalCount: 6,
+    label: "72 € / 6 months",
+  },
+  annual: {
+    eur: 144,
+    cents: 14400,
+    interval: "year",
+    intervalCount: 1,
+    label: "144 €/year",
+  },
+} as const;
+
+export function isStudentPassStripePlan(
+  value: string | null | undefined,
+): value is StudentPassStripePlan {
+  return (
+    value === "monthly" ||
+    value === "semiannual" ||
+    value === "annual"
+  );
+}
 
 export const STUDENT_PASS_STATUSES = [
   "active",
@@ -47,6 +91,27 @@ export function isStudentPassManualSource(
     value === "manual" ||
     value === "offline"
   );
+}
+
+export function isStudentPassStripeSource(
+  value: string | null | undefined,
+): boolean {
+  return value === STUDENT_PASS_STRIPE_SOURCE;
+}
+
+/**
+ * Admin must not convert a live Stripe-billed row into manual/offline.
+ * Cancelled or expired Stripe rows may receive a later manual grant.
+ */
+export function isProtectedStripeStudentPass(row: {
+  source?: string | null;
+  status?: string | null;
+  stripe_subscription_id?: string | null;
+} | null | undefined): boolean {
+  if (!row) return false;
+  if (!isStudentPassStripeSource(row.source)) return false;
+  if (!row.stripe_subscription_id?.trim()) return false;
+  return row.status !== "cancelled" && row.status !== "expired";
 }
 
 export function isStudentPassStatus(

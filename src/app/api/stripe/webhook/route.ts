@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getStripeClient } from "@/lib/stripe/client";
 import {
-  processCheckoutSessionCompleted,
+  dispatchStripeWebhookEvent,
   verifyStripeWebhookEvent,
 } from "@/lib/stripe/webhook";
 import { createServiceRoleSupabaseClient } from "@/lib/supabase/admin";
@@ -34,41 +34,52 @@ export async function POST(request: Request) {
   }
 
   const event = verified.event;
+  const needsDatabase =
+    event.type === "checkout.session.completed" ||
+    event.type === "customer.subscription.created" ||
+    event.type === "customer.subscription.updated" ||
+    event.type === "customer.subscription.deleted" ||
+    event.type === "invoice.paid" ||
+    event.type === "invoice.payment_failed";
 
-  if (event.type === "checkout.session.completed") {
-    if (!isSupabaseConfigured() || !getSupabaseSecretKey()) {
+  if (!needsDatabase) {
+    return NextResponse.json({ ok: true, ignored: true });
+  }
+
+  if (!isSupabaseConfigured() || !getSupabaseSecretKey()) {
+    return NextResponse.json(
+      { ok: false, error: "supabase_secret_not_configured" },
+      { status: 503 },
+    );
+  }
+
+  try {
+    const supabase = createServiceRoleSupabaseClient();
+    const result = await dispatchStripeWebhookEvent({
+      event,
+      supabase,
+      retrieveSubscription: async (subscriptionId) =>
+        stripe.subscriptions.retrieve(subscriptionId),
+    });
+
+    if (!result.ok) {
       return NextResponse.json(
-        { ok: false, error: "supabase_secret_not_configured" },
-        { status: 503 },
-      );
-    }
-
-    try {
-      const supabase = createServiceRoleSupabaseClient();
-      const result = await processCheckoutSessionCompleted({
-        event,
-        supabase,
-      });
-
-      if (!result.ok) {
-        return NextResponse.json(
-          { ok: false, error: result.error },
-          { status: 500 },
-        );
-      }
-
-      return NextResponse.json({
-        ok: true,
-        action: result.action,
-        granted: result.grantedCourseIds.length,
-      });
-    } catch {
-      return NextResponse.json(
-        { ok: false, error: "enrollment_grant_failed" },
+        { ok: false, error: result.error },
         { status: 500 },
       );
     }
-  }
 
-  return NextResponse.json({ ok: true, ignored: true });
+    return NextResponse.json({
+      ok: true,
+      action: result.action,
+      granted: result.grantedCourseIds?.length ?? 0,
+      profileId: result.profileId ?? null,
+      ignored: result.ignored === true,
+    });
+  } catch {
+    return NextResponse.json(
+      { ok: false, error: "webhook_processing_failed" },
+      { status: 500 },
+    );
+  }
 }
