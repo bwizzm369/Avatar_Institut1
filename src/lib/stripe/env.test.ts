@@ -1,15 +1,21 @@
 import { afterEach, describe, expect, it } from "vitest";
 import {
   getAppOrigin,
+  getStripeStudentPassPriceId,
   getStripeWebhookSecret,
   isStripeCheckoutConfigured,
   isStripePublishableConfigured,
+  isStripeStudentPassCheckoutConfigured,
 } from "@/lib/stripe/env";
 
 const KEYS = [
   "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
   "STRIPE_SECRET_KEY",
   "STRIPE_WEBHOOK_SECRET",
+  "STRIPE_STUDENT_PASS_PRICE_ID",
+  "STRIPE_STUDENT_PASS_MONTHLY_PRICE_ID",
+  "STRIPE_STUDENT_PASS_SEMIANNUAL_PRICE_ID",
+  "STRIPE_STUDENT_PASS_ANNUAL_PRICE_ID",
   "NEXT_PUBLIC_APP_URL",
   "VERCEL_ENV",
   "VERCEL_URL",
@@ -44,6 +50,27 @@ describe("Stripe env validation", () => {
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_your_publishable_key";
     process.env.STRIPE_SECRET_KEY = "sk_test_your_secret_key";
     expect(isStripeCheckoutConfigured()).toBe(false);
+  });
+
+  it("requires real Student Pass Price IDs for all three plans", () => {
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_demo_key";
+    process.env.STRIPE_SECRET_KEY = "sk_test_demo_key";
+    process.env.STRIPE_STUDENT_PASS_MONTHLY_PRICE_ID =
+      "price_your_student_pass_monthly";
+    process.env.STRIPE_STUDENT_PASS_SEMIANNUAL_PRICE_ID =
+      "price_your_student_pass_semiannual";
+    process.env.STRIPE_STUDENT_PASS_ANNUAL_PRICE_ID =
+      "price_your_student_pass_annual";
+    expect(getStripeStudentPassPriceId("monthly")).toBeNull();
+    expect(isStripeStudentPassCheckoutConfigured()).toBe(false);
+
+    process.env.STRIPE_STUDENT_PASS_MONTHLY_PRICE_ID = "price_test_monthly_12";
+    process.env.STRIPE_STUDENT_PASS_SEMIANNUAL_PRICE_ID = "price_test_semi_72";
+    process.env.STRIPE_STUDENT_PASS_ANNUAL_PRICE_ID = "price_test_annual_144";
+    expect(getStripeStudentPassPriceId("monthly")).toBe("price_test_monthly_12");
+    expect(getStripeStudentPassPriceId("semiannual")).toBe("price_test_semi_72");
+    expect(getStripeStudentPassPriceId("annual")).toBe("price_test_annual_144");
+    expect(isStripeStudentPassCheckoutConfigured()).toBe(true);
   });
 });
 

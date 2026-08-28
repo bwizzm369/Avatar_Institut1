@@ -4,6 +4,9 @@
  * Webhook secret stays optional until generated via Stripe CLI / Dashboard.
  */
 
+import type { StudentPassStripePlan } from "@/lib/admin/student-pass/types";
+import { isStudentPassStripePlan } from "@/lib/admin/student-pass/types";
+
 const PLACEHOLDER_MARKERS = [
   "pk_test_your_publishable_key",
   "sk_test_your_secret_key",
@@ -11,6 +14,9 @@ const PLACEHOLDER_MARKERS = [
   "your_publishable_key",
   "your_secret_key",
   "your_webhook_secret",
+  "price_your_student_pass_monthly",
+  "price_your_student_pass_semiannual",
+  "price_your_student_pass_annual",
 ];
 
 function isFilled(value: string | undefined): value is string {
@@ -48,9 +54,55 @@ export function getStripeWebhookSecret(): string | null {
   return key.trim();
 }
 
+const STUDENT_PASS_PRICE_ENV_KEYS: Record<StudentPassStripePlan, string> = {
+  monthly: "STRIPE_STUDENT_PASS_MONTHLY_PRICE_ID",
+  semiannual: "STRIPE_STUDENT_PASS_SEMIANNUAL_PRICE_ID",
+  annual: "STRIPE_STUDENT_PASS_ANNUAL_PRICE_ID",
+};
+
+function readStripePriceId(value: string | undefined): string | null {
+  if (!isFilled(value)) return null;
+  const trimmed = value.trim();
+  if (!trimmed.startsWith("price_")) return null;
+  return trimmed;
+}
+
+/**
+ * Server-only Stripe Price ID for a Student Pass plan.
+ * Never expose to the browser. The amount lives on the Stripe Price, not in Checkout.
+ * Monthly still accepts the legacy STRIPE_STUDENT_PASS_PRICE_ID if the named var is unset.
+ */
+export function getStripeStudentPassPriceId(
+  plan: StudentPassStripePlan,
+): string | null {
+  if (!isStudentPassStripePlan(plan)) return null;
+  const named = readStripePriceId(process.env[STUDENT_PASS_PRICE_ENV_KEYS[plan]]);
+  if (named) return named;
+  if (plan === "monthly") {
+    return readStripePriceId(process.env.STRIPE_STUDENT_PASS_PRICE_ID);
+  }
+  return null;
+}
+
+export function getStripeStudentPassPriceEnvKey(
+  plan: StudentPassStripePlan,
+): string {
+  return STUDENT_PASS_PRICE_ENV_KEYS[plan];
+}
+
 /** Server-side: publishable + secret required for creating Checkout sessions. */
 export function isStripeCheckoutConfigured(): boolean {
   return getStripePublishableKey() !== null && getStripeSecretKey() !== null;
+}
+
+/** Server-side: course Checkout config + all three Student Pass Price IDs. */
+export function isStripeStudentPassCheckoutConfigured(): boolean {
+  return (
+    isStripeCheckoutConfigured() &&
+    getStripeStudentPassPriceId("monthly") !== null &&
+    getStripeStudentPassPriceId("semiannual") !== null &&
+    getStripeStudentPassPriceId("annual") !== null
+  );
 }
 
 export function assertStripeCheckoutConfigured(): {
