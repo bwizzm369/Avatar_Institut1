@@ -16,6 +16,7 @@ export function ConnectSection() {
           <h2 id="connect-title" className="display display-lg">
             {msg("connect.title", locale)}
           </h2>
+          <div className="section-rule" aria-hidden="true" />
           <p className="lead connect-lead">{msg("connect.description", locale)}</p>
         </div>
 

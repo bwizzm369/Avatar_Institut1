@@ -30,6 +30,22 @@ function statusClass(status: AdminStudentPassListItem["status"]): string {
   return "admin-status admin-status-duplicate";
 }
 
+function sourceClass(source: string | null): string {
+  if (source === "stripe") return "admin-status admin-status-ready";
+  if (source === "offline") return "admin-status admin-status-warning";
+  if (source === "manual") return "admin-status admin-status-duplicate";
+  return "admin-status";
+}
+
+function isStripeProtectedMember(member: AdminStudentPassListItem): boolean {
+  return (
+    member.source === "stripe" &&
+    member.status !== "none" &&
+    member.status !== "cancelled" &&
+    member.status !== "expired"
+  );
+}
+
 export function StudentPassClient({
   members,
   initialQuery,
@@ -116,6 +132,7 @@ export function StudentPassClient({
             ) : (
               members.map((member) => {
                 const busy = pendingId === member.profileId;
+                const stripeProtected = isStripeProtectedMember(member);
                 return (
                   <tr key={member.profileId}>
                     <td>{member.name}</td>
@@ -130,13 +147,33 @@ export function StudentPassClient({
                     </td>
                     <td>{formatDate(member.startedAt)}</td>
                     <td>{formatDate(member.expiresAt)}</td>
-                    <td>{member.source ?? "—"}</td>
+                    <td>
+                      {member.source ? (
+                        <span
+                          className={sourceClass(member.source)}
+                          title={
+                            member.source === "stripe"
+                              ? "Billed by Stripe. Activate/Offline will not overwrite this row."
+                              : undefined
+                          }
+                        >
+                          {member.source}
+                        </span>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
                     <td>
                       <div className="admin-row-actions">
                         <button
                           type="button"
                           className="admin-btn-primary admin-btn-inline"
-                          disabled={busy || member.isEntitled}
+                          disabled={busy || member.isEntitled || stripeProtected}
+                          title={
+                            stripeProtected
+                              ? "This membership is billed by Stripe"
+                              : undefined
+                          }
                           onClick={() =>
                             runAction(member.profileId, () =>
                               activateStudentPassAction(
@@ -151,8 +188,12 @@ export function StudentPassClient({
                         <button
                           type="button"
                           className="admin-btn-ghost admin-btn-inline"
-                          disabled={busy || member.isEntitled}
-                          title="Activate with source = offline"
+                          disabled={busy || member.isEntitled || stripeProtected}
+                          title={
+                            stripeProtected
+                              ? "This membership is billed by Stripe"
+                              : "Activate with source = offline"
+                          }
                           onClick={() =>
                             runAction(member.profileId, () =>
                               activateStudentPassAction(

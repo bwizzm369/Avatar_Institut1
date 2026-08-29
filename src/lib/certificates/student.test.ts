@@ -157,6 +157,9 @@ describe("student certificate source invariants", () => {
     expect(route).not.toMatch(/generateCertificatePreviewPdf/);
     expect(route).not.toMatch(/next_certificate_number/);
     expect(route).not.toMatch(/issue_certificate/);
+    expect(route).toMatch(/maxDuration = 60/);
+    expect(route).toMatch(/export const runtime = "nodejs"/);
+    expect(route).not.toMatch(/runtime = "edge"/);
     expect(route).not.toMatch(/SUPABASE_SECRET_KEY|SERVICE_ROLE/);
   });
 

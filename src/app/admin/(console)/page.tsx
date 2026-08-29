@@ -55,6 +55,12 @@ export default async function AdminDashboardPage() {
           <li>
             <Link href="/admin/students">Students / Import</Link>
           </li>
+          <li>
+            <Link href="/admin/consultations">Consultations</Link>
+          </li>
+          <li>
+            <Link href="/admin/reviews">Reviews</Link>
+          </li>
         </ul>
       </section>
     </div>

@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/types/database";
 import {
   assertCanMutateStudentPass,
+  isProtectedStripeStudentPass,
   isStudentPassManualSource,
   type StudentPassManualSource,
   type StudentPassMutationContext,
@@ -19,7 +20,9 @@ async function loadSubscription(
 ) {
   const { data, error } = await client
     .from("student_pass_subscriptions")
-    .select("id, profile_id, status, started_at, expires_at, cancelled_at, source")
+    .select(
+      "id, profile_id, status, started_at, expires_at, cancelled_at, source, stripe_customer_id, stripe_subscription_id",
+    )
     .eq("profile_id", profileId)
     .maybeSingle();
 
@@ -66,6 +69,14 @@ export async function activateStudentPass(options: {
   }
 
   if (row) {
+    if (isProtectedStripeStudentPass(row)) {
+      return {
+        ok: false,
+        error:
+          "This membership is billed by Stripe. Manual activation would overwrite the Stripe subscription.",
+      };
+    }
+
     const { error } = await options.client
       .from("student_pass_subscriptions")
       .update({

@@ -30,7 +30,7 @@ describe("i18n helpers", () => {
     );
     expect(msg("courses.normalPrice", "en")).toContain("Normal price");
     expect(msg("courses.passPrice", "ar")).toContain("Student Pass");
-    expect(msg("courses.startCourse", "en")).toBe("Start Course");
+    expect(msg("courses.startCourse", "en")).toBe("Start course");
     expect(msg("courses.startCourse", "ar")).toBe("ابدأ الدورة");
     expect(msg("courses.intro", "en")).not.toMatch(/demonstration/i);
     expect(msg("courses.passBenefitDiscount", "en")).toContain("% off");
@@ -42,7 +42,34 @@ describe("i18n helpers", () => {
     expect(msg("dashboard.studentPassMaintains", "ar")).toBe(
       "يحافظ Student Pass على صفتك كعضو فعّال في معهد الأفاتار.",
     );
-    expect(msg("dashboard.studentPassPrice", "en")).toBe("12 € / month");
+    expect(msg("dashboard.studentPassPlanNameMonthly", "en")).toBe("Monthly");
+    expect(msg("dashboard.studentPassPlanAmountMonthly", "en")).toBe("12 €");
+    expect(msg("dashboard.studentPassPlanIntervalMonthly", "en")).toBe(
+      "per month",
+    );
+    expect(msg("dashboard.studentPassChooseMonthly", "en")).toBe(
+      "Choose monthly",
+    );
+    expect(msg("dashboard.studentPassPlanNameSemiannual", "en")).toBe(
+      "6 months",
+    );
+    expect(msg("dashboard.studentPassPlanAmountSemiannual", "en")).toBe("72 €");
+    expect(msg("dashboard.studentPassPlanIntervalSemiannual", "ar")).toBe(
+      "كل 6 أشهر",
+    );
+    expect(msg("dashboard.studentPassChooseSemiannual", "en")).toBe(
+      "Choose 6 months",
+    );
+    expect(msg("dashboard.studentPassPlanNameAnnual", "en")).toBe("Annual");
+    expect(msg("dashboard.studentPassPlanAmountAnnual", "en")).toBe("144 €");
+    expect(msg("dashboard.studentPassPlanIntervalAnnual", "en")).toBe(
+      "per year",
+    );
+    expect(msg("dashboard.studentPassChooseAnnual", "ar")).toBe("اختر السنوي");
+    expect(msg("dashboard.overallProgress", "en")).toBe("Overall progress");
+    expect(msg("dashboard.overallProgress", "ar")).toBe("التقدّم الإجمالي");
+    expect(msg("dashboard.viewAll", "en")).toBe("View all");
+    expect(msg("dashboard.viewAll", "ar")).toBe("عرض الكل");
   });
 
   it("includes password reset strings in EN/AR", () => {
@@ -52,6 +79,36 @@ describe("i18n helpers", () => {
     expect(msg("auth.resetSent", "ar")).toMatch(/إذا كان هناك حساب/);
     expect(msg("auth.resetSuccess", "en")).toMatch(/password has been updated/i);
     expect(msg("auth.error.passwordMismatch", "ar")).toMatch(/غير متطابقتين/);
+  });
+
+  it("includes About menu labels in EN/AR without repeating the institute item", () => {
+    expect(msg("about.tab.institute", "en")).toBe("About the Institute");
+    expect(msg("about.tab.institute", "ar")).toBe("عن المعهد");
+    expect(msg("about.tab.founder", "en")).toBe("Founder");
+    expect(msg("about.tab.founder", "ar")).toBe("المؤسس");
+    expect(msg("about.tab.founder", "ar")).not.toBe(
+      msg("about.tab.institute", "ar"),
+    );
+  });
+
+  it("includes consultation and testimonial strings in EN/AR", () => {
+    expect(msg("nav.consultation", "en")).toBe("Consultation");
+    expect(msg("nav.consultation", "ar")).toBe("استشارة");
+    expect(msg("nav.reviews", "en")).toBe("Reviews");
+    expect(msg("nav.reviews", "ar")).toBe("الآراء");
+    expect(msg("consultation.title", "ar")).toBe("استشارة ومعلومات");
+    expect(msg("consultation.type.consultation", "en")).toBe(
+      "Private consultation",
+    );
+    expect(msg("reviews.title", "ar")).toBe("آراء الدارسين");
+    expect(msg("reviews.empty", "en")).toMatch(/No published testimonials/i);
+    expect(msg("reviews.form.success", "en")).toMatch(/after it has been reviewed/i);
+    expect(msg("reviews.form.success", "ar")).toContain("شكرًا لمشاركتك رأيك");
+    expect(msg("reviews.status.pendingBody", "ar")).toContain("معهد الأفاتار");
+    expect(msg("reviews.error.ratingRequired", "en")).toMatch(/rating/i);
+    expect(msg("reviews.error.textRequired", "ar")).toMatch(/رأيك/);
+    expect(msg("reviews.error.alreadySubmitted", "en")).toMatch(/already submitted/i);
+    expect(msg("reviews.form.loginCta", "ar")).toMatch(/تسجيل الدخول/);
   });
 
   it("includes public certificate verification strings in EN/AR", () => {

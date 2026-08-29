@@ -22,16 +22,17 @@ export default async function AdminStudentPassPage({
         <p className="admin-kicker">Digital Membership / العضوية الرقمية</p>
         <p>
           Student Pass maintains your active member status within Avatar
-          Institut. Manual and offline subscription management. Stripe billing
-          is not connected yet.
+          Institut. Manual and offline activation remain available. Stripe
+          subscriptions appear with source = stripe and are not overwritten by
+          Activate / Offline.
         </p>
       </header>
 
       <section className="admin-stat-grid" aria-label="Student Pass overview">
         <article className="admin-stat-card">
           <p className="admin-stat-label">Student Pass</p>
-          <p className="admin-stat-value">{data.priceLabel}</p>
-          <p className="admin-stat-hint">{data.priceEur} EUR billed monthly (later)</p>
+          <p className="admin-stat-value">12 / 72 / 144 €</p>
+          <p className="admin-stat-hint">month · 6 months · year</p>
         </article>
         <article className="admin-stat-card">
           <p className="admin-stat-label">Active members</p>

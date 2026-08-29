@@ -23,6 +23,16 @@ export interface Database {
           last_name: string;
           locale: string;
           role: "student" | "admin";
+          phone: string | null;
+          country: string | null;
+          previously_studied: boolean;
+          previous_course: string | null;
+          declared_certificate_number: string | null;
+          legacy_match_status:
+            | "none"
+            | "linked"
+            | "pending_review"
+            | "unmatched";
           created_at: string;
           updated_at: string;
         };
@@ -33,6 +43,16 @@ export interface Database {
           last_name?: string;
           locale?: string;
           role?: "student" | "admin";
+          phone?: string | null;
+          country?: string | null;
+          previously_studied?: boolean;
+          previous_course?: string | null;
+          declared_certificate_number?: string | null;
+          legacy_match_status?:
+            | "none"
+            | "linked"
+            | "pending_review"
+            | "unmatched";
           created_at?: string;
           updated_at?: string;
         };
@@ -43,6 +63,16 @@ export interface Database {
           last_name?: string;
           locale?: string;
           role?: "student" | "admin";
+          phone?: string | null;
+          country?: string | null;
+          previously_studied?: boolean;
+          previous_course?: string | null;
+          declared_certificate_number?: string | null;
+          legacy_match_status?:
+            | "none"
+            | "linked"
+            | "pending_review"
+            | "unmatched";
           created_at?: string;
           updated_at?: string;
         };
@@ -532,6 +562,120 @@ export interface Database {
         };
         Relationships: [];
       };
+      consultation_requests: {
+        Row: {
+          id: string;
+          full_name: string;
+          email: string;
+          phone: string;
+          locale: "en" | "ar";
+          request_type: "consultation" | "information";
+          message: string;
+          status: "new" | "in_review" | "contacted" | "closed";
+          admin_notes: string;
+          consent_at: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          full_name: string;
+          email: string;
+          phone?: string;
+          locale?: "en" | "ar";
+          request_type: "consultation" | "information";
+          message: string;
+          status?: "new" | "in_review" | "contacted" | "closed";
+          admin_notes?: string;
+          consent_at: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          full_name?: string;
+          email?: string;
+          phone?: string;
+          locale?: "en" | "ar";
+          request_type?: "consultation" | "information";
+          message?: string;
+          status?: "new" | "in_review" | "contacted" | "closed";
+          admin_notes?: string;
+          consent_at?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      reviews: {
+        Row: {
+          id: string;
+          author_name: string;
+          author_title_en: string;
+          author_title_ar: string;
+          quote_en: string;
+          quote_ar: string;
+          is_published: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+          profile_id: string | null;
+          rating: number | null;
+          moderation_status: "pending" | "approved" | "rejected";
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+        };
+        Insert: {
+          id?: string;
+          author_name: string;
+          author_title_en?: string;
+          author_title_ar?: string;
+          quote_en?: string;
+          quote_ar?: string;
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+          profile_id?: string | null;
+          rating?: number | null;
+          moderation_status?: "pending" | "approved" | "rejected";
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+        };
+        Update: {
+          id?: string;
+          author_name?: string;
+          author_title_en?: string;
+          author_title_ar?: string;
+          quote_en?: string;
+          quote_ar?: string;
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+          profile_id?: string | null;
+          rating?: number | null;
+          moderation_status?: "pending" | "approved" | "rejected";
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reviews_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reviews_reviewed_by_fkey";
+            columns: ["reviewed_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       student_pass_subscriptions: {
         Row: {
           id: string;
@@ -663,3 +807,6 @@ export type StudentPassSubscriptionRow =
 export type CertificateRow = Database["public"]["Tables"]["certificates"]["Row"];
 export type CertificateYearCounterRow =
   Database["public"]["Tables"]["certificate_year_counters"]["Row"];
+export type ConsultationRequestRow =
+  Database["public"]["Tables"]["consultation_requests"]["Row"];
+export type ReviewRow = Database["public"]["Tables"]["reviews"]["Row"];

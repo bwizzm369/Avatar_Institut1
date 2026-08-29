@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Logo } from "@/components/Logo";
 import { useLocale } from "@/components/LocaleProvider";
 import { msg } from "@/lib/i18n";
 
@@ -11,8 +12,11 @@ export function Footer() {
     <footer className="site-footer">
       <div className="footer-grid">
         <div>
-          <div className="brand-ar footer-brand" lang="ar" dir="rtl">
-            {msg("brand.arabicName", locale)}
+          <div className="footer-brand-block">
+            <Logo variant="panel" />
+            <div className="brand-ar footer-brand" lang="ar" dir="rtl">
+              {msg("brand.arabicName", locale)}
+            </div>
           </div>
           <p className="muted">{msg("footer.aboutBody", locale)}</p>
         </div>
@@ -33,6 +37,12 @@ export function Footer() {
             </li>
             <li>
               <Link href="/library">{msg("nav.library", locale)}</Link>
+            </li>
+            <li>
+              <Link href="/consultation">{msg("nav.consultation", locale)}</Link>
+            </li>
+            <li>
+              <Link href="/reviews">{msg("nav.reviews", locale)}</Link>
             </li>
             <li>
               <Link href="/cart">{msg("nav.cart", locale)}</Link>

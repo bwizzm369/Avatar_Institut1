@@ -50,6 +50,7 @@ export function LibraryClient({ resources }: LibraryClientProps) {
         <div className="container library-hero-inner">
           <p className="eyebrow">{msg("library.eyebrow", locale)}</p>
           <h1 className="display display-lg library-title">{msg("library.title", locale)}</h1>
+          <div className="section-rule" aria-hidden="true" />
           <p className="lead library-lead">{msg("library.subtitle", locale)}</p>
         </div>
       </section>
@@ -89,19 +90,34 @@ export function LibraryClient({ resources }: LibraryClientProps) {
           {isTrulyEmpty ? (
             <div className="library-empty">
               <div className="library-empty-mark" aria-hidden="true" />
+              <p className="eyebrow">{msg("library.eyebrow", locale)}</p>
               <h2 className="display display-md">{msg("library.emptyTitle", locale)}</h2>
               <p className="muted">{msg("library.emptyBody", locale)}</p>
             </div>
           ) : filteredResources.length === 0 ? (
             <div className="library-empty">
               <div className="library-empty-mark" aria-hidden="true" />
+              <p className="eyebrow">{msg("library.eyebrow", locale)}</p>
               <h2 className="display display-md">{msg("library.noResultsTitle", locale)}</h2>
               <p className="muted">{msg("library.noResultsBody", locale)}</p>
             </div>
           ) : (
-            <div className="library-grid">
-              {filteredResources.map((resource) => (
-                <article key={resource.id} className="library-card">
+            <div
+              className={
+                filteredResources.length < 3
+                  ? "library-grid library-grid--sparse"
+                  : "library-grid"
+              }
+            >
+              {filteredResources.map((resource, index) => (
+                <article
+                  key={resource.id}
+                  className={
+                    index === 0 && filteredResources.length === 1
+                      ? "library-card library-card--wide"
+                      : "library-card"
+                  }
+                >
                   {resource.thumbnail_url ? (
                     <div className="library-thumb-frame">
                       <Image

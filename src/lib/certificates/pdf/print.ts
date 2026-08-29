@@ -4,38 +4,32 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
+import type { Browser } from "puppeteer-core";
+import {
+  resolveCertificatePdfBrowser,
+  type CertificatePdfBrowserStrategy,
+} from "@/lib/certificates/pdf/browser";
+
+export {
+  findCertificateChromeExecutable,
+  isServerlessCertificatePdfRuntime,
+  resolveCertificatePdfBrowser,
+} from "@/lib/certificates/pdf/browser";
 
 const execFileAsync = promisify(execFile);
 
-const CHROME_CANDIDATES = [
-  process.env.CHROME_PATH,
-  process.env.PUPPETEER_EXECUTABLE_PATH,
-  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-  "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-  process.env.LOCALAPPDATA
-    ? path.join(
-        process.env.LOCALAPPDATA,
-        "Google\\Chrome\\Application\\chrome.exe",
-      )
-    : undefined,
-  "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
-  "C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe",
-  "/usr/bin/google-chrome",
-  "/usr/bin/google-chrome-stable",
-  "/usr/bin/chromium",
-  "/usr/bin/chromium-browser",
-  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-  "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
-];
-
-export function findCertificateChromeExecutable(): string {
-  for (const candidate of CHROME_CANDIDATES) {
-    if (candidate && existsSync(candidate)) return candidate;
-  }
-  throw new Error(
-    "Certificate PDF rendering requires Chrome or Edge to print Template 2. Install Chrome or set CHROME_PATH.",
-  );
-}
+const LOCAL_PRINT_FLAGS = [
+  "--headless=new",
+  "--disable-gpu",
+  "--no-first-run",
+  "--no-default-browser-check",
+  "--disable-extensions",
+  "--hide-scrollbars",
+  "--allow-file-access-from-files",
+  "--virtual-time-budget=2000",
+  "--no-pdf-header-footer",
+  "--print-to-pdf-no-header",
+] as const;
 
 function pathToFileUrl(filePath: string): string {
   const resolved = path.resolve(filePath).replace(/\\/g, "/");
@@ -45,10 +39,31 @@ function pathToFileUrl(filePath: string): string {
   return `file://${resolved}`;
 }
 
-export async function printCertificateHtmlToPdf(
+function logCertificatePdfFailure(strategy: CertificatePdfBrowserStrategy): void {
+  console.error("Certificate PDF browser failed", { strategy });
+}
+
+function certificatePdfRenderFailed(): Error {
+  return new Error("Certificate PDF rendering failed.");
+}
+
+function assertPdfBytes(bytes: Uint8Array): Uint8Array {
+  const looksLikePdf =
+    bytes.length >= 100 &&
+    bytes[0] === 0x25 &&
+    bytes[1] === 0x50 &&
+    bytes[2] === 0x44 &&
+    bytes[3] === 0x46;
+  if (!looksLikePdf) {
+    throw certificatePdfRenderFailed();
+  }
+  return bytes;
+}
+
+async function printWithLocalChrome(
   html: string,
+  executablePath: string,
 ): Promise<Uint8Array> {
-  const chrome = findCertificateChromeExecutable();
   const tempDir = await mkdtemp(path.join(os.tmpdir(), "avt-cert-"));
   const htmlPath = path.join(tempDir, "certificate.html");
   const pdfPath = path.join(tempDir, "certificate.pdf");
@@ -57,18 +72,9 @@ export async function printCertificateHtmlToPdf(
   try {
     await writeFile(htmlPath, html, "utf8");
     await execFileAsync(
-      chrome,
+      executablePath,
       [
-        "--headless=new",
-        "--disable-gpu",
-        "--no-first-run",
-        "--no-default-browser-check",
-        "--disable-extensions",
-        "--hide-scrollbars",
-        "--allow-file-access-from-files",
-        "--virtual-time-budget=2000",
-        "--no-pdf-header-footer",
-        "--print-to-pdf-no-header",
+        ...LOCAL_PRINT_FLAGS,
         `--user-data-dir=${profileDir}`,
         `--print-to-pdf=${pdfPath}`,
         pathToFileUrl(htmlPath),
@@ -77,14 +83,73 @@ export async function printCertificateHtmlToPdf(
     );
 
     if (!existsSync(pdfPath)) {
-      throw new Error("Chrome did not write the certificate PDF.");
+      throw certificatePdfRenderFailed();
     }
-    const bytes = await readFile(pdfPath);
-    if (bytes.length < 100 || bytes.subarray(0, 4).toString() !== "%PDF") {
-      throw new Error("Chrome wrote an invalid certificate PDF.");
+    return assertPdfBytes(new Uint8Array(await readFile(pdfPath)));
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message === certificatePdfRenderFailed().message
+    ) {
+      throw error;
     }
-    return new Uint8Array(bytes);
+    logCertificatePdfFailure("local-chrome");
+    throw certificatePdfRenderFailed();
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }
+}
+
+async function printWithServerlessChromium(html: string): Promise<Uint8Array> {
+  const chromium = (await import("@sparticuz/chromium")).default;
+  const puppeteer = await import("puppeteer-core");
+  chromium.setGraphicsMode = false;
+
+  let browser: Browser | undefined;
+  try {
+    browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: {
+        width: 794,
+        height: 1123,
+        deviceScaleFactor: 1,
+      },
+      executablePath: await chromium.executablePath(),
+      headless: true,
+      timeout: 45000,
+    });
+    const page = await browser.newPage();
+    page.setDefaultTimeout(45000);
+    await page.setContent(html, { waitUntil: "load", timeout: 45000 });
+    const pdf = await page.pdf({
+      printBackground: true,
+      preferCSSPageSize: true,
+      displayHeaderFooter: false,
+      margin: { top: 0, right: 0, bottom: 0, left: 0 },
+      timeout: 45000,
+    });
+    return assertPdfBytes(new Uint8Array(pdf));
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message === certificatePdfRenderFailed().message
+    ) {
+      throw error;
+    }
+    logCertificatePdfFailure("serverless-chromium");
+    throw certificatePdfRenderFailed();
+  } finally {
+    await browser?.close().catch(() => undefined);
+  }
+}
+
+export async function printCertificateHtmlToPdf(
+  html: string,
+  env: NodeJS.ProcessEnv = process.env,
+): Promise<Uint8Array> {
+  const plan = resolveCertificatePdfBrowser(env);
+  if (plan.strategy === "serverless-chromium") {
+    return printWithServerlessChromium(html);
+  }
+  return printWithLocalChrome(html, plan.executablePath);
 }

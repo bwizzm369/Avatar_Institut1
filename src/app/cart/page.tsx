@@ -16,10 +16,12 @@ export default function CartPage() {
   const currency = items[0]?.currency ?? "EUR";
 
   return (
-    <>
+    <div className="cart-page">
       <section className="page-hero">
-        <div className="container stack-lg">
+        <div className="container page-hero-inner">
+          <p className="eyebrow">{msg("nav.cart", locale)}</p>
           <h1 className="display display-lg">{msg("cart.title", locale)}</h1>
+          <div className="section-rule" aria-hidden="true" />
           <p className="lead">{msg("cart.demoNote", locale)}</p>
         </div>
       </section>
@@ -31,22 +33,22 @@ export default function CartPage() {
               <p className="muted">{msg("cart.loading", locale)}</p>
             </div>
           ) : items.length === 0 ? (
-            <div className="empty-state stack-lg">
-              <p>{msg("cart.empty", locale)}</p>
-              <div>
-                <Link href="/courses" className="btn btn-primary">
-                  {msg("cart.browse", locale)}
-                </Link>
-              </div>
+            <div className="empty-state">
+              <div className="empty-state-mark" aria-hidden="true" />
+              <h2 className="display display-md">{msg("cart.empty", locale)}</h2>
+              <p className="muted">{msg("courses.intro", locale)}</p>
+              <Link href="/courses" className="btn btn-primary">
+                {msg("cart.browse", locale)}
+              </Link>
             </div>
           ) : (
-            <>
+            <div className="cart-layout">
               <div className="cart-list">
                 {items.map((item) => (
                   <article key={item.courseId} className="cart-item">
                     <div className="stack-lg" style={{ gap: "0.5rem" }}>
                       {isDemoCourseSlug(item.slug) ? <DemoBadge /> : null}
-                      <h2 className="display display-md" style={{ fontSize: "1.35rem" }}>
+                      <h2 className="display display-sm">
                         <Link href={publicCoursePath(item.slug)}>
                           {displayLocalized(item.title, locale)}
                         </Link>
@@ -75,10 +77,10 @@ export default function CartPage() {
                 </div>
                 <CartCheckoutButton />
               </div>
-            </>
+            </div>
           )}
         </div>
       </section>
-    </>
+    </div>
   );
 }

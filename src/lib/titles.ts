@@ -2,10 +2,12 @@ import type { Locale, LocalizedString } from "@/types";
 
 export const pageTitles: Record<string, LocalizedString> = {
   home: { en: "Home", ar: "الرئيسية" },
-  about: { en: "About", ar: "عن المؤسسة" },
+  about: { en: "About", ar: "عن المعهد" },
   founder: { en: "Founder", ar: "المؤسس" },
   courses: { en: "Courses", ar: "الدورات" },
   library: { en: "Library", ar: "المكتبة" },
+  consultation: { en: "Consultation", ar: "استشارة" },
+  reviews: { en: "Testimonials", ar: "آراء الدارسين" },
   courseDetail: { en: "Course detail", ar: "تفاصيل الدورة" },
   cart: { en: "Cart", ar: "السلة" },
   cartSuccess: { en: "Payment received", ar: "تم استلام الدفع" },
@@ -30,6 +32,8 @@ export function resolveTitleKey(pathname: string): keyof typeof pageTitles {
   if (pathname === "/about" || pathname.startsWith("/about/")) return "about";
   if (pathname === "/courses") return "courses";
   if (pathname === "/library") return "library";
+  if (pathname === "/consultation") return "consultation";
+  if (pathname === "/reviews") return "reviews";
   if (pathname.startsWith("/courses/")) return "courseDetail";
   if (pathname === "/cart/success") return "cartSuccess";
   if (pathname === "/cart") return "cart";

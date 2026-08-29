@@ -53,6 +53,19 @@ describe("certificate public origin", () => {
     process.env.NEXT_PUBLIC_APP_URL = "https://academy.example.test/";
     expect(getCertificatePublicOrigin()).toBe("https://academy.example.test");
   });
+
+  it("does not invent a Vercel host from VERCEL_URL", () => {
+    const previousUrl = process.env.VERCEL_URL;
+    const previousEnv = process.env.VERCEL_ENV;
+    delete process.env.NEXT_PUBLIC_APP_URL;
+    process.env.VERCEL_URL = "preview-host.example.vercel.app";
+    process.env.VERCEL_ENV = "production";
+    expect(getCertificatePublicOrigin()).toBe(LOCAL_CERTIFICATE_ORIGIN);
+    if (previousUrl === undefined) delete process.env.VERCEL_URL;
+    else process.env.VERCEL_URL = previousUrl;
+    if (previousEnv === undefined) delete process.env.VERCEL_ENV;
+    else process.env.VERCEL_ENV = previousEnv;
+  });
 });
 
 describe("certificate verification URL", () => {
@@ -124,6 +137,12 @@ describe("official certificate origin", () => {
       assertOfficialCertificateOrigin("https://academy.example.test"),
     ).not.toThrow();
   });
+
+  it("accepts a Vercel HTTPS origin as a public certificate host", () => {
+    expect(() =>
+      assertOfficialCertificateOrigin("https://example-beta.vercel.app"),
+    ).not.toThrow();
+  });
 });
 
 describe("certificate QR artifact", () => {
@@ -172,6 +191,18 @@ describe("certificate QR artifact", () => {
       "https://academy.example.test/verify/AVT-2026-000001",
     );
     expect(decodeQrPng(artifact.qrPngBytes)).toBe(artifact.verificationUrl);
+  });
+});
+
+describe("certificate origin source invariants", () => {
+  it("never hardcodes a Vercel or production host", () => {
+    const source = readFileSync(
+      path.resolve(process.cwd(), "src/lib/certificates/verification-url.ts"),
+      "utf8",
+    );
+    expect(source).toMatch(/NEXT_PUBLIC_APP_URL/);
+    expect(source).not.toMatch(/vercel\.app/);
+    expect(source).not.toMatch(/env\.VERCEL_URL|process\.env\.VERCEL_URL/);
   });
 });
 

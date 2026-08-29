@@ -35,6 +35,8 @@ export function adminNavIsIndependentOfPublicSite(): boolean {
       href === "/" ||
       href.startsWith("/about") ||
       href.startsWith("/library") ||
+      href.startsWith("/consultation") ||
+      href.startsWith("/reviews") ||
       href.startsWith("/cart") ||
       href.startsWith("/dashboard") ||
       href === "/login" ||

@@ -29,27 +29,38 @@ export function CourseDetailClient({
   const description = displayLocalized(course.description, locale);
 
   return (
-    <>
+    <div className="detail-page">
       <section className="page-hero">
-        <div className="container stack-lg">
+        <div className="container page-hero-inner">
+          <p className="eyebrow">{msg("courses.eyebrow", locale)}</p>
           <h1 className="display display-lg">{title}</h1>
+          <div className="section-rule" aria-hidden="true" />
           {summary ? <p className="lead">{summary}</p> : null}
         </div>
       </section>
 
       <section className="section">
         <div className="container detail-layout">
-          <div>
-            {course.imageUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                className="course-detail-image"
-                src={course.imageUrl}
-                alt=""
-              />
-            ) : null}
+          <div className="detail-main">
+            <div className="course-detail-cover">
+              {course.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  className="course-detail-image"
+                  src={course.imageUrl}
+                  alt=""
+                />
+              ) : (
+                <div className="course-card-cover" aria-hidden="true">
+                  <div className="course-card-cover-mark" />
+                  <span className="course-card-cover-label">
+                    {msg("learning.coverPlaceholder", locale)}
+                  </span>
+                </div>
+              )}
+            </div>
             {description ? (
-              <p className="muted" style={{ marginBottom: "2rem", lineHeight: 1.8 }}>
+              <p className="muted" style={{ lineHeight: 1.8 }}>
                 {description}
               </p>
             ) : null}
@@ -156,7 +167,7 @@ export function CourseDetailClient({
                 {inCart ? msg("courses.inCart", locale) : msg("courses.addToCart", locale)}
               </button>
             )}
-            <div style={{ marginTop: "1rem" }}>
+            <div>
               <Link href="/courses" className="btn btn-ghost btn-block">
                 {msg("courses.back", locale)}
               </Link>
@@ -164,6 +175,6 @@ export function CourseDetailClient({
           </aside>
         </div>
       </section>
-    </>
+    </div>
   );
 }

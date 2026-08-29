@@ -409,6 +409,9 @@ describe("certificate PDF route wiring", () => {
     expect(route).toMatch(/denyCertificatePdfAccess/);
     expect(route).toMatch(/generateCertificatePdf/);
     expect(route).toMatch(/loadCertificatePdfRecord/);
+    expect(route).toMatch(/maxDuration = 60/);
+    expect(route).toMatch(/export const runtime = "nodejs"/);
+    expect(route).not.toMatch(/runtime = "edge"/);
     expect(route).not.toMatch(/SUPABASE_SECRET_KEY|SERVICE_ROLE/);
   });
 
@@ -471,5 +474,19 @@ describe("certificate PDF route wiring", () => {
     expect(OFFICIAL_LOGO_RELATIVE_PATH).toBe(
       "public/brand/avatar-institut-official.jpeg",
     );
+  });
+
+  it("traces Template 2 assets into Vercel serverless PDF functions", () => {
+    const config = readFileSync(
+      path.resolve(process.cwd(), "next.config.ts"),
+      "utf8",
+    );
+    expect(config).toMatch(/outputFileTracingIncludes/);
+    expect(config).toMatch(/serverExternalPackages/);
+    expect(config).toMatch(/@sparticuz\/chromium/);
+    expect(config).toMatch(/puppeteer-core/);
+    expect(config).toMatch(/public\/certificates\/template/);
+    expect(config).toMatch(/avatar-institut-official\.jpeg/);
+    expect(config).not.toMatch(/vercel\.app/);
   });
 });

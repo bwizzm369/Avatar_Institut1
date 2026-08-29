@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import HomePage from "./HomePage";
+import { listPublishedReviews } from "@/lib/reviews/public";
 import { englishAbsoluteTitle } from "@/lib/titles";
 
 export const metadata: Metadata = {
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
     "Avatar Institut für Metaphysik — international academy for metaphysics, consciousness, and human development in English and Arabic.",
 };
 
-export default function Page() {
-  return <HomePage />;
+export default async function Page() {
+  const reviews = await listPublishedReviews();
+  return <HomePage reviews={reviews} />;
 }

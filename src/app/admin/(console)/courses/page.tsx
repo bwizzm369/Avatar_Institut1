@@ -20,7 +20,7 @@ export default async function AdminCoursesPage({
       <header className="admin-page-header">
         <h1>Courses</h1>
         <p>
-          Official Avatar Institute course registry. Add courses manually or
+          Official Avatar Institut course registry. Add courses manually or
           import Excel/CSV from the academy. No titles or prices are invented
           here.
         </p>

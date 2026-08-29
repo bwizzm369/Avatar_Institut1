@@ -38,10 +38,12 @@ type Dictionary = Record<string, LocalizedString>;
 
 export const messages: Dictionary = {
   "nav.home": { en: "Home", ar: "الرئيسية" },
-  "nav.about": { en: "About", ar: "عن المؤسسة" },
+  "nav.about": { en: "About", ar: "عن المعهد" },
   "nav.founder": { en: "Founder", ar: "المؤسس" },
   "nav.courses": { en: "Courses", ar: "الدورات" },
   "nav.library": { en: "Library", ar: "المكتبة" },
+  "nav.consultation": { en: "Consultation", ar: "استشارة" },
+  "nav.reviews": { en: "Reviews", ar: "الآراء" },
   "nav.cart": { en: "Cart", ar: "السلة" },
   "nav.login": { en: "Log in", ar: "تسجيل الدخول" },
   "nav.signup": { en: "Sign up", ar: "إنشاء حساب" },
@@ -55,10 +57,10 @@ export const messages: Dictionary = {
     en: "Where Science Meets Consciousness",
     ar: "حيث يلتقي العلم بالوعي",
   },
-  "brand.arabicName": { en: "مؤسسة الأڤاتار", ar: "مؤسسة الأڤاتار" },
+  "brand.arabicName": { en: "معهد الأفاتار", ar: "معهد الأفاتار" },
   "brand.logoAlt": {
     en: "Official Avatar Institut logo: circle with a center point, Avatar Institut für Metaphysik GmbH",
-    ar: "الشعار الرسمي لمؤسسة الأڤاتار: دائرة بنقطة مركزية، Avatar Institut für Metaphysik GmbH",
+    ar: "الشعار الرسمي لمعهد الأفاتار: دائرة بنقطة مركزية، Avatar Institut für Metaphysik GmbH",
   },
 
   "home.eyebrow": {
@@ -66,8 +68,8 @@ export const messages: Dictionary = {
     ar: "معهد إلكتروني",
   },
   "home.title": {
-    en: "Avatar Institute for\nConsciousness &\nMetaphysical Studies",
-    ar: "معهد الأڤاتار\nلدراسات الوعي\nوالميتافيزيقا",
+    en: "Avatar Institut for\nConsciousness &\nMetaphysical Studies",
+    ar: "معهد الأفاتار\nلدراسات الوعي\nوالميتافيزيقا",
   },
   "home.subtitle": {
     en: "An international online institute dedicated to philosophy,\nconsciousness studies,\nand structured learning in Arabic and English.",
@@ -75,16 +77,17 @@ export const messages: Dictionary = {
   },
   "home.ctaCourses": { en: "Explore Courses", ar: "استكشف الدورات" },
   "home.ctaLibrary": { en: "Digital Library", ar: "المكتبة الرقمية" },
+  "home.ctaConsultation": { en: "Request a consultation", ar: "اطلب استشارة" },
   "home.ctaAbout": { en: "Our mission", ar: "رسالتنا" },
   "home.ctaFounder": {
     en: "Meet our founder",
     ar: "تعرّف على المؤسس",
   },
-  "home.aboutEyebrow": { en: "About Avatar Institut", ar: "عن مؤسسة الأڤاتار" },
+  "home.aboutEyebrow": { en: "About Avatar Institut", ar: "عن معهد الأفاتار" },
   "home.aboutTitle": { en: "Bridging Science and Spirit", ar: "جسر بين العلم والروح" },
   "home.aboutBody1": {
     en: "Avatar Institut für Metaphysik GmbH is an international academy dedicated to advancing the study of metaphysics, consciousness, and human development.",
-    ar: "مؤسسة الأڤاتار للميتافيزيقا هي أكاديمية دولية مكرسة لتطوير دراسة الميتافيزيقا والوعي والتنمية البشرية.",
+    ar: "معهد الأفاتار للميتافيزيقا هو أكاديمية دولية مكرّسة لتطوير دراسة الميتافيزيقا والوعي والتنمية البشرية.",
   },
   "home.aboutBody2": {
     en: "Our mission brings together philosophical inquiry and spiritual wisdom, opening pathways for researchers, students, and professionals in Arabic and English.",
@@ -95,7 +98,7 @@ export const messages: Dictionary = {
   "home.value.wisdom": { en: "Wisdom", ar: "الحكمة" },
   "home.value.wisdomBody": {
     en: "Reflective understanding that joins metaphysical thought with spiritual insight, as cultivated at Avatar Institut.",
-    ar: "فهم تأمّلي يجمع الفكر الميتافيزيقي بالبصيرة الروحية، كما تُنمّيه مؤسسة الأڤاتار.",
+    ar: "فهم تأمّلي يجمع الفكر الميتافيزيقي بالبصيرة الروحية، كما يُنمّيه معهد الأفاتار.",
   },
   "home.value.research": { en: "Research", ar: "البحث" },
   "home.value.researchBody": {
@@ -107,7 +110,7 @@ export const messages: Dictionary = {
     en: "Honest inquiry and clear communication, without exaggeration or unsupported claims.",
     ar: "استقصاء صادق وتواصل واضح، بلا مبالغة ولا ادّعاءات غير موثّقة.",
   },
-  "home.value.transformation": { en: "Transformation", ar: "التحول" },
+  "home.value.transformation": { en: "Transformation", ar: "التحوّل" },
   "home.value.transformationBody": {
     en: "Supporting personal growth and the development of human consciousness through accessible education.",
     ar: "دعم النمو الشخصي وتنمية الوعي الإنساني عبر تعليم واضح ومتاح.",
@@ -118,7 +121,7 @@ export const messages: Dictionary = {
   },
   "home.ctaBannerBody": {
     en: "Explore the Avatar Institut course catalogue and begin your learning journey.",
-    ar: "استكشف كتالوج دورات مؤسسة الأڤاتار وابدأ رحلتك التعليمية.",
+    ar: "استكشف كتالوج دورات معهد الأفاتار وابدأ رحلتك التعليمية.",
   },
   "connect.eyebrow": {
     en: "Official Channels",
@@ -129,23 +132,161 @@ export const messages: Dictionary = {
     ar: "تواصل معنا",
   },
   "connect.description": {
-    en: "Stay connected with Avatar Institute through our official channels.",
+    en: "Stay connected with Avatar Institut through our official channels.",
     ar: "ابقَ على تواصل مع معهد الأفاتار عبر قنواتنا الرسمية.",
   },
   "connect.open": {
     en: "Open",
-    ar: "فتح",
+    ar: "افتح",
   },
+
+  "consultation.eyebrow": { en: "Guidance", ar: "إرشاد" },
+  "consultation.title": {
+    en: "Consultation & Information",
+    ar: "استشارة ومعلومات",
+  },
+  "consultation.lead": {
+    en: "Request a private consultation or ask about our programmes. The institute team reviews each message and replies by email.",
+    ar: "اطلب استشارة خاصة أو استعلم عن برامجنا. يراجع فريق المعهد كل رسالة ويرد عبر البريد الإلكتروني.",
+  },
+  "consultation.type": { en: "Request type", ar: "نوع الطلب" },
+  "consultation.typePlaceholder": { en: "Choose a type", ar: "اختر النوع" },
+  "consultation.type.consultation": {
+    en: "Private consultation",
+    ar: "استشارة خاصة",
+  },
+  "consultation.type.information": { en: "Information request", ar: "طلب معلومات" },
+  "consultation.fullName": { en: "Full name", ar: "الاسم الكامل" },
+  "consultation.email": { en: "Email", ar: "البريد الإلكتروني" },
+  "consultation.phone": { en: "Phone (optional)", ar: "الهاتف (اختياري)" },
+  "consultation.message": { en: "Message", ar: "الرسالة" },
+  "consultation.consent": {
+    en: "I agree to be contacted about this request. My details are used only to reply and are not published.",
+    ar: "أوافق على التواصل معي بخصوص هذا الطلب. تُستخدم بياناتي للرد فقط ولا تُنشر.",
+  },
+  "consultation.submit": { en: "Send request", ar: "إرسال الطلب" },
+  "consultation.submitting": { en: "Sending…", ar: "جارٍ الإرسال…" },
+  "consultation.success": {
+    en: "Thank you. Your request has been received. We will reply by email.",
+    ar: "شكرًا لك. تم استلام طلبك، وسنرد عبر البريد الإلكتروني.",
+  },
+  "consultation.error": {
+    en: "Unable to send your request. Please try again.",
+    ar: "تعذّر إرسال طلبك. يُرجى المحاولة مرة أخرى.",
+  },
+  "consultation.configMissing": {
+    en: "The request form is not connected yet. Please try again later.",
+    ar: "نموذج الطلب غير متصل حاليًا. يُرجى المحاولة لاحقًا.",
+  },
+  "consultation.validationFailed": {
+    en: "Please complete the required fields.",
+    ar: "يُرجى إكمال الحقول المطلوبة.",
+  },
+  "consultation.error.required": { en: "This field is required.", ar: "هذا الحقل مطلوب." },
+  "consultation.error.emailInvalid": {
+    en: "Enter a valid email address.",
+    ar: "أدخل بريدًا إلكترونيًا صالحًا.",
+  },
+  "consultation.error.tooShort": {
+    en: "Please write a little more so we can help you.",
+    ar: "يُرجى كتابة المزيد حتى نتمكّن من مساعدتك.",
+  },
+  "consultation.error.tooLong": { en: "This field is too long.", ar: "هذا الحقل طويل جدًا." },
+
+  "reviews.eyebrow": { en: "Student voices", ar: "أصوات الدارسين" },
+  "reviews.title": { en: "Testimonials", ar: "آراء الدارسين" },
+  "reviews.lead": {
+    en: "Reflections shared by students of Avatar Institut, published with care.",
+    ar: "آراء يشاركها طلاب معهد الأفاتار، وتُنشر بعناية.",
+  },
+  "reviews.empty": {
+    en: "No published testimonials yet.",
+    ar: "لا توجد آراء منشورة حاليًا.",
+  },
+  "reviews.viewAll": { en: "All testimonials", ar: "جميع الآراء" },
+  "reviews.form.title": { en: "Share your review", ar: "شارك رأيك" },
+  "reviews.form.lead": {
+    en: "Tell us about your experience. Your name is taken from your student profile, and your review appears after the institute has reviewed it.",
+    ar: "حدّثنا عن تجربتك. يُؤخذ اسمك من ملفك الدراسي، ويظهر رأيك بعد مراجعته من المعهد.",
+  },
+  "reviews.form.as": { en: "Submitting as {name}", ar: "الإرسال باسم {name}" },
+  "reviews.form.rating": { en: "Rating", ar: "التقييم" },
+  "reviews.form.ratingStar": { en: "{n} out of 5", ar: "{n} من 5" },
+  "reviews.form.text": { en: "Your review", ar: "رأيك" },
+  "reviews.form.submit": { en: "Submit review", ar: "إرسال الرأي" },
+  "reviews.form.submitting": { en: "Sending…", ar: "جارٍ الإرسال…" },
+  "reviews.form.success": {
+    en: "Thank you for sharing your review. It will appear after it has been reviewed by Avatar Institut.",
+    ar: "شكرًا لمشاركتك رأيك. سيظهر بعد مراجعته من قِبل معهد الأفاتار.",
+  },
+  "reviews.form.loginTitle": {
+    en: "Share a review",
+    ar: "شارك رأيك",
+  },
+  "reviews.form.loginBody": {
+    en: "Sign in with your student account to leave a review.",
+    ar: "سجّل الدخول بحسابك الدراسي لترك رأيك.",
+  },
+  "reviews.form.loginCta": { en: "Log in to share a review", ar: "تسجيل الدخول لمشاركة رأيك" },
+  "reviews.status.pendingTitle": {
+    en: "Thank you for your review",
+    ar: "شكرًا لمشاركتك رأيك",
+  },
+  "reviews.status.pendingBody": {
+    en: "Thank you for sharing your review. It will appear after it has been reviewed by Avatar Institut.",
+    ar: "شكرًا لمشاركتك رأيك. سيظهر بعد مراجعته من قِبل معهد الأفاتار.",
+  },
+  "reviews.status.approvedTitle": {
+    en: "Your review is published",
+    ar: "تم نشر رأيك",
+  },
+  "reviews.status.approvedBody": {
+    en: "Your review is now visible on this page.",
+    ar: "رأيك ظاهر الآن في هذه الصفحة.",
+  },
+  "reviews.status.rejectedTitle": {
+    en: "Your review was not published",
+    ar: "لم يُنشر رأيك",
+  },
+  "reviews.status.rejectedBody": {
+    en: "Thank you for writing to us. The institute has not published this review.",
+    ar: "شكرًا لك. لم ينشر المعهد هذا الرأي.",
+  },
+  "reviews.error.ratingRequired": {
+    en: "Please choose a rating from 1 to 5.",
+    ar: "يُرجى اختيار تقييم من 1 إلى 5.",
+  },
+  "reviews.error.textRequired": {
+    en: "Please write your review.",
+    ar: "يُرجى كتابة رأيك.",
+  },
+  "reviews.error.tooLong": {
+    en: "Your review is too long.",
+    ar: "رأيك طويل جدًا.",
+  },
+  "reviews.error.alreadySubmitted": {
+    en: "You have already submitted a review with this account.",
+    ar: "لقد أرسلت رأيًا مسبقًا بهذا الحساب.",
+  },
+  "reviews.error.unauthenticated": {
+    en: "Please log in to share a review.",
+    ar: "يُرجى تسجيل الدخول لمشاركة رأيك.",
+  },
+  "reviews.error.failed": {
+    en: "We could not save your review. Please try again.",
+    ar: "تعذّر حفظ رأيك. يُرجى المحاولة مرة أخرى.",
+  },
+  "reviews.ratingAria": { en: "{n} out of 5 stars", ar: "{n} من 5 نجوم" },
 
   "courses.eyebrow": { en: "Learning pathways", ar: "مسارات التعلم" },
   "courses.title": { en: "Course catalogue", ar: "كتالوج الدورات" },
   "courses.intro": {
     en: "Explore the Avatar Institut programmes currently open for enrolment.",
-    ar: "استكشف برامج معهد الأفاتار المتاحة للتسجيل حالياً.",
+    ar: "استكشف برامج معهد الأفاتار المتاحة للتسجيل حاليًا.",
   },
   "courses.empty": {
     en: "No published programmes are available yet.",
-    ar: "لا توجد برامج منشورة متاحة حالياً.",
+    ar: "لا توجد برامج منشورة متاحة حاليًا.",
   },
   "courses.demoBadge": { en: "Demonstration course", ar: "دورة تجريبية" },
   "courses.weeks": { en: "{n} weeks", ar: "{n} أسابيع" },
@@ -190,11 +331,11 @@ export const messages: Dictionary = {
     ar: "العضوية الرقمية",
   },
   "courses.startCourse": {
-    en: "Start Course",
+    en: "Start course",
     ar: "ابدأ الدورة",
   },
   "courses.continueCourse": {
-    en: "Continue Course",
+    en: "Continue course",
     ar: "متابعة الدورة",
   },
 
@@ -203,15 +344,15 @@ export const messages: Dictionary = {
     ar: "عن المعهد",
   },
   "about.title": {
-    en: "About Avatar Institute",
+    en: "About Avatar Institut",
     ar: "نبذة عن المعهد",
   },
   "about.overviewTitle": {
-    en: "About Avatar Institute",
+    en: "About Avatar Institut",
     ar: "نبذة عن المعهد",
   },
   "about.overviewBody1": {
-    en: "Avatar Institute is an international institute dedicated to the study of Metaphysical Sciences. Its mission is to develop a balanced scientific and intellectual perspective on the relationship between human beings, consciousness, and the universe by bringing together physics, philosophy, Sufism, consciousness studies, parapsychology, and metaphysics within an academic framework based on research, analysis, and scholarly inquiry.",
+    en: "Avatar Institut is an international institute dedicated to the study of Metaphysical Sciences. Its mission is to develop a balanced scientific and intellectual perspective on the relationship between human beings, consciousness, and the universe by bringing together physics, philosophy, Sufism, consciousness studies, parapsychology, and metaphysics within an academic framework based on research, analysis, and scholarly inquiry.",
     ar: "الأفاتار (AVATAR) هو معهد عالمي متخصص في علوم الميتافيزيقا، يهدف إلى بناء رؤية علمية وفكرية متوازنة تستكشف العلاقة بين الإنسان والكون والوعي، من خلال الجمع بين الفيزياء، والفلسفة، والتصوف، ودراسات الوعي، والعلوم الباراسيكولوجية، والميتافيزيقا، ضمن منهج أكاديمي يقوم على البحث والتحليل والدراسة.",
   },
   "about.overviewBody2": {
@@ -224,7 +365,7 @@ export const messages: Dictionary = {
     ar: "عن المعهد",
   },
   "about.tab.founder": {
-    en: "The Founder",
+    en: "Founder",
     ar: "المؤسس",
   },
   "about.missionTitle": {
@@ -284,7 +425,7 @@ export const messages: Dictionary = {
     ar: "ماذا نقدم؟",
   },
   "about.offer.1": {
-    en: "Specialized academic programs and courses.",
+    en: "Specialized academic programmes and courses.",
     ar: "برامج ودورات أكاديمية متخصصة.",
   },
   "about.offer.2": {
@@ -300,7 +441,7 @@ export const messages: Dictionary = {
     ar: "مشاريع بحثية وتعاونية دولية.",
   },
   "about.offer.5": {
-    en: "Academic certificates and authorizations for approved programs.",
+    en: "Academic certificates and authorizations for approved programmes.",
     ar: "شهادات وإجازات علمية في البرامج المعتمدة.",
   },
   "about.offer.6": {
@@ -330,7 +471,7 @@ export const messages: Dictionary = {
   },
   "founder.institutionalNote": {
     en: "Institutional biography provided by Avatar Institut. Biographical statements are presented as supplied and are not independent scientific verification.",
-    ar: "سيرة مؤسسية قدّمتها مؤسسة الأفاتار. تُعرض الإفادات البيوغرافية كما وردت، وليست تحققًا علميًا مستقلًا.",
+    ar: "سيرة مؤسسية قدّمها معهد الأفاتار. تُعرض الإفادات البيوغرافية كما وردت، وليست تحققًا علميًا مستقلًا.",
   },
   "founder.tocLabel": {
     en: "On this page",
@@ -350,7 +491,7 @@ export const messages: Dictionary = {
   },
   "founder.backToAbout": {
     en: "Back to About the Institute",
-    ar: "العودة إلى عن المعهد",
+    ar: "العودة إلى صفحة عن المعهد",
   },
   "founder.section.biography": {
     en: "Biography",
@@ -390,7 +531,7 @@ export const messages: Dictionary = {
   },
   "founder.worksNote": {
     en: "Titles listed as provided by Avatar Institut. Official Amazon KDP links will be added when available.",
-    ar: "العناوين كما قدّمتها مؤسسة الأفاتار. ستُضاف روابط أمازون KDP الرسمية عند توفرها.",
+    ar: "العناوين كما قدّمها معهد الأفاتار. ستُضاف روابط أمازون KDP الرسمية عند توفرها.",
   },
   "founder.externalPending": {
     en: "External reference pending",
@@ -407,7 +548,7 @@ export const messages: Dictionary = {
   },
   "library.subtitle": {
     en: "Explore books, videos and research selected by Avatar Institut.",
-    ar: "اكتشف كتبًا وفيديوهات وأبحاثًا مختارة من مؤسسة الأفاتار.",
+    ar: "اكتشف كتبًا وفيديوهات وأبحاثًا مختارة من معهد الأفاتار.",
   },
   "library.filtersLabel": {
     en: "Library filters",
@@ -435,8 +576,8 @@ export const messages: Dictionary = {
     ar: "نعمل حاليًا على إعداد أول مجموعة مختارة من الكتب والفيديوهات والأبحاث.",
   },
   "library.emptyBody": {
-    en: "Please return soon to discover Avatar Institut's first public collection.",
-    ar: "يرجى العودة قريبًا لاكتشاف أول مجموعة عامة من مؤسسة الأفاتار.",
+    en: "Please check back soon to discover Avatar Institut's first public collection.",
+    ar: "يُرجى العودة قريبًا لاكتشاف أول مجموعة عامة من معهد الأفاتار.",
   },
   "library.noResultsTitle": {
     en: "No resources match your current search.",
@@ -449,14 +590,14 @@ export const messages: Dictionary = {
 
   "cart.title": { en: "Your cart", ar: "سلتك" },
   "cart.empty": { en: "Your cart is empty.", ar: "سلتك فارغة." },
-  "cart.loading": { en: "Loading cart…", ar: "جاري تحميل السلة…" },
+  "cart.loading": { en: "Loading cart…", ar: "جارٍ تحميل السلة…" },
   "cart.browse": { en: "Browse courses", ar: "تصفح الدورات" },
   "cart.remove": { en: "Remove", ar: "إزالة" },
   "cart.total": { en: "Total", ar: "المجموع" },
   "cart.checkout": { en: "Pay with Stripe (test)", ar: "الدفع عبر Stripe (تجريبي)" },
   "cart.checkoutLoading": {
     en: "Redirecting to Stripe…",
-    ar: "جاري التحويل إلى Stripe…",
+    ar: "جارٍ التحويل إلى Stripe…",
   },
   "cart.checkoutLoginRequired": {
     en: "Sign in to pay",
@@ -464,23 +605,23 @@ export const messages: Dictionary = {
   },
   "cart.checkoutConfigMissing": {
     en: "Secure checkout is temporarily unavailable. Please try again later.",
-    ar: "الدفع الآمن غير متاح مؤقتًا. يرجى المحاولة لاحقًا.",
+    ar: "الدفع الآمن غير متاح مؤقتًا. يُرجى المحاولة لاحقًا.",
   },
   "cart.checkoutError": {
     en: "Could not start checkout. Please try again.",
-    ar: "تعذّر بدء الدفع. يرجى المحاولة مرة أخرى.",
+    ar: "تعذّر بدء الدفع. يُرجى المحاولة مرة أخرى.",
   },
   "cart.checkoutIncludedWithPass": {
     en: "This course is included with your Student Pass. Opening your course…",
-    ar: "هذه الدورة مشمولة ضمن عضويتك في Student Pass. جاري فتح دورتك…",
+    ar: "هذه الدورة مشمولة ضمن عضويتك في Student Pass. جارٍ فتح دورتك…",
   },
   "cart.checkoutZeroAmount": {
     en: "This Student Pass discount brings the price to zero. Please contact the academy or use an included course.",
-    ar: "تخفيض Student Pass يجعل السعر صفرًا. يرجى التواصل مع المعهد أو استخدام دورة مشمولة.",
+    ar: "تخفيض Student Pass يجعل السعر صفرًا. يُرجى التواصل مع المعهد أو استخدام دورة مشمولة.",
   },
   "cart.checkoutPriceRejected": {
     en: "Checkout amounts are set securely by the academy. Please try again.",
-    ar: "تُحدَّد مبالغ الدفع بأمان من الأكاديمية. يرجى المحاولة مرة أخرى.",
+    ar: "تُحدَّد مبالغ الدفع بأمان من الأكاديمية. يُرجى المحاولة مرة أخرى.",
   },
   "cart.checkoutStripeNote": {
     en: "Secure checkout. Your courses appear under My courses shortly after payment.",
@@ -508,7 +649,7 @@ export const messages: Dictionary = {
   },
   "cart.successActivated": {
     en: "Your course has been added to My courses",
-    ar: "تمت إضافة دورتك إلى دوراتي",
+    ar: "تمت إضافة دورتك إلى «دوراتي»",
   },
   "cart.successDelayed": {
     en: "Your payment was received. We are still confirming access and will update this page automatically.",
@@ -543,16 +684,16 @@ export const messages: Dictionary = {
   "auth.lastName": { en: "Last name", ar: "اسم العائلة" },
   "auth.submitLogin": { en: "Log in", ar: "تسجيل الدخول" },
   "auth.submitSignup": { en: "Sign up", ar: "إنشاء حساب" },
-  "auth.submitting": { en: "Please wait…", ar: "يرجى الانتظار…" },
+  "auth.submitting": { en: "Please wait…", ar: "يُرجى الانتظار…" },
   "auth.noAccount": { en: "No account yet?", ar: "ليس لديك حساب؟" },
   "auth.hasAccount": { en: "Already have an account?", ar: "لديك حساب بالفعل؟" },
   "auth.configMissing": {
     en: "Sign-in is temporarily unavailable. Please try again later.",
-    ar: "تسجيل الدخول غير متاح مؤقتًا. يرجى المحاولة لاحقًا.",
+    ar: "تسجيل الدخول غير متاح مؤقتًا. يُرجى المحاولة لاحقًا.",
   },
   "auth.connectedNotice": {
     en: "Sign in with your Avatar Institut account. Course access appears under My courses after payment is confirmed.",
-    ar: "سجّل الدخول بحساب مؤسسة الأڤاتار. يظهر الوصول إلى الدورات ضمن «دوراتي» بعد تأكيد الدفع.",
+    ar: "سجّل الدخول بحساب معهد الأفاتار. يظهر الوصول إلى الدورات ضمن «دوراتي» بعد تأكيد الدفع.",
   },
   "auth.confirmEmail": {
     en: "Check your email to confirm your account before signing in.",
@@ -564,7 +705,7 @@ export const messages: Dictionary = {
   },
   "auth.emailNotConfirmed": {
     en: "Please confirm your email before signing in. Check your inbox for the confirmation link.",
-    ar: "يرجى تأكيد بريدك الإلكتروني قبل تسجيل الدخول. تحقق من صندوق الوارد لرابط التأكيد.",
+    ar: "يُرجى تأكيد بريدك الإلكتروني قبل تسجيل الدخول. تحقق من صندوق الوارد لرابط التأكيد.",
   },
   "auth.networkError": {
     en: "Network error. Check your connection and try again.",
@@ -572,24 +713,65 @@ export const messages: Dictionary = {
   },
   "auth.logoutFailed": {
     en: "Could not sign out. Please try again.",
-    ar: "تعذّر تسجيل الخروج. يرجى المحاولة مرة أخرى.",
+    ar: "تعذّر تسجيل الخروج. يُرجى المحاولة مرة أخرى.",
   },
   "auth.signupFailed": {
     en: "Could not create the account. Please try again.",
-    ar: "تعذّر إنشاء الحساب. يرجى المحاولة مرة أخرى.",
+    ar: "تعذّر إنشاء الحساب. يُرجى المحاولة مرة أخرى.",
+  },
+  "auth.accountExists": {
+    en: "An account already exists for this email. Please log in.",
+    ar: "يوجد حساب مرتبط بهذا البريد الإلكتروني. يُرجى تسجيل الدخول.",
+  },
+  "auth.phone": {
+    en: "WhatsApp / Phone",
+    ar: "رقم الهاتف أو واتساب",
+  },
+  "auth.country": { en: "Country", ar: "البلد" },
+  "auth.preferredLanguage": {
+    en: "Preferred language",
+    ar: "اللغة المفضلة",
+  },
+  "auth.language.ar": { en: "Arabic", ar: "العربية" },
+  "auth.language.en": { en: "English", ar: "الإنجليزية" },
+  "auth.section.identity": { en: "Identity", ar: "الهوية" },
+  "auth.section.contact": { en: "Contact", ar: "التواصل" },
+  "auth.section.account": { en: "Account", ar: "الحساب" },
+  "auth.section.language": { en: "Language", ar: "اللغة" },
+  "auth.section.history": {
+    en: "Avatar history",
+    ar: "السجل في معهد الأفاتار",
+  },
+  "auth.previouslyStudied": {
+    en: "Have you previously studied at Avatar Institut?",
+    ar: "هل سبق لك الدراسة في معهد الأفاتار؟",
+  },
+  "auth.previouslyStudiedYes": { en: "Yes", ar: "نعم" },
+  "auth.previouslyStudiedNo": { en: "No", ar: "لا" },
+  "auth.previousCourse": {
+    en: "Course previously attended",
+    ar: "الدورة التي سبق حضورها",
+  },
+  "auth.certificateNumberOptional": {
+    en: "Certificate number, if available",
+    ar: "رقم الشهادة، إن وُجد",
   },
   "auth.validationFailed": {
     en: "Please correct the highlighted fields.",
-    ar: "يرجى تصحيح الحقول المميزة.",
+    ar: "يُرجى تصحيح الحقول المميزة.",
   },
   "auth.callbackFailed": {
-    en: "Authentication callback failed. Please try signing in again.",
-    ar: "فشل ردّ المصادقة. يرجى محاولة تسجيل الدخول مرة أخرى.",
+    en: "Sign-in could not be completed. Please try again.",
+    ar: "تعذّر إكمال تسجيل الدخول. يُرجى المحاولة مرة أخرى.",
   },
   "auth.error.required": { en: "This field is required.", ar: "هذا الحقل مطلوب." },
   "auth.error.emailInvalid": {
     en: "Enter a valid email address.",
     ar: "أدخل بريدًا إلكترونيًا صالحًا.",
+  },
+  "auth.error.tooLong": {
+    en: "This value is too long.",
+    ar: "هذه القيمة طويلة جدًا.",
   },
   "auth.error.passwordShort": {
     en: "Password must be at least 8 characters.",
@@ -605,7 +787,7 @@ export const messages: Dictionary = {
   },
   "auth.forgotNotice": {
     en: "Enter the email for your Avatar Institut account. If an account exists, a reset link will be sent.",
-    ar: "أدخل البريد الإلكتروني لحساب مؤسسة الأڤاتار. إذا كان الحساب موجودًا، فسيتم إرسال رابط إعادة التعيين.",
+    ar: "أدخل البريد الإلكتروني لحساب معهد الأفاتار. إذا كان الحساب موجودًا، فسيتم إرسال رابط إعادة التعيين.",
   },
   "auth.sendResetLink": {
     en: "Send reset link",
@@ -674,16 +856,21 @@ export const messages: Dictionary = {
     ar: "يجب تسجيل الدخول لعرض لوحة التحكم.",
   },
   "dashboard.intro": {
-    en: "After server-confirmed payment, enrolled programmes will appear under My courses. Certificates will appear after completion rules are met.",
-    ar: "بعد تأكيد الدفع من الخادم، ستظهر البرامج المسجّلة ضمن دوراتي. ستظهر الشهادات بعد استيفاء شروط الإتمام.",
+    en: "Thank you for your payment. Welcome to Avatar Institut.",
+    ar: "شكرًا لإتمام عملية الدفع. مرحبًا بك في معهد الأفاتار.",
   },
+  "dashboard.overallProgress": {
+    en: "Overall progress",
+    ar: "التقدّم الإجمالي",
+  },
+  "dashboard.viewAll": { en: "View all", ar: "عرض الكل" },
   "dashboard.nav.overview": { en: "Overview", ar: "نظرة عامة" },
   "dashboard.nav.courses": { en: "My courses", ar: "دوراتي" },
   "dashboard.nav.studentPass": { en: "Student Pass", ar: "Student Pass" },
   "dashboard.nav.certificates": { en: "My certificates", ar: "شهاداتي" },
   "dashboard.coursesTitle": { en: "My courses", ar: "دوراتي" },
   "dashboard.coursesEmpty": {
-    en: "No enrollments yet. Purchased courses appear here once access is ready.",
+    en: "No enrolments yet. Purchased courses appear here once access is ready.",
     ar: "لا توجد تسجيلات بعد. تظهر الدورات المشتراة هنا عندما يصبح الوصول جاهزًا.",
   },
   "dashboard.studentPassTitle": { en: "Student Pass", ar: "Student Pass" },
@@ -712,9 +899,68 @@ export const messages: Dictionary = {
   },
   "dashboard.memberCardActive": { en: "ACTIVE", ar: "ACTIVE" },
   "dashboard.memberCardInactive": { en: "INACTIVE", ar: "INACTIVE" },
-  "dashboard.studentPassPrice": {
-    en: "12 € / month",
-    ar: "12 € / الشهر",
+  "dashboard.studentPassPlansTitle": {
+    en: "Choose your plan",
+    ar: "اختر خطتك",
+  },
+  "dashboard.studentPassPlanNameMonthly": {
+    en: "Monthly",
+    ar: "شهري",
+  },
+  "dashboard.studentPassPlanNameSemiannual": {
+    en: "6 months",
+    ar: "6 أشهر",
+  },
+  "dashboard.studentPassPlanNameAnnual": {
+    en: "Annual",
+    ar: "سنوي",
+  },
+  "dashboard.studentPassPlanAmountMonthly": { en: "12 €", ar: "12 €" },
+  "dashboard.studentPassPlanAmountSemiannual": { en: "72 €", ar: "72 €" },
+  "dashboard.studentPassPlanAmountAnnual": { en: "144 €", ar: "144 €" },
+  "dashboard.studentPassPlanIntervalMonthly": {
+    en: "per month",
+    ar: "شهريًا",
+  },
+  "dashboard.studentPassPlanIntervalSemiannual": {
+    en: "every 6 months",
+    ar: "كل 6 أشهر",
+  },
+  "dashboard.studentPassPlanIntervalAnnual": {
+    en: "per year",
+    ar: "سنويًا",
+  },
+  "dashboard.studentPassChooseMonthly": {
+    en: "Choose monthly",
+    ar: "اختر الشهري",
+  },
+  "dashboard.studentPassChooseSemiannual": {
+    en: "Choose 6 months",
+    ar: "اختر 6 أشهر",
+  },
+  "dashboard.studentPassChooseAnnual": {
+    en: "Choose annual",
+    ar: "اختر السنوي",
+  },
+  "dashboard.studentPassSubscribeLoading": {
+    en: "Redirecting to Stripe…",
+    ar: "جارٍ التحويل إلى Stripe…",
+  },
+  "dashboard.studentPassCheckoutSuccess": {
+    en: "Stripe has received your checkout. Your Digital Membership becomes ACTIVE when the subscription is confirmed — not from this page alone.",
+    ar: "استلم Stripe عملية الدفع. تصبح العضوية الرقمية ACTIVE عندما يُؤكَّد الاشتراك — وليس من هذه الصفحة وحدها.",
+  },
+  "dashboard.studentPassCheckoutCancelled": {
+    en: "Checkout was cancelled. Your Student Pass is unchanged.",
+    ar: "تم إلغاء الدفع. لم تتغير حالة Student Pass.",
+  },
+  "dashboard.studentPassCheckoutError": {
+    en: "We could not start Student Pass checkout. Please try again.",
+    ar: "تعذّر بدء اشتراك Student Pass. يُرجى المحاولة مرة أخرى.",
+  },
+  "dashboard.studentPassAlreadyActive": {
+    en: "Your Student Pass is already active.",
+    ar: "Student Pass الخاص بك نشط بالفعل.",
   },
   "dashboard.certificatesTitle": { en: "My certificates", ar: "شهاداتي" },
   "dashboard.certificatesEmpty": {
@@ -777,11 +1023,11 @@ export const messages: Dictionary = {
   "learning.status.notStarted": { en: "Not started", ar: "لم يبدأ" },
   "learning.status.inProgress": { en: "In progress", ar: "قيد التقدّم" },
   "learning.status.completed": { en: "Completed", ar: "مكتمل" },
-  "learning.markComplete": { en: "Mark as completed", ar: "وضع علامة مكتمل" },
+  "learning.markComplete": { en: "Mark as completed", ar: "وضع علامة الاكتمال" },
   "learning.markingComplete": { en: "Saving…", ar: "جارٍ الحفظ…" },
   "learning.alreadyCompleted": {
     en: "This lesson is marked as completed.",
-    ar: "تم وضع علامة مكتمل على هذا الدرس.",
+    ar: "تم وضع علامة الاكتمال على هذا الدرس.",
   },
   "learning.bunnyPlaceholderTitle": {
     en: "Video lesson",
@@ -805,7 +1051,7 @@ export const messages: Dictionary = {
     ar: "لا يوجد ملف PDF مرفق بهذا الدرس بعد.",
   },
   "learning.accessDenied": {
-    en: "Access denied. An active, payment-confirmed enrollment is required. A URL alone never unlocks a course.",
+    en: "Access denied. An active, payment-confirmed enrolment is required. A URL alone never unlocks a course.",
     ar: "الوصول مرفوض. يلزم تسجيل نشط مؤكَّد الدفع. لا يفتح عنوان URL وحده أي دورة.",
   },
   "learning.courseNotFound": {
@@ -833,7 +1079,7 @@ export const messages: Dictionary = {
   },
   "learning.coverPlaceholder": {
     en: "Avatar Institut",
-    ar: "معهد أفاتار",
+    ar: "معهد الأفاتار",
   },
   "learning.enrolledBadge": { en: "Enrolled", ar: "مسجّل" },
   "learning.sidebarLabel": { en: "Course summary", ar: "ملخص الدورة" },
@@ -848,7 +1094,7 @@ export const messages: Dictionary = {
   },
   "learning.certificatePending": {
     en: "Complete all lessons to unlock certificate eligibility.",
-    ar: "أكمل جميع الدروس لتأهيل الشهادة.",
+    ar: "أكمل جميع الدروس لفتح أهلية الحصول على الشهادة.",
   },
   "learning.moduleLessonCount": {
     en: "{n} lessons",
@@ -858,7 +1104,7 @@ export const messages: Dictionary = {
 
   "footer.rights": {
     en: "© 2026 Avatar Institut für Metaphysik. All rights reserved.",
-    ar: "© 2026 مؤسسة الأڤاتار للميتافيزيقا. جميع الحقوق محفوظة.",
+    ar: "© 2026 معهد الأفاتار للميتافيزيقا. جميع الحقوق محفوظة.",
   },
   "footer.tagline": {
     en: "Where Science Meets Consciousness",
@@ -868,12 +1114,12 @@ export const messages: Dictionary = {
   "footer.platform": { en: "Platform", ar: "المنصة" },
   "footer.aboutBody": {
     en: "Avatar Institut für Metaphysik GmbH advances consciousness studies and metaphysical education.",
-    ar: "تعمل مؤسسة الأڤاتار للميتافيزيقا على تطوير دراسات الوعي والتعليم الميتافيزيقي.",
+    ar: "يعمل معهد الأفاتار للميتافيزيقا على تطوير دراسات الوعي والتعليم الميتافيزيقي.",
   },
 
   "notice.platformPhase": {
     en: "Avatar Institut — learning with care and clarity.",
-    ar: "معهد أفاتار — تعلّم بعناية ووضوح.",
+    ar: "معهد الأفاتار — تعلّم بعناية ووضوح.",
   },
 
   "common.min": { en: "{n} min", ar: "{n} د" },

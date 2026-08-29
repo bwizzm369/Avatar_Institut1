@@ -3,9 +3,12 @@ import {
   assertCanMutateStudentPass,
   canMutateStudentPass,
   hasActiveStudentPass,
+  isProtectedStripeStudentPass,
   isStudentPassManualSource,
+  STUDENT_PASS_PRICE_CENTS,
   STUDENT_PASS_PRICE_EUR,
   STUDENT_PASS_PRICE_LABEL,
+  STUDENT_PASS_STRIPE_PLAN_SPECS,
 } from "@/lib/admin/student-pass/types";
 import {
   activateStudentPass,
@@ -22,11 +25,20 @@ type SubRow = {
   expires_at: string | null;
   cancelled_at: string | null;
   source: string | null;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
 };
 
-function createMockClient(seed: SubRow[] = []) {
+function createMockClient(seed: Array<Partial<SubRow> & Pick<SubRow, "id" | "profile_id" | "status" | "started_at" | "expires_at" | "cancelled_at" | "source">> = []) {
   const rows = new Map<string, SubRow>(
-    seed.map((row) => [row.profile_id, { ...row }]),
+    seed.map((row) => [
+      row.profile_id,
+      {
+        stripe_customer_id: null,
+        stripe_subscription_id: null,
+        ...row,
+      },
+    ]),
   );
 
   return {
@@ -66,6 +78,10 @@ function createMockClient(seed: SubRow[] = []) {
                 expires_at: (payload.expires_at as string | null) ?? null,
                 cancelled_at: (payload.cancelled_at as string | null) ?? null,
                 source: (payload.source as string | null) ?? null,
+                stripe_customer_id:
+                  (payload.stripe_customer_id as string | null) ?? null,
+                stripe_subscription_id:
+                  (payload.stripe_subscription_id as string | null) ?? null,
               };
               rows.set(profileId, row);
               return { data: row, error: null };
@@ -104,6 +120,16 @@ function createMockClient(seed: SubRow[] = []) {
                       payload.source !== undefined
                         ? ((payload.source as string | null) ?? null)
                         : existing.source,
+                    stripe_customer_id:
+                      payload.stripe_customer_id !== undefined
+                        ? ((payload.stripe_customer_id as string | null) ??
+                          null)
+                        : existing.stripe_customer_id,
+                    stripe_subscription_id:
+                      payload.stripe_subscription_id !== undefined
+                        ? ((payload.stripe_subscription_id as string | null) ??
+                          null)
+                        : existing.stripe_subscription_id,
                   };
                   rows.set(next.profile_id, next);
                   return { data: next, error: null };
@@ -169,9 +195,28 @@ describe("hasActiveStudentPass", () => {
 });
 
 describe("Student Pass price socle", () => {
-  it("documents the 12 EUR / month offer", () => {
+  it("documents the 12 / 72 / 144 EUR Stripe plans", () => {
     expect(STUDENT_PASS_PRICE_EUR).toBe(12);
+    expect(STUDENT_PASS_PRICE_CENTS).toBe(1200);
     expect(STUDENT_PASS_PRICE_LABEL).toBe("12 €/month");
+    expect(STUDENT_PASS_STRIPE_PLAN_SPECS.monthly).toMatchObject({
+      eur: 12,
+      cents: 1200,
+      interval: "month",
+      intervalCount: 1,
+    });
+    expect(STUDENT_PASS_STRIPE_PLAN_SPECS.semiannual).toMatchObject({
+      eur: 72,
+      cents: 7200,
+      interval: "month",
+      intervalCount: 6,
+    });
+    expect(STUDENT_PASS_STRIPE_PLAN_SPECS.annual).toMatchObject({
+      eur: 144,
+      cents: 14400,
+      interval: "year",
+      intervalCount: 1,
+    });
   });
 });
 
@@ -320,5 +365,79 @@ describe("admin Student Pass mutations", () => {
     if (!result.ok) {
       expect(result.error).toMatch(/manual or offline/i);
     }
+  });
+
+  it("refuses to overwrite a live Stripe-billed subscription", async () => {
+    const mock = createMockClient([
+      {
+        id: "sub-stripe",
+        profile_id: "profile-stripe",
+        status: "active",
+        started_at: "2026-08-01T00:00:00.000Z",
+        expires_at: "2026-09-01T00:00:00.000Z",
+        cancelled_at: null,
+        source: "stripe",
+        stripe_customer_id: "cus_test",
+        stripe_subscription_id: "sub_test",
+      },
+    ]);
+
+    expect(
+      isProtectedStripeStudentPass(mock.rows.get("profile-stripe")!),
+    ).toBe(true);
+
+    const result = await activateStudentPass({
+      client: mock.client as never,
+      profileId: "profile-stripe",
+      source: "manual",
+      context: "admin",
+      now,
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error).toMatch(/billed by Stripe/i);
+    }
+    expect(mock.rows.get("profile-stripe")?.source).toBe("stripe");
+    expect(mock.rows.get("profile-stripe")?.stripe_subscription_id).toBe(
+      "sub_test",
+    );
+  });
+
+  it("keeps Stripe ids when deactivating or cancelling a Stripe row", async () => {
+    const mock = createMockClient([
+      {
+        id: "sub-stripe",
+        profile_id: "profile-stripe",
+        status: "active",
+        started_at: "2026-08-01T00:00:00.000Z",
+        expires_at: "2026-09-01T00:00:00.000Z",
+        cancelled_at: null,
+        source: "stripe",
+        stripe_customer_id: "cus_test",
+        stripe_subscription_id: "sub_test",
+      },
+    ]);
+
+    const deactivated = await deactivateStudentPass({
+      client: mock.client as never,
+      profileId: "profile-stripe",
+      context: "admin",
+    });
+    expect(deactivated.ok).toBe(true);
+    expect(mock.rows.get("profile-stripe")?.source).toBe("stripe");
+    expect(mock.rows.get("profile-stripe")?.stripe_subscription_id).toBe(
+      "sub_test",
+    );
+
+    const cancelled = await cancelStudentPass({
+      client: mock.client as never,
+      profileId: "profile-stripe",
+      context: "admin",
+      now,
+    });
+    expect(cancelled.ok).toBe(true);
+    expect(mock.rows.get("profile-stripe")?.status).toBe("cancelled");
+    expect(mock.rows.get("profile-stripe")?.source).toBe("stripe");
+    expect(mock.rows.get("profile-stripe")?.stripe_customer_id).toBe("cus_test");
   });
 });

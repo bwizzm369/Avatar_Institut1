@@ -3,7 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { resolveStudentLoginDestination } from "@/lib/admin/auth-policy";
-import { genericResetRequestResult, passwordResetEmailRedirectTo, PASSWORD_RESET_LOGIN_PATH } from "@/lib/auth/password-reset";
+import { applyLegacyMatchAfterSignup } from "@/lib/auth/legacy-match-store";
+import {
+  authRedirectOrigin,
+  genericResetRequestResult,
+  passwordResetEmailRedirectTo,
+  PASSWORD_RESET_LOGIN_PATH,
+} from "@/lib/auth/password-reset";
+import {
+  buildSignupUserMetadata,
+  readSignupFormFields,
+} from "@/lib/auth/signup-fields";
 import {
   validateForgotPassword,
   validateLogin,
@@ -99,6 +109,29 @@ export async function loginAction(
   }
 }
 
+function isSignupEmailTakenError(error: {
+  message?: string;
+  code?: string;
+}): boolean {
+  const code = (error.code ?? "").toLowerCase();
+  const message = (error.message ?? "").toLowerCase();
+  return (
+    code === "user_already_exists" ||
+    code === "email_exists" ||
+    message.includes("already been registered") ||
+    message.includes("already registered") ||
+    message.includes("user already exists") ||
+    message.includes("email_exists") ||
+    message.includes("already been taken")
+  );
+}
+
+function isLikelyExistingSignupUser(user: {
+  identities?: { id?: string }[] | null;
+} | null): boolean {
+  return Boolean(user && Array.isArray(user.identities) && user.identities.length === 0);
+}
+
 export async function signupAction(
   formData: FormData,
 ): Promise<AuthActionResult> {
@@ -106,12 +139,7 @@ export async function signupAction(
     return { ok: false, errorKey: "auth.configMissing" };
   }
 
-  const parsed = validateSignup({
-    email: String(formData.get("email") ?? ""),
-    password: String(formData.get("password") ?? ""),
-    firstName: String(formData.get("firstName") ?? ""),
-    lastName: String(formData.get("lastName") ?? ""),
-  });
+  const parsed = validateSignup(readSignupFormFields(formData));
 
   if (!parsed.ok) {
     return {
@@ -122,25 +150,42 @@ export async function signupAction(
   }
 
   const supabase = await createServerSupabaseClient();
-  const origin =
-    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ||
-    "http://localhost:3000";
+  const origin = authRedirectOrigin();
+  const metadata = buildSignupUserMetadata(parsed.values);
 
   const { data, error } = await supabase.auth.signUp({
     email: parsed.values.email,
     password: parsed.values.password,
     options: {
       emailRedirectTo: `${origin}/auth/callback?next=/dashboard`,
-      data: {
-        first_name: parsed.values.firstName,
-        last_name: parsed.values.lastName,
-        locale: String(formData.get("locale") ?? "en"),
-      },
+      data: metadata,
     },
   });
 
   if (error) {
-    return { ok: false, errorKey: "auth.signupFailed" };
+    return {
+      ok: false,
+      errorKey: isSignupEmailTakenError(error)
+        ? "auth.accountExists"
+        : "auth.signupFailed",
+    };
+  }
+
+  if (isLikelyExistingSignupUser(data.user)) {
+    return { ok: false, errorKey: "auth.accountExists" };
+  }
+
+  if (data.user?.id) {
+    try {
+      await applyLegacyMatchAfterSignup({
+        profileId: data.user.id,
+        email: parsed.values.email,
+        previouslyStudied: parsed.values.previouslyStudied,
+        declaredCertificateNumber: parsed.values.declaredCertificateNumber,
+      });
+    } catch {
+      // Profile already exists; matching is best-effort and must not block signup.
+    }
   }
 
   if (!data.session) {

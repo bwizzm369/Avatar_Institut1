@@ -46,7 +46,16 @@ export function DashboardCoursesClient({
   if (state.enrollments.length === 0) {
     return (
       <div className="learning-courses-root">
-        <div className="empty-state">{msg("dashboard.coursesEmpty", locale)}</div>
+        <div className="empty-state">
+          <div className="empty-state-mark" aria-hidden="true" />
+          <h2 className="display display-sm">
+            {msg("dashboard.coursesTitle", locale)}
+          </h2>
+          <p>{msg("dashboard.coursesEmpty", locale)}</p>
+          <Link href="/courses" className="btn btn-primary">
+            {msg("home.ctaCourses", locale)}
+          </Link>
+        </div>
       </div>
     );
   }

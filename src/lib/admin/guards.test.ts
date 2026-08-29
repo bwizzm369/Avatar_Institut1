@@ -90,6 +90,8 @@ describe("admin navigation", () => {
       "/admin/student-pass",
       "/admin/students",
       "/admin/certificates",
+      "/admin/consultations",
+      "/admin/reviews",
     ]);
   });
 

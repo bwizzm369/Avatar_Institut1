@@ -17,12 +17,14 @@ export function DashboardShell({
   const { locale } = useLocale();
 
   return (
-    <section className="section">
+    <section className="section dashboard-shell">
       <div className="container">
-        <div className="stack-lg" style={{ marginBottom: "1.5rem" }}>
+        <header className="dashboard-header">
+          <p className="eyebrow">{msg("nav.dashboard", locale)}</p>
           <h1 className="display display-lg">{msg(titleKey, locale)}</h1>
-          <div className="notice-box">{msg(noticeKey, locale)}</div>
-        </div>
+          <div className="section-rule" aria-hidden="true" />
+          <p className="dashboard-lead muted">{msg(noticeKey, locale)}</p>
+        </header>
         <div className="dashboard-layout">
           <DashboardNav />
           {children}

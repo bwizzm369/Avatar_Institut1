@@ -65,6 +65,7 @@ describe("password reset source invariants", () => {
       "utf8",
     );
 
+    expect(actions).toMatch(/authRedirectOrigin/);
     expect(actions).toMatch(/resetPasswordForEmail/);
     expect(actions).toMatch(/updateUser/);
     expect(actions).not.toMatch(/createServiceRoleSupabaseClient/);

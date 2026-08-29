@@ -42,6 +42,8 @@ describe("admin console shell", () => {
     expect(adminConsoleUsesAdminShell("/admin/students")).toBe(true);
     expect(adminConsoleUsesAdminShell("/admin/import")).toBe(true);
     expect(adminConsoleUsesAdminShell("/admin/certificates")).toBe(true);
+    expect(adminConsoleUsesAdminShell("/admin/consultations")).toBe(true);
+    expect(adminConsoleUsesAdminShell("/admin/reviews")).toBe(true);
     expect(adminConsoleUsesAdminShell("/admin/login")).toBe(false);
   });
 
@@ -62,6 +64,8 @@ describe("admin console shell", () => {
       "/admin/student-pass",
       "/admin/students",
       "/admin/certificates",
+      "/admin/consultations",
+      "/admin/reviews",
     ]);
     expect(ADMIN_NAV_ITEMS.map((item) => item.label)).toEqual([
       "Dashboard",
@@ -69,6 +73,8 @@ describe("admin console shell", () => {
       "Student Pass",
       "Students / Import",
       "Certificates",
+      "Consultations",
+      "Reviews",
     ]);
   });
 

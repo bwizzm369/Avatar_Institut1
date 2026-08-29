@@ -9,6 +9,7 @@ import { loadOwnedStudentCertificatePdfRecord } from "@/lib/certificates/student
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
+export const maxDuration = 60;
 
 export async function GET(
   _request: Request,

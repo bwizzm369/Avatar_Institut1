@@ -21,6 +21,8 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
     matchPrefixes: ["/admin/students", "/admin/import"],
   },
   { href: "/admin/certificates", label: "Certificates" },
+  { href: "/admin/consultations", label: "Consultations" },
+  { href: "/admin/reviews", label: "Reviews" },
 ];
 
 export const ADMIN_SHELL_BRAND = {
@@ -33,6 +35,8 @@ export const PUBLIC_SITE_NAV_LABELS = [
   "Home",
   "About",
   "Library",
+  "Consultation",
+  "Testimonials",
   "Cart",
 ] as const;
 

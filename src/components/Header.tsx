@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/components/AuthProvider";
@@ -19,20 +19,32 @@ export function Header() {
   const { itemCount, ready: cartReady } = useCart();
   const { user, configured, ready: authReady, refresh } = useAuth();
   const [open, setOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const [logoutPending, setLogoutPending] = useState(false);
   const [logoutError, setLogoutError] = useState<string | null>(null);
+
+  const aboutItems = [
+    { href: "/about", label: msg("about.tab.institute", locale) },
+    { href: "/about/founder", label: msg("about.tab.founder", locale) },
+  ] as const;
 
   const links = [
     { href: "/", label: msg("nav.home", locale) },
     { href: "/about", label: msg("nav.about", locale) },
     { href: "/courses", label: msg("nav.courses", locale) },
     { href: "/library", label: msg("nav.library", locale) },
+    { href: "/consultation", label: msg("nav.consultation", locale) },
+    { href: "/reviews", label: msg("nav.reviews", locale) },
     { href: "/cart", label: msg("nav.cart", locale) },
     { href: "/dashboard", label: msg("nav.dashboard", locale) },
   ];
 
+  const isAboutSection =
+    pathname === "/about" || pathname.startsWith("/about/");
+
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
+    if (href === "/about") return pathname === "/about";
     if (pathname === href) return true;
     if (!pathname.startsWith(`${href}/`)) return false;
     const hasMoreSpecificMatch = links.some(
@@ -43,6 +55,49 @@ export function Header() {
     );
     return !hasMoreSpecificMatch;
   };
+
+  function renderAboutDropdown(closeMobile?: () => void) {
+    return (
+      <div
+        className={aboutOpen ? "nav-dropdown is-open" : "nav-dropdown"}
+        onMouseEnter={() => setAboutOpen(true)}
+        onMouseLeave={() => setAboutOpen(false)}
+      >
+        <Link
+          href="/about"
+          className={isAboutSection ? "nav-link active" : "nav-link"}
+          aria-expanded={aboutOpen}
+          aria-haspopup="true"
+          onClick={() => {
+            setAboutOpen(false);
+            closeMobile?.();
+          }}
+        >
+          {msg("nav.about", locale)}
+        </Link>
+        <div className="nav-dropdown-panel" role="list">
+          {aboutItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              role="listitem"
+              className={
+                isActive(item.href)
+                  ? "nav-link nav-dropdown-link active"
+                  : "nav-link nav-dropdown-link"
+              }
+              onClick={() => {
+                setAboutOpen(false);
+                closeMobile?.();
+              }}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   const showCartBadge = cartReady && itemCount > 0;
   const showSignedIn = isClientSignedIn({
@@ -90,20 +145,24 @@ export function Header() {
         </Link>
 
         <nav className="nav-desktop" aria-label="Primary">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={isActive(link.href) ? "nav-link active" : "nav-link"}
-            >
-              {link.label}
-              {link.href === "/cart" && showCartBadge ? (
-                <span className="cart-count" aria-label={`${itemCount}`}>
-                  {itemCount}
-                </span>
-              ) : null}
-            </Link>
-          ))}
+          {links.map((link) =>
+            link.href === "/about" ? (
+              <Fragment key={link.href}>{renderAboutDropdown()}</Fragment>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={isActive(link.href) ? "nav-link active" : "nav-link"}
+              >
+                {link.label}
+                {link.href === "/cart" && showCartBadge ? (
+                  <span className="cart-count" aria-label={`${itemCount}`}>
+                    {itemCount}
+                  </span>
+                ) : null}
+              </Link>
+            ),
+          )}
         </nav>
 
         <div className="header-actions">
@@ -148,17 +207,34 @@ export function Header() {
 
       {open ? (
         <nav id="mobile-nav" className="nav-mobile" aria-label="Mobile">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={isActive(link.href) ? "nav-link active" : "nav-link"}
-              onClick={() => setOpen(false)}
-            >
-              {link.label}
-              {link.href === "/cart" && showCartBadge ? ` (${itemCount})` : ""}
-            </Link>
-          ))}
+          {links.map((link) =>
+            link.href === "/about" ? (
+              <div key={link.href} className="nav-mobile-about">
+                {aboutItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={
+                      isActive(item.href) ? "nav-link active" : "nav-link"
+                    }
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={isActive(link.href) ? "nav-link active" : "nav-link"}
+                onClick={() => setOpen(false)}
+              >
+                {link.label}
+                {link.href === "/cart" && showCartBadge ? ` (${itemCount})` : ""}
+              </Link>
+            ),
+          )}
           {showSignedIn ? (
             <button
               type="button"

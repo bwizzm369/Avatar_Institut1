@@ -8,6 +8,8 @@ describe("document titles", () => {
     expect(resolveTitleKey("/about/founder")).toBe("founder");
     expect(resolveTitleKey("/courses")).toBe("courses");
     expect(resolveTitleKey("/library")).toBe("library");
+    expect(resolveTitleKey("/consultation")).toBe("consultation");
+    expect(resolveTitleKey("/reviews")).toBe("reviews");
     expect(resolveTitleKey("/courses/foo")).toBe("courseDetail");
     expect(resolveTitleKey("/cart")).toBe("cart");
     expect(resolveTitleKey("/cart/success")).toBe("cartSuccess");

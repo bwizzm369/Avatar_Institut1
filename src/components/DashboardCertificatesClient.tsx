@@ -43,7 +43,11 @@ export function DashboardCertificatesClient({
     return (
       <div className="dashboard-panel">
         <div className="empty-state">
-          {msg("dashboard.certificatesEmpty", locale)}
+          <div className="empty-state-mark" aria-hidden="true" />
+          <h2 className="display display-sm">
+            {msg("dashboard.certificatesTitle", locale)}
+          </h2>
+          <p>{msg("dashboard.certificatesEmpty", locale)}</p>
         </div>
       </div>
     );
@@ -51,7 +55,7 @@ export function DashboardCertificatesClient({
 
   return (
     <div className="dashboard-panel">
-      <ul className="course-list">
+      <ul className="certificate-list">
         {state.certificates.map((certificate) => {
           const statusKey =
             certificate.status === "revoked"
@@ -60,7 +64,7 @@ export function DashboardCertificatesClient({
           return (
             <li
               key={certificate.certificateNumber}
-              className="course-list-item"
+              className="certificate-card course-list-item"
             >
               <div className="certificate-list-body">
                 <p className="certificate-number">

@@ -4,12 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { ConnectSection } from "@/components/connect/ConnectSection";
 import { Logo } from "@/components/Logo";
+import { ReviewsGallery } from "@/components/ReviewsGallery";
 import { useLocale } from "@/components/LocaleProvider";
 import { msg } from "@/lib/i18n";
+import type { PublicReview } from "@/lib/reviews/types";
 
 const HERO_IMAGE_SRC = "/hero/avatar-online-institute-hero-v2.png";
 
-export default function HomePage() {
+export default function HomePage({
+  reviews = [],
+}: {
+  reviews?: PublicReview[];
+}) {
   const { locale } = useLocale();
 
   const values = [
@@ -61,9 +67,13 @@ export default function HomePage() {
           <div className="stack-lg">
             <p className="eyebrow">{msg("home.aboutEyebrow", locale)}</p>
             <h2 className="display display-lg">{msg("home.aboutTitle", locale)}</h2>
+            <div className="section-rule" aria-hidden="true" />
             <p className="muted">{msg("home.aboutBody1", locale)}</p>
             <p className="muted">{msg("home.aboutBody2", locale)}</p>
-            <div>
+            <div className="cta-row" style={{ justifyContent: "flex-start", marginTop: "0.5rem" }}>
+              <Link href="/about" className="btn btn-primary">
+                {msg("home.ctaAbout", locale)}
+              </Link>
               <Link href="/about/founder" className="btn btn-ghost">
                 {msg("home.ctaFounder", locale)}
               </Link>
@@ -75,15 +85,50 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section section-soft">
+      <section className="section home-pathways">
         <div className="container">
-          <div className="text-center stack-lg" style={{ marginBottom: "2.5rem" }}>
+          <div className="pathway-grid">
+            <article className="pathway-card">
+              <p className="eyebrow">{msg("courses.eyebrow", locale)}</p>
+              <h3 className="display display-md">{msg("courses.title", locale)}</h3>
+              <p className="muted">{msg("courses.intro", locale)}</p>
+              <Link href="/courses" className="btn btn-ghost">
+                {msg("home.ctaCourses", locale)}
+              </Link>
+            </article>
+            <article className="pathway-card">
+              <p className="eyebrow">{msg("library.eyebrow", locale)}</p>
+              <h3 className="display display-md">{msg("library.title", locale)}</h3>
+              <p className="muted">{msg("library.subtitle", locale)}</p>
+              <Link href="/library" className="btn btn-ghost">
+                {msg("home.ctaLibrary", locale)}
+              </Link>
+            </article>
+            <article className="pathway-card">
+              <p className="eyebrow">{msg("consultation.eyebrow", locale)}</p>
+              <h3 className="display display-md">{msg("consultation.title", locale)}</h3>
+              <p className="muted">{msg("consultation.lead", locale)}</p>
+              <Link href="/consultation" className="btn btn-ghost">
+                {msg("home.ctaConsultation", locale)}
+              </Link>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="section home-values">
+        <div className="container">
+          <div className="section-heading">
             <p className="eyebrow">{msg("home.valuesEyebrow", locale)}</p>
             <h2 className="display display-lg">{msg("home.valuesTitle", locale)}</h2>
+            <div className="section-rule" aria-hidden="true" />
           </div>
           <div className="values-grid">
-            {values.map((value) => (
+            {values.map((value, index) => (
               <article key={value.title} className="value-card">
+                <span className="value-index" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
                 <h3>{msg(value.title, locale)}</h3>
                 <p className="muted small">{msg(value.body, locale)}</p>
               </article>
@@ -92,19 +137,38 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section section-green">
-        <div className="container text-center stack-lg">
+      <section className="section section-green home-cta">
+        <div className="container home-cta-inner">
           <h2 className="display display-lg">{msg("home.ctaBannerTitle", locale)}</h2>
-          <p style={{ opacity: 0.95, maxWidth: "40rem", margin: "0 auto" }}>
+          <p style={{ opacity: 0.95, margin: 0 }}>
             {msg("home.ctaBannerBody", locale)}
           </p>
-          <div className="cta-row">
+          <div className="cta-row" style={{ justifyContent: "flex-start", marginTop: 0 }}>
             <Link href="/courses" className="btn" style={{ background: "#fff", color: "#1F4D3A" }}>
               {msg("home.ctaCourses", locale)}
+            </Link>
+            <Link href="/library" className="btn btn-ghost">
+              {msg("home.ctaLibrary", locale)}
             </Link>
           </div>
         </div>
       </section>
+
+      {reviews.length > 0 ? (
+        <section className="section home-reviews" aria-labelledby="home-reviews-title">
+          <div className="container">
+            <div className="section-heading">
+              <p className="eyebrow">{msg("reviews.eyebrow", locale)}</p>
+              <h2 id="home-reviews-title" className="display display-lg">
+                {msg("reviews.title", locale)}
+              </h2>
+              <div className="section-rule" aria-hidden="true" />
+              <p className="muted">{msg("reviews.lead", locale)}</p>
+            </div>
+            <ReviewsGallery reviews={reviews.slice(0, 6)} showViewAll={reviews.length > 6} />
+          </div>
+        </section>
+      ) : null}
 
       <ConnectSection />
     </>

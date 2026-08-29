@@ -38,55 +38,64 @@ export function CourseCard({
           src={course.imageUrl}
           alt=""
         />
-      ) : null}
-      <div className="course-card-top">
-        <h2 className="course-card-title">
-          <Link href={publicCoursePath(course.slug)}>{title}</Link>
-        </h2>
-        {summary ? <p className="muted">{summary}</p> : null}
-      </div>
-      <div className="course-meta">
-        {course.durationWeeks > 0 ? (
-          <span>
-            {msgReplace("courses.weeks", locale, { n: course.durationWeeks })}
+      ) : (
+        <div className="course-card-cover" aria-hidden="true">
+          <div className="course-card-cover-mark" />
+          <span className="course-card-cover-label">
+            {msg("learning.coverPlaceholder", locale)}
           </span>
-        ) : null}
-        {lessonCount > 0 ? (
-          <span>
-            {msgReplace("courses.lessons", locale, { n: lessonCount })}
-          </span>
-        ) : null}
-        {levelLabel ? <span>{levelLabel}</span> : null}
-      </div>
-      <div className="course-card-footer">
-        <CoursePassPricing
-          locale={locale}
-          currency={course.currency}
-          listPriceCents={course.priceCents}
-          offer={offer}
-          compact
-        />
-        <div className="course-actions">
-          <Link href={publicCoursePath(course.slug)} className="btn btn-ghost">
-            {msg("courses.view", locale)}
-          </Link>
-          {includedAccess ? (
-            <Link
-              href={dashboardCoursePath(course.slug)}
-              className="btn btn-primary"
-            >
-              {msg("courses.startCourse", locale)}
+        </div>
+      )}
+      <div className="course-card-body">
+        <div className="course-card-top">
+          <h2 className="course-card-title">
+            <Link href={publicCoursePath(course.slug)}>{title}</Link>
+          </h2>
+          {summary ? <p className="muted">{summary}</p> : null}
+        </div>
+        <div className="course-meta">
+          {course.durationWeeks > 0 ? (
+            <span>
+              {msgReplace("courses.weeks", locale, { n: course.durationWeeks })}
+            </span>
+          ) : null}
+          {lessonCount > 0 ? (
+            <span>
+              {msgReplace("courses.lessons", locale, { n: lessonCount })}
+            </span>
+          ) : null}
+          {levelLabel ? <span>{levelLabel}</span> : null}
+        </div>
+        <div className="course-card-footer">
+          <CoursePassPricing
+            locale={locale}
+            currency={course.currency}
+            listPriceCents={course.priceCents}
+            offer={offer}
+            compact
+          />
+          <div className="course-actions">
+            <Link href={publicCoursePath(course.slug)} className="btn btn-ghost">
+              {msg("courses.view", locale)}
             </Link>
-          ) : (
-            <button
-              type="button"
-              className="btn btn-primary"
-              disabled={inCart}
-              onClick={() => addCourse(course)}
-            >
-              {inCart ? msg("courses.inCart", locale) : msg("courses.addToCart", locale)}
-            </button>
-          )}
+            {includedAccess ? (
+              <Link
+                href={dashboardCoursePath(course.slug)}
+                className="btn btn-primary"
+              >
+                {msg("courses.startCourse", locale)}
+              </Link>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-primary"
+                disabled={inCart}
+                onClick={() => addCourse(course)}
+              >
+                {inCart ? msg("courses.inCart", locale) : msg("courses.addToCart", locale)}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </article>
