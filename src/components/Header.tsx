@@ -76,24 +76,26 @@ export function Header() {
           {msg("nav.about", locale)}
         </Link>
         <div className="nav-dropdown-panel" role="list">
-          {aboutItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              role="listitem"
-              className={
-                isActive(item.href)
-                  ? "nav-link nav-dropdown-link active"
-                  : "nav-link nav-dropdown-link"
-              }
-              onClick={() => {
-                setAboutOpen(false);
-                closeMobile?.();
-              }}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {aboutItems
+            .filter((item) => item.label !== msg("nav.about", locale))
+            .map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                role="listitem"
+                className={
+                  isActive(item.href)
+                    ? "nav-link nav-dropdown-link active"
+                    : "nav-link nav-dropdown-link"
+                }
+                onClick={() => {
+                  setAboutOpen(false);
+                  closeMobile?.();
+                }}
+              >
+                {item.label}
+              </Link>
+            ))}
         </div>
       </div>
     );

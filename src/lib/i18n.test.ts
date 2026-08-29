@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { displayLocalized, getDirection, isLocale, msg } from "@/lib/i18n";
 
@@ -89,6 +91,13 @@ describe("i18n helpers", () => {
     expect(msg("about.tab.founder", "ar")).not.toBe(
       msg("about.tab.institute", "ar"),
     );
+    expect(msg("nav.about", "ar")).toBe(msg("about.tab.institute", "ar"));
+    const header = readFileSync(
+      path.join(process.cwd(), "src/components/Header.tsx"),
+      "utf8",
+    );
+    expect(header).toMatch(/item\.label !== msg\("nav\.about"/);
+    expect(header).toMatch(/href: "\/about\/founder"/);
   });
 
   it("includes consultation and testimonial strings in EN/AR", () => {
@@ -100,7 +109,16 @@ describe("i18n helpers", () => {
     expect(msg("consultation.type.consultation", "en")).toBe(
       "Private consultation",
     );
-    expect(msg("reviews.title", "ar")).toBe("آراء الدارسين");
+    expect(msg("reviews.title", "ar")).toBe("آراء الطلاب");
+    expect(msg("reviews.eyebrow", "ar")).toBe("أصوات الطلاب");
+    expect(msg("reviews.lead", "ar")).toContain("طلاب معهد الأفاتار");
+    expect(msg("cart.checkout", "en")).toBe("Proceed to payment");
+    expect(msg("cart.checkout", "ar")).toBe("متابعة الدفع");
+    expect(msg("cart.checkout", "en")).not.toMatch(/stripe|test/i);
+    expect(msg("cart.checkout", "ar")).not.toMatch(/stripe|تجريبي/i);
+    expect(msg("dashboard.intro", "en")).toBe("Welcome to Avatar Institut.");
+    expect(msg("dashboard.intro", "en")).not.toMatch(/payment/i);
+    expect(msg("dashboard.introPaid", "en")).toMatch(/Thank you for your payment/);
     expect(msg("reviews.empty", "en")).toMatch(/No published testimonials/i);
     expect(msg("reviews.form.success", "en")).toMatch(/after it has been reviewed/i);
     expect(msg("reviews.form.success", "ar")).toContain("شكرًا لمشاركتك رأيك");

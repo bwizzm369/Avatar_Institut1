@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { CoursePassPricing } from "@/components/CoursePassPricing";
 import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
@@ -18,6 +19,7 @@ export function CourseDetailClient({
   offer?: CoursePassOfferView;
 }) {
   const { locale } = useLocale();
+  const router = useRouter();
   const { addCourse, hasCourse, ready: cartReady } = useCart();
   const inCart = cartReady && hasCourse(course.id);
   const includedAccess = Boolean(offer?.accessIncluded && offer.hasLearnerAccess);
@@ -162,7 +164,10 @@ export function CourseDetailClient({
                 type="button"
                 className="btn btn-primary btn-block"
                 disabled={inCart}
-                onClick={() => addCourse(course)}
+                onClick={() => {
+                  addCourse(course);
+                  router.push("/cart");
+                }}
               >
                 {inCart ? msg("courses.inCart", locale) : msg("courses.addToCart", locale)}
               </button>

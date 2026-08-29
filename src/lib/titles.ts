@@ -7,7 +7,7 @@ export const pageTitles: Record<string, LocalizedString> = {
   courses: { en: "Courses", ar: "الدورات" },
   library: { en: "Library", ar: "المكتبة" },
   consultation: { en: "Consultation", ar: "استشارة" },
-  reviews: { en: "Testimonials", ar: "آراء الدارسين" },
+  reviews: { en: "Testimonials", ar: "آراء الطلاب" },
   courseDetail: { en: "Course detail", ar: "تفاصيل الدورة" },
   cart: { en: "Cart", ar: "السلة" },
   cartSuccess: { en: "Payment received", ar: "تم استلام الدفع" },

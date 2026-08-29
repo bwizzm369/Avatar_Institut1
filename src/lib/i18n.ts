@@ -193,8 +193,8 @@ export const messages: Dictionary = {
   },
   "consultation.error.tooLong": { en: "This field is too long.", ar: "هذا الحقل طويل جدًا." },
 
-  "reviews.eyebrow": { en: "Student voices", ar: "أصوات الدارسين" },
-  "reviews.title": { en: "Testimonials", ar: "آراء الدارسين" },
+  "reviews.eyebrow": { en: "Student voices", ar: "أصوات الطلاب" },
+  "reviews.title": { en: "Testimonials", ar: "آراء الطلاب" },
   "reviews.lead": {
     en: "Reflections shared by students of Avatar Institut, published with care.",
     ar: "آراء يشاركها طلاب معهد الأفاتار، وتُنشر بعناية.",
@@ -594,7 +594,7 @@ export const messages: Dictionary = {
   "cart.browse": { en: "Browse courses", ar: "تصفح الدورات" },
   "cart.remove": { en: "Remove", ar: "إزالة" },
   "cart.total": { en: "Total", ar: "المجموع" },
-  "cart.checkout": { en: "Pay with Stripe (test)", ar: "الدفع عبر Stripe (تجريبي)" },
+  "cart.checkout": { en: "Proceed to payment", ar: "متابعة الدفع" },
   "cart.checkoutLoading": {
     en: "Redirecting to Stripe…",
     ar: "جارٍ التحويل إلى Stripe…",
@@ -856,6 +856,10 @@ export const messages: Dictionary = {
     ar: "يجب تسجيل الدخول لعرض لوحة التحكم.",
   },
   "dashboard.intro": {
+    en: "Welcome to Avatar Institut.",
+    ar: "مرحبًا بك في معهد الأفاتار.",
+  },
+  "dashboard.introPaid": {
     en: "Thank you for your payment. Welcome to Avatar Institut.",
     ar: "شكرًا لإتمام عملية الدفع. مرحبًا بك في معهد الأفاتار.",
   },
@@ -896,6 +900,11 @@ export const messages: Dictionary = {
   "dashboard.memberCardJoined": {
     en: "Membership date",
     ar: "تاريخ الانضمام",
+  },
+  "dashboard.memberCardPlan": { en: "Plan", ar: "الخطة" },
+  "dashboard.memberCardValidUntil": {
+    en: "Valid until",
+    ar: "صالحة حتى",
   },
   "dashboard.memberCardActive": { en: "ACTIVE", ar: "ACTIVE" },
   "dashboard.memberCardInactive": { en: "INACTIVE", ar: "INACTIVE" },

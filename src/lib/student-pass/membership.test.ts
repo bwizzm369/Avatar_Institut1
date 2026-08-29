@@ -8,6 +8,7 @@ import {
 import {
   digitalMemberCardStatus,
   formatMembershipDate,
+  inferStudentPassPlanFromPeriod,
   membershipJoinedAt,
   PUBLIC_MEMBER_ID_FALLBACK,
   studentMemberId,
@@ -128,6 +129,42 @@ describe("membership date", () => {
     expect(formatMembershipDate("2026-03-01T00:00:00.000Z", "ar").length).toBeGreaterThan(4);
     expect(formatMembershipDate(null, "en")).toBe("—");
   });
+
+  it("reads Stripe-synced expires_at and infers plan from period length", () => {
+    expect(
+      inferStudentPassPlanFromPeriod(
+        "2026-08-29T00:00:00.000Z",
+        "2026-09-29T00:00:00.000Z",
+      ),
+    ).toBe("monthly");
+    expect(
+      inferStudentPassPlanFromPeriod(
+        "2026-08-29T00:00:00.000Z",
+        "2027-02-28T00:00:00.000Z",
+      ),
+    ).toBe("semiannual");
+    expect(
+      inferStudentPassPlanFromPeriod(
+        "2026-08-29T00:00:00.000Z",
+        "2027-08-29T00:00:00.000Z",
+      ),
+    ).toBe("annual");
+    expect(inferStudentPassPlanFromPeriod("2026-08-29T00:00:00.000Z", null)).toBe(
+      null,
+    );
+    const card = toStudentMembershipCard({
+      profileId: PROFILE_ID,
+      firstName: "Imane",
+      lastName: "Benali",
+      subscription: {
+        status: "active",
+        started_at: "2026-08-29T00:00:00.000Z",
+        expires_at: "2027-02-28T00:00:00.000Z",
+      },
+    });
+    expect(card.expiresAt).toBe("2027-02-28T00:00:00.000Z");
+    expect(card.plan).toBe("semiannual");
+  });
 });
 
 describe("Student Pass commercial constants stay unchanged", () => {
@@ -175,6 +212,8 @@ describe("membership module boundaries", () => {
     expect(card).not.toMatch(/qrcode|QR/i);
     expect(client).not.toMatch(/from ["']@\/lib\/student-pass\/load["']/);
     expect(card).toMatch(/card\.memberId/);
+    expect(card).toMatch(/card\.plan/);
+    expect(card).toMatch(/card\.expiresAt/);
     expect(card).not.toMatch(/profileId/);
     expect(adminClient).toMatch(/studentMemberId\(member\.profileId\)/);
     expect(adminClient).not.toMatch(

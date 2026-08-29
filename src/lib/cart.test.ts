@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   addItemToCart,
@@ -169,5 +171,27 @@ describe("cart helpers", () => {
       remaining,
     );
     expect(readCartFromStorage(storage)).toEqual(guestCart);
+  });
+});
+
+describe("add to cart redirect", () => {
+  it("sends catalogue and detail add-to-cart to /cart after a successful add", () => {
+    const card = readFileSync(
+      path.join(process.cwd(), "src/components/CourseCard.tsx"),
+      "utf8",
+    );
+    const detail = readFileSync(
+      path.join(process.cwd(), "src/components/CourseDetailClient.tsx"),
+      "utf8",
+    );
+    expect(card).toMatch(/addCourse\(course\)/);
+    expect(card).toMatch(/router\.push\("\/cart"\)/);
+    expect(detail).toMatch(/addCourse\(course\)/);
+    expect(detail).toMatch(/router\.push\("\/cart"\)/);
+    const page = readFileSync(
+      path.join(process.cwd(), "src/app/cart/page.tsx"),
+      "utf8",
+    );
+    expect(page).not.toMatch(/cart\.demoNote/);
   });
 });

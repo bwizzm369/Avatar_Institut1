@@ -10,12 +10,15 @@ import {
 import type { Locale } from "@/types";
 
 export type DigitalMemberCardStatus = "ACTIVE" | "INACTIVE";
+export type MembershipPeriodPlan = "monthly" | "semiannual" | "annual";
 
 export type StudentMembershipCard = {
   fullName: string;
   memberId: string;
   cardStatus: DigitalMemberCardStatus;
   joinedAt: string | null;
+  expiresAt: string | null;
+  plan: MembershipPeriodPlan | null;
   isEntitled: boolean;
 };
 
@@ -69,6 +72,26 @@ export function membershipJoinedAt(input: {
   return created || null;
 }
 
+/**
+ * Infer the purchased plan from the synced subscription period only.
+ * Plan is not a column; monthly / semiannual / annual follow period length.
+ */
+export function inferStudentPassPlanFromPeriod(
+  startedAt: string | null | undefined,
+  expiresAt: string | null | undefined,
+): MembershipPeriodPlan | null {
+  const start = startedAt ? Date.parse(startedAt) : Number.NaN;
+  const end = expiresAt ? Date.parse(expiresAt) : Number.NaN;
+  if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) {
+    return null;
+  }
+  const days = (end - start) / 86_400_000;
+  if (days >= 20 && days <= 40) return "monthly";
+  if (days >= 150 && days <= 210) return "semiannual";
+  if (days >= 330 && days <= 400) return "annual";
+  return null;
+}
+
 export function formatMembershipDate(
   iso: string | null,
   locale: Locale,
@@ -111,14 +134,18 @@ export function toStudentMembershipCard(input: {
   now?: Date;
 }): StudentMembershipCard {
   const isEntitled = hasActiveStudentPass(input.subscription, input.now);
+  const startedAt = input.subscription?.started_at ?? null;
+  const expiresAt = input.subscription?.expires_at ?? null;
   return {
     fullName: membershipDisplayName(input),
     memberId: studentMemberId(input.profileId),
     cardStatus: isEntitled ? "ACTIVE" : "INACTIVE",
     joinedAt: membershipJoinedAt({
-      startedAt: input.subscription?.started_at,
+      startedAt,
       profileCreatedAt: input.profileCreatedAt,
     }),
+    expiresAt,
+    plan: inferStudentPassPlanFromPeriod(startedAt, expiresAt),
     isEntitled,
   };
 }

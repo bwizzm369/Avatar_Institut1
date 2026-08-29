@@ -60,6 +60,27 @@ export function DigitalMemberCard({ card }: { card: StudentMembershipCard }) {
           <dt>{msg("dashboard.memberCardJoined", locale)}</dt>
           <dd>{formatMembershipDate(card.joinedAt, locale)}</dd>
         </div>
+        {card.plan ? (
+          <div>
+            <dt>{msg("dashboard.memberCardPlan", locale)}</dt>
+            <dd>
+              {msg(
+                card.plan === "monthly"
+                  ? "dashboard.studentPassPlanNameMonthly"
+                  : card.plan === "semiannual"
+                    ? "dashboard.studentPassPlanNameSemiannual"
+                    : "dashboard.studentPassPlanNameAnnual",
+                locale,
+              )}
+            </dd>
+          </div>
+        ) : null}
+        {card.expiresAt ? (
+          <div>
+            <dt>{msg("dashboard.memberCardValidUntil", locale)}</dt>
+            <dd>{formatMembershipDate(card.expiresAt, locale)}</dd>
+          </div>
+        ) : null}
       </dl>
     </article>
   );

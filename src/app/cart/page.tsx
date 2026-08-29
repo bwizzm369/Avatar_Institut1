@@ -22,7 +22,6 @@ export default function CartPage() {
           <p className="eyebrow">{msg("nav.cart", locale)}</p>
           <h1 className="display display-lg">{msg("cart.title", locale)}</h1>
           <div className="section-rule" aria-hidden="true" />
-          <p className="lead">{msg("cart.demoNote", locale)}</p>
         </div>
       </section>
 

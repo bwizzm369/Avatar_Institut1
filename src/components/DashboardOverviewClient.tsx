@@ -13,6 +13,10 @@ import {
 } from "@/lib/courses/student-display";
 import type { StudentCertificatesState } from "@/lib/certificates/student-view";
 import type { DashboardStudentState } from "@/lib/enrollments/types";
+import {
+  dashboardIntroMessageKey,
+  hasConfirmedCoursePayment,
+} from "@/lib/dashboard/welcome-intro";
 import { msg } from "@/lib/i18n";
 import type { StudentMembershipState } from "@/lib/student-pass/membership";
 
@@ -75,7 +79,17 @@ export function DashboardOverviewClient({
         <h2 className="display display-md">
           {msg("dashboard.welcomeNamed", locale).replace("{name}", displayName)}
         </h2>
-        <p className="muted">{msg("dashboard.intro", locale)}</p>
+        <p className="muted">
+          {msg(
+            dashboardIntroMessageKey({
+              hasConfirmedCoursePayment: hasConfirmedCoursePayment(
+                state.enrollments,
+              ),
+              hasActiveMembership: passStatus === "ACTIVE",
+            }),
+            locale,
+          )}
+        </p>
       </header>
 
       <dl className="overview-stats">
