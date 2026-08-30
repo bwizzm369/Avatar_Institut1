@@ -15,6 +15,7 @@
   --radius: 3px;
   --max: 1200px;
   --header: 1400px;
+  color-scheme: only light;
 }
 
 * {
@@ -25,6 +26,8 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: var(--color-ivory);
+  color-scheme: only light;
 }
 
 body {
@@ -711,6 +714,10 @@ img.official-logo-panel {
   object-position: center;
 }
 
+.hero-image--mobile {
+  display: none;
+}
+
 .hero-overlay {
   position: absolute;
   inset: 0;
@@ -930,7 +937,7 @@ img.official-logo-panel {
     max-width: 100%;
   }
 
-  .hero-image {
+  .hero-image--desktop {
     object-position: 62% center;
   }
 
@@ -961,6 +968,132 @@ img.official-logo-panel {
   .connect-card-action {
     width: 100%;
     justify-content: center;
+  }
+}
+
+/* Mobile homepage + header only. Desktop (≥768px) unchanged. */
+@media (max-width: 767px) {
+  .site-header {
+    background: var(--color-ivory);
+    backdrop-filter: none;
+    isolation: isolate;
+  }
+
+  .header-inner {
+    padding: 0.85rem 1.05rem;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .official-logo-wrap--header {
+    max-width: 4.5rem;
+  }
+
+  .site-header img.official-logo-header {
+    width: 4.5rem;
+    max-width: 4.5rem;
+    mix-blend-mode: darken;
+  }
+
+  .home-about-logo {
+    isolation: isolate;
+  }
+
+  .home-about-logo .official-logo-wrap--panel,
+  .home-about-logo img.official-logo-panel {
+    width: 9.5rem;
+    max-width: 9.5rem;
+  }
+
+  .home-about-logo img.official-logo-panel {
+    mix-blend-mode: darken;
+  }
+
+  .header-actions {
+    gap: 0.55rem;
+  }
+
+  .lang-btn {
+    min-width: 2.35rem;
+    height: 2.25rem;
+  }
+
+  .menu-toggle {
+    min-height: 2.25rem;
+    padding: 0.55rem 0.9rem;
+  }
+
+  .hero {
+    height: min(72svh, 34rem);
+    min-height: 26.5rem;
+    padding: 0 1.1rem 1.4rem;
+  }
+
+  .hero-image--desktop {
+    display: none;
+  }
+
+  .hero-image--mobile {
+    display: block;
+    object-fit: cover;
+    object-position: center 70%;
+  }
+
+  .hero-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.16) 0%,
+      rgba(0, 0, 0, 0.22) 40%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+  }
+
+  .hero-badge {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.55rem;
+  }
+
+  .hero-title {
+    font-size: clamp(1.42rem, 5.6vw, 1.78rem);
+    line-height: 1.28;
+    margin: 0 0 0.65rem;
+  }
+
+  .hero-lead {
+    font-size: 0.92rem;
+    line-height: 1.52;
+  }
+
+  .hero-actions {
+    gap: 0.55rem;
+    margin-top: 0.9rem;
+  }
+
+  .hero-actions .btn {
+    min-height: 2.75rem;
+    padding: 0.62rem 1rem;
+    font-size: 0.75rem;
+  }
+
+  .section {
+    padding: 1.75rem 1.1rem;
+  }
+
+  .home-about {
+    padding-top: 1.75rem;
+    padding-bottom: 1.85rem;
+  }
+
+  .pathway-card,
+  .value-card,
+  .connect-card {
+    padding: 1.1rem 1.05rem 1.15rem;
+  }
+
+  .home-cta {
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
   }
 }
 

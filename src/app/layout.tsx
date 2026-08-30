@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import {
   Cairo,
@@ -49,6 +49,11 @@ export const metadata: Metadata = {
   },
   description:
     "Avatar Institut — bilingual e-learning platform for metaphysics, consciousness, and human development.",
+};
+
+export const viewport: Viewport = {
+  colorScheme: "only light",
+  themeColor: "#FBFAF7",
 };
 
 export default async function RootLayout({

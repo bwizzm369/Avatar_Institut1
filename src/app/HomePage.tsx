@@ -9,7 +9,8 @@ import { useLocale } from "@/components/LocaleProvider";
 import { msg } from "@/lib/i18n";
 import type { PublicReview } from "@/lib/reviews/types";
 
-const HERO_IMAGE_SRC = "/hero/avatar-online-institute-hero-v2.png";
+const HERO_DESKTOP_SRC = "/hero/hero-desktop.png";
+const HERO_MOBILE_SRC = "/hero/hero-mobile.png";
 
 export default function HomePage({
   reviews = [],
@@ -30,12 +31,20 @@ export default function HomePage({
       <section className="hero" aria-labelledby="home-hero-title">
         <div className="hero-visual" aria-hidden="true">
           <Image
-            src={HERO_IMAGE_SRC}
+            src={HERO_DESKTOP_SRC}
             alt=""
             fill
             priority
-            sizes="100vw"
-            className="hero-image"
+            sizes="(max-width: 767px) 0px, 100vw"
+            className="hero-image hero-image--desktop"
+          />
+          <Image
+            src={HERO_MOBILE_SRC}
+            alt=""
+            fill
+            priority
+            sizes="(max-width: 767px) 100vw, 0px"
+            className="hero-image hero-image--mobile"
           />
           <div className="hero-overlay" />
         </div>
