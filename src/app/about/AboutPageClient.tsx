@@ -43,7 +43,6 @@ export default function AboutPage() {
             </Link>
           </nav>
           <div className="about-hero-inner">
-            <p className="founder-kicker">{msg("about.eyebrow", locale)}</p>
             <h1 id="about-hero-title" className="about-hero-title">
               {msg("about.overviewTitle", locale)}
             </h1>

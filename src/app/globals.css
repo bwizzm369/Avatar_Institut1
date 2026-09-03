@@ -1576,23 +1576,26 @@ img.official-logo-panel {
 
 .password-field {
   position: relative;
+  width: 100%;
 }
 
 .password-field input {
   width: 100%;
-  padding-inline-end: 2.75rem;
+  padding-inline-end: 2.85rem;
 }
 
 .password-toggle {
   position: absolute;
-  inset-inline-end: 0.4rem;
+  inset-inline-end: 0.1rem;
   top: 50%;
   transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 44px;
+  min-height: 44px;
   margin: 0;
   padding: 0;
   border: none;

@@ -6,6 +6,7 @@ import { useState, type FormEvent } from "react";
 import { verifyAdminSessionAction } from "@/lib/admin/actions";
 import { resolveSafeAdminRedirect } from "@/lib/admin/auth-policy";
 import { OFFICIAL_LOGO_SRC } from "@/components/Logo";
+import { PasswordInput } from "@/components/PasswordInput";
 import { validateLogin } from "@/lib/auth/validation";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
@@ -118,10 +119,9 @@ export function AdminLoginForm() {
           </div>
           <div className="admin-field">
             <label htmlFor="admin-password">Password</label>
-            <input
+            <PasswordInput
               id="admin-password"
               name="password"
-              type="password"
               autoComplete="current-password"
               required
               aria-invalid={passwordError ? true : undefined}

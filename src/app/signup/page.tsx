@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { useLocale } from "@/components/LocaleProvider";
+import { PasswordInput } from "@/components/PasswordInput";
 import { signupAction } from "@/lib/auth/actions";
 import { readSignupFormFields } from "@/lib/auth/signup-fields";
 import { validateSignup } from "@/lib/auth/validation";
@@ -189,10 +190,9 @@ export default function SignupPage() {
               <label htmlFor="signup-password">
                 {msg("auth.password", locale)}
               </label>
-              <input
+              <PasswordInput
                 id="signup-password"
                 name="password"
-                type="password"
                 autoComplete="new-password"
                 required
                 minLength={8}
@@ -208,10 +208,9 @@ export default function SignupPage() {
               <label htmlFor="signup-confirm">
                 {msg("auth.confirmPassword", locale)}
               </label>
-              <input
+              <PasswordInput
                 id="signup-confirm"
                 name="confirmPassword"
-                type="password"
                 autoComplete="new-password"
                 required
                 minLength={8}

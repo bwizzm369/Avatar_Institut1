@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { englishAbsoluteTitle } from "@/lib/titles";
 
 export const metadata: Metadata = {
@@ -10,5 +11,5 @@ export default function ForgotPasswordLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return <Suspense fallback={null}>{children}</Suspense>;
 }

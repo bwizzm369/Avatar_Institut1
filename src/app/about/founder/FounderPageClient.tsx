@@ -91,7 +91,6 @@ export default function FounderPageClient() {
                 {msg("about.tab.founder", locale)}
               </Link>
             </nav>
-            <p className="founder-kicker">{msg("founder.eyebrow", locale)}</p>
             <h1 id="founder-name" className="founder-hero-name">
               {name}
             </h1>

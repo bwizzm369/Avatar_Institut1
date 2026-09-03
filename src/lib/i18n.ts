@@ -680,6 +680,8 @@ export const messages: Dictionary = {
   "auth.signupTitle": { en: "Create an account", ar: "إنشاء حساب" },
   "auth.email": { en: "Email", ar: "البريد الإلكتروني" },
   "auth.password": { en: "Password", ar: "كلمة المرور" },
+  "auth.showPassword": { en: "Show password", ar: "إظهار كلمة المرور" },
+  "auth.hidePassword": { en: "Hide password", ar: "إخفاء كلمة المرور" },
   "auth.firstName": { en: "First name", ar: "الاسم الأول" },
   "auth.lastName": { en: "Last name", ar: "اسم العائلة" },
   "auth.submitLogin": { en: "Log in", ar: "تسجيل الدخول" },
@@ -817,6 +819,10 @@ export const messages: Dictionary = {
     en: "Confirm password",
     ar: "تأكيد كلمة المرور",
   },
+  "auth.confirmNewPassword": {
+    en: "Confirm new password",
+    ar: "تأكيد كلمة المرور الجديدة",
+  },
   "auth.submitNewPassword": {
     en: "Update password",
     ar: "تحديث كلمة المرور",
@@ -826,8 +832,12 @@ export const messages: Dictionary = {
     ar: "تم تحديث كلمة المرور. يمكنك الآن تسجيل الدخول.",
   },
   "auth.resetInvalid": {
-    en: "This reset link is invalid or has expired. Request a new one.",
-    ar: "رابط إعادة التعيين غير صالح أو منتهٍ. اطلب رابطًا جديدًا.",
+    en: "This reset link is invalid or has expired. Please request a new one.",
+    ar: "رابط إعادة التعيين هذا غير صالح أو منتهٍ. يُرجى طلب رابط جديد.",
+  },
+  "auth.resetLinkExpired": {
+    en: "This reset link is invalid or has expired. Please request a new one.",
+    ar: "رابط إعادة التعيين هذا غير صالح أو منتهٍ. يُرجى طلب رابط جديد.",
   },
   "auth.resetUpdateFailed": {
     en: "Could not update the password. Request a new reset link and try again.",

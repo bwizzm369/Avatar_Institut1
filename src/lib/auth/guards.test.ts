@@ -61,6 +61,10 @@ describe("dashboard route protection", () => {
     expect(safeAuthRedirect("/cart")).toBe("/cart");
     expect(safeAuthRedirect("https://evil.example")).toBe("/dashboard");
     expect(safeAuthRedirect("//evil.example")).toBe("/dashboard");
+    expect(safeAuthRedirect("https://avatarinstitut.com.evil")).toBe(
+      "/dashboard",
+    );
+    expect(safeAuthRedirect("/\\evil")).toBe("/dashboard");
     expect(safeAuthRedirect(null)).toBe("/dashboard");
   });
 });

@@ -50,3 +50,7 @@ next-env.d.ts
 
 .vercel
 .env*
+
+public/certificates/avatar-institut-certificate-reference.jpeg
+
+supabase/.temp/

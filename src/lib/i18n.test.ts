@@ -80,6 +80,20 @@ describe("i18n helpers", () => {
     expect(msg("auth.resetSent", "en")).toMatch(/If an account exists/i);
     expect(msg("auth.resetSent", "ar")).toMatch(/إذا كان هناك حساب/);
     expect(msg("auth.resetSuccess", "en")).toMatch(/password has been updated/i);
+    expect(msg("auth.resetLinkExpired", "en")).toBe(
+      "This reset link is invalid or has expired. Please request a new one.",
+    );
+    expect(msg("auth.resetLinkExpired", "ar")).toBe(
+      "رابط إعادة التعيين هذا غير صالح أو منتهٍ. يُرجى طلب رابط جديد.",
+    );
+    expect(msg("auth.confirmNewPassword", "en")).toBe("Confirm new password");
+    expect(msg("auth.confirmNewPassword", "ar")).toBe(
+      "تأكيد كلمة المرور الجديدة",
+    );
+    expect(msg("auth.showPassword", "en")).toBe("Show password");
+    expect(msg("auth.showPassword", "ar")).toBe("إظهار كلمة المرور");
+    expect(msg("auth.hidePassword", "en")).toBe("Hide password");
+    expect(msg("auth.hidePassword", "ar")).toBe("إخفاء كلمة المرور");
     expect(msg("auth.error.passwordMismatch", "ar")).toMatch(/غير متطابقتين/);
   });
 

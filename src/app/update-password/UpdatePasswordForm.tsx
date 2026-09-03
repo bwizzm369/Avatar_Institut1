@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { useLocale } from "@/components/LocaleProvider";
+import { PasswordInput } from "@/components/PasswordInput";
 import { updatePasswordAction } from "@/lib/auth/actions";
 import { validatePasswordReset } from "@/lib/auth/validation";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
@@ -21,15 +22,19 @@ function passwordErrorMessage(
   return msg("auth.validationFailed", locale);
 }
 
-export function UpdatePasswordForm() {
+export function UpdatePasswordForm({
+  hasRecoverySession,
+}: {
+  hasRecoverySession: boolean;
+}) {
   const { locale } = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
   const configured = isSupabaseConfigured();
   const invalidLink = searchParams.get("error") === "invalid";
 
-  const [sessionReady, setSessionReady] = useState(false);
-  const [hasRecoverySession, setHasRecoverySession] = useState(false);
+  const [sessionReady, setSessionReady] = useState(hasRecoverySession);
+  const [recoveryOk, setRecoveryOk] = useState(hasRecoverySession);
   const [pending, setPending] = useState(false);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [confirmError, setConfirmError] = useState<string | null>(null);
@@ -40,7 +45,7 @@ export function UpdatePasswordForm() {
     async function checkSession() {
       if (!configured || invalidLink) {
         setSessionReady(true);
-        setHasRecoverySession(false);
+        setRecoveryOk(false);
         return;
       }
       try {
@@ -49,11 +54,11 @@ export function UpdatePasswordForm() {
           data: { user },
         } = await supabase.auth.getUser();
         if (!cancelled) {
-          setHasRecoverySession(Boolean(user));
+          setRecoveryOk(Boolean(user) && hasRecoverySession);
         }
       } catch {
         if (!cancelled) {
-          setHasRecoverySession(false);
+          setRecoveryOk(false);
         }
       } finally {
         if (!cancelled) {
@@ -65,9 +70,9 @@ export function UpdatePasswordForm() {
     return () => {
       cancelled = true;
     };
-  }, [configured, invalidLink]);
+  }, [configured, invalidLink, hasRecoverySession]);
 
-  const blocked = !configured || invalidLink || (sessionReady && !hasRecoverySession);
+  const blocked = !configured || invalidLink || (sessionReady && !recoveryOk);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -144,10 +149,9 @@ export function UpdatePasswordForm() {
               <label htmlFor="new-password">
                 {msg("auth.newPassword", locale)}
               </label>
-              <input
+              <PasswordInput
                 id="new-password"
                 name="password"
-                type="password"
                 autoComplete="new-password"
                 required
                 minLength={8}
@@ -161,12 +165,11 @@ export function UpdatePasswordForm() {
             </div>
             <div className="form-field">
               <label htmlFor="confirm-password">
-                {msg("auth.confirmPassword", locale)}
+                {msg("auth.confirmNewPassword", locale)}
               </label>
-              <input
+              <PasswordInput
                 id="confirm-password"
                 name="confirmPassword"
-                type="password"
                 autoComplete="new-password"
                 required
                 minLength={8}

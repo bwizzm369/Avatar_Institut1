@@ -4,10 +4,13 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { resolveStudentLoginDestination } from "@/lib/admin/auth-policy";
 import { applyLegacyMatchAfterSignup } from "@/lib/auth/legacy-match-store";
+import { cookies } from "next/headers";
 import {
   authRedirectOrigin,
   genericResetRequestResult,
+  passwordRecoveryCookieOptions,
   passwordResetEmailRedirectTo,
+  PASSWORD_RECOVERY_COOKIE,
   PASSWORD_RESET_LOGIN_PATH,
 } from "@/lib/auth/password-reset";
 import {
@@ -257,10 +260,12 @@ export async function updatePasswordAction(
 
   try {
     const supabase = await createServerSupabaseClient();
+    const cookieStore = await cookies();
+    const recovery = cookieStore.get(PASSWORD_RECOVERY_COOKIE)?.value === "1";
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) {
+    if (!user || !recovery) {
       return { ok: false, errorKey: "auth.resetInvalid" };
     }
 
@@ -272,9 +277,35 @@ export async function updatePasswordAction(
     }
 
     await supabase.auth.signOut();
+    cookieStore.set(
+      PASSWORD_RECOVERY_COOKIE,
+      "",
+      passwordRecoveryCookieOptions(authRedirectOrigin().startsWith("https")),
+    );
+    cookieStore.delete(PASSWORD_RECOVERY_COOKIE);
     revalidatePath("/", "layout");
     return { ok: true, redirectTo: PASSWORD_RESET_LOGIN_PATH };
   } catch {
     return { ok: false, errorKey: "auth.networkError" };
   }
+}
+
+export async function markPasswordRecoveryAction(): Promise<{ ok: boolean }> {
+  if (!isSupabaseConfigured()) {
+    return { ok: false };
+  }
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { ok: false };
+  }
+  const cookieStore = await cookies();
+  cookieStore.set(
+    PASSWORD_RECOVERY_COOKIE,
+    "1",
+    passwordRecoveryCookieOptions(authRedirectOrigin().startsWith("https")),
+  );
+  return { ok: true };
 }

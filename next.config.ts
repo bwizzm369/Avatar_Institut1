@@ -1,4 +1,5 @@
 ﻿import type { NextConfig } from "next";
+import { getApplicationSecurityHeaders } from "./src/lib/security/headers";
 
 /** Template 2 assets + fonts are read from disk at PDF time, not imported. */
 const certificatePdfTraceIncludes = [
@@ -12,6 +13,14 @@ const certificatePdfTraceIncludes = [
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["@sparticuz/chromium", "puppeteer-core"],
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: getApplicationSecurityHeaders(),
+      },
+    ];
+  },
   outputFileTracingIncludes: {
     "/api/admin/certificates/[certificateNumber]/pdf":
       certificatePdfTraceIncludes,
