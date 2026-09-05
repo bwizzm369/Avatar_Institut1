@@ -380,6 +380,43 @@
   color: var(--admin-muted);
 }
 
+.admin-login-langs {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.admin-login-langs .lang-switcher {
+  gap: 0.35rem;
+}
+
+.admin-login-langs .lang-btn {
+  min-width: 2.25rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--admin-border);
+  background: #fff;
+  color: var(--admin-muted);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.admin-login-langs .lang-btn.active {
+  border-color: var(--admin-green);
+  color: var(--admin-green-deep);
+  font-weight: 600;
+}
+
+.admin-verify-resend {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.admin-verify-resend .admin-btn-ghost {
+  width: 100%;
+}
+
 .admin-form {
   display: flex;
   flex-direction: column;

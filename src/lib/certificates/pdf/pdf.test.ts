@@ -99,6 +99,7 @@ describe("certificate PDF access", () => {
       denyCertificatePdfAccess({
         status: "ok",
         userId: "admin-1",
+        sessionId: "session-admin-1",
         profile: {
           id: "admin-1",
           email: "admin@example.com",

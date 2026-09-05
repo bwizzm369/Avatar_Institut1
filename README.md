@@ -52,6 +52,9 @@ Chaîne brute, sans garde (CI interne / debug) : `npm run check:run`.
 | `NEXT_PUBLIC_SUPABASE_URL` | Public |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public (RLS) |
 | `SUPABASE_SERVICE_ROLE_KEY` | **Serveur uniquement** |
+| `RESEND_API_KEY` | **Serveur uniquement** |
+| `RESEND_EMAIL_DOMAIN` | **Serveur uniquement** |
+| `ADMIN_EMAIL_VERIFICATION_SECRET` | **Serveur uniquement** |
 
 Ne jamais committer de secrets.
 

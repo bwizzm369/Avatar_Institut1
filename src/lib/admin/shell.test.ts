@@ -45,6 +45,7 @@ describe("admin console shell", () => {
     expect(adminConsoleUsesAdminShell("/admin/consultations")).toBe(true);
     expect(adminConsoleUsesAdminShell("/admin/reviews")).toBe(true);
     expect(adminConsoleUsesAdminShell("/admin/login")).toBe(false);
+    expect(adminConsoleUsesAdminShell("/admin/verify")).toBe(false);
   });
 
   it("exposes Admin Console branding without public site navigation", () => {

@@ -16,6 +16,10 @@ export default async function AdminConsoleLayout({
     redirect(ADMIN_LOGIN_PATH);
   }
 
+  if (gate.outcome === "redirect_verify") {
+    redirect(gate.redirectTo);
+  }
+
   if (gate.outcome === "deny" || access.status !== "ok") {
     return (
       <div className="admin-denied">

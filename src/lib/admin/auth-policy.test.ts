@@ -37,15 +37,15 @@ describe("student vs admin auth separation", () => {
     expect(consoleGate.outcome).toBe("allow");
   });
 
-  it("redirects a valid admin login to /admin", () => {
+  it("sends a valid admin login to administrative email verification", () => {
     const decision = decideAdminLogin({
       authenticated: true,
       role: "admin",
       nextPath: "/admin/students",
     });
     expect(decision).toEqual({
-      outcome: "allow",
-      redirectTo: "/admin/students",
+      outcome: "challenge",
+      redirectTo: "/admin/verify?next=%2Fadmin%2Fstudents",
     });
   });
 
@@ -93,6 +93,15 @@ describe("admin auth policy details", () => {
       "deny",
     );
     expect(decideAdminConsoleAccess({ status: "ok" }).outcome).toBe("allow");
+    expect(
+      decideAdminConsoleAccess({
+        status: "needs_verification",
+        pathname: "/admin",
+      }),
+    ).toEqual({
+      outcome: "redirect_verify",
+      redirectTo: "/admin/verify",
+    });
   });
 
   it("allows admins to open /dashboard without forcing /admin", () => {

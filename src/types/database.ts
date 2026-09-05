@@ -726,6 +726,56 @@ export interface Database {
           },
         ];
       };
+      admin_email_verification_challenges: {
+        Row: {
+          id: string;
+          profile_id: string;
+          session_id: string;
+          code_hash: string;
+          expires_at: string;
+          attempt_count: number;
+          last_sent_at: string;
+          consumed_at: string | null;
+          superseded_at: string | null;
+          locked_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          profile_id: string;
+          session_id: string;
+          code_hash: string;
+          expires_at: string;
+          attempt_count?: number;
+          last_sent_at?: string;
+          consumed_at?: string | null;
+          superseded_at?: string | null;
+          locked_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          profile_id?: string;
+          session_id?: string;
+          code_hash?: string;
+          expires_at?: string;
+          attempt_count?: number;
+          last_sent_at?: string;
+          consumed_at?: string | null;
+          superseded_at?: string | null;
+          locked_at?: string | null;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "admin_email_verification_challenges_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -810,3 +860,5 @@ export type CertificateYearCounterRow =
 export type ConsultationRequestRow =
   Database["public"]["Tables"]["consultation_requests"]["Row"];
 export type ReviewRow = Database["public"]["Tables"]["reviews"]["Row"];
+export type AdminEmailVerificationChallengeRow =
+  Database["public"]["Tables"]["admin_email_verification_challenges"]["Row"];

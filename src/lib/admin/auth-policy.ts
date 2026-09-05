@@ -9,7 +9,11 @@ import {
   resolveAdminSessionAccess,
   type ProfileRole,
 } from "@/lib/admin/guards";
-import { ADMIN_HOME_PATH, ADMIN_LOGIN_PATH } from "@/lib/admin/paths";
+import {
+  ADMIN_HOME_PATH,
+  ADMIN_LOGIN_PATH,
+  adminVerifyRedirect,
+} from "@/lib/admin/paths";
 import {
   resolveDashboardAccess,
   safeAuthRedirect,
@@ -17,6 +21,7 @@ import {
 
 export type AdminLoginDecision =
   | { outcome: "allow"; redirectTo: string }
+  | { outcome: "challenge"; redirectTo: string }
   | { outcome: "deny"; error: string; shouldSignOut: true }
   | { outcome: "unauthenticated"; error: string };
 
@@ -42,8 +47,8 @@ export function decideAdminLogin(options: {
   }
 
   return {
-    outcome: "allow",
-    redirectTo: resolveSafeAdminRedirect(options.nextPath),
+    outcome: "challenge",
+    redirectTo: adminVerifyRedirect(resolveSafeAdminRedirect(options.nextPath)),
   };
 }
 
@@ -59,17 +64,24 @@ export function resolveSafeAdminRedirect(
 
 export type AdminConsoleDecision =
   | { outcome: "redirect_login"; redirectTo: string }
+  | { outcome: "redirect_verify"; redirectTo: string }
   | { outcome: "deny" }
   | { outcome: "allow" };
 
 /**
- * Server console gate for /admin/* except /admin/login.
+ * Server console gate for /admin/* except /admin/login and /admin/verify.
  * - no session → /admin/login
  * - student (or non-admin) → access denied
- * - admin → allow
+ * - admin without email verification → /admin/verify
+ * - verified admin → allow
  */
 export function decideAdminConsoleAccess(options: {
-  status: "unconfigured" | "unauthenticated" | "forbidden" | "ok";
+  status:
+    | "unconfigured"
+    | "unauthenticated"
+    | "forbidden"
+    | "needs_verification"
+    | "ok";
   pathname?: string;
 }): AdminConsoleDecision {
   if (
@@ -86,6 +98,14 @@ export function decideAdminConsoleAccess(options: {
 
   if (options.status === "forbidden") {
     return { outcome: "deny" };
+  }
+
+  if (options.status === "needs_verification") {
+    const pathname = options.pathname ?? ADMIN_HOME_PATH;
+    return {
+      outcome: "redirect_verify",
+      redirectTo: adminVerifyRedirect(resolveSafeAdminRedirect(pathname)),
+    };
   }
 
   return { outcome: "allow" };

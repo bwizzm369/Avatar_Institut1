@@ -3,6 +3,7 @@ import {
   isAdminLoginPath,
   isAdminPath,
   isAdminRole,
+  isAdminVerifyPath,
   isProtectedAdminPath,
   resolveAdminSessionAccess,
 } from "@/lib/admin/guards";
@@ -17,6 +18,7 @@ describe("admin route session protection", () => {
     expect(isAdminLoginPath("/admin/login")).toBe(true);
     expect(isProtectedAdminPath("/admin")).toBe(true);
     expect(isProtectedAdminPath("/admin/login")).toBe(false);
+    expect(isProtectedAdminPath("/admin/verify")).toBe(false);
   });
 
   it("redirects unauthenticated users away from admin console", () => {
@@ -58,6 +60,24 @@ describe("admin route session protection", () => {
       supabaseConfigured: true,
     });
     expect(result.allowed).toBe(true);
+  });
+
+  it("requires a session on the administrative verification page", () => {
+    expect(isAdminVerifyPath("/admin/verify")).toBe(true);
+    const anonymous = resolveAdminSessionAccess({
+      pathname: "/admin/verify",
+      userId: null,
+      supabaseConfigured: true,
+    });
+    expect(anonymous.allowed).toBe(false);
+    expect(anonymous.redirectTo).toContain("/admin/login");
+
+    const signedIn = resolveAdminSessionAccess({
+      pathname: "/admin/verify",
+      userId: "admin-1",
+      supabaseConfigured: true,
+    });
+    expect(signedIn.allowed).toBe(true);
   });
 
   it("does not treat public certificate verification as an admin path", () => {

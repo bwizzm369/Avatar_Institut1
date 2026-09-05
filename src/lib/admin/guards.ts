@@ -12,19 +12,42 @@ export function isAdminLoginPath(pathname: string): boolean {
   return pathname === "/admin/login";
 }
 
+export function isAdminVerifyPath(pathname: string): boolean {
+  return pathname === "/admin/verify";
+}
+
 export function isProtectedAdminPath(pathname: string): boolean {
-  return isAdminPath(pathname) && !isAdminLoginPath(pathname);
+  return (
+    isAdminPath(pathname) &&
+    !isAdminLoginPath(pathname) &&
+    !isAdminVerifyPath(pathname)
+  );
 }
 
 /**
  * Session-level gate for /admin/* (except /admin/login).
- * Does NOT verify role — that must happen in a Server Component / action.
+ * /admin/verify requires a session but not the verification cookie.
+ * Console paths require a session; role and email verification run on the server.
  */
 export function resolveAdminSessionAccess(options: {
   pathname: string;
   userId: string | null;
   supabaseConfigured: boolean;
 }): { allowed: boolean; redirectTo: string | null } {
+  if (isAdminLoginPath(options.pathname)) {
+    return { allowed: true, redirectTo: null };
+  }
+
+  if (isAdminVerifyPath(options.pathname)) {
+    if (!options.supabaseConfigured || !options.userId) {
+      return {
+        allowed: false,
+        redirectTo: "/admin/login?next=%2Fadmin%2Fverify",
+      };
+    }
+    return { allowed: true, redirectTo: null };
+  }
+
   if (!isProtectedAdminPath(options.pathname)) {
     return { allowed: true, redirectTo: null };
   }
